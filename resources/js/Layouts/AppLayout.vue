@@ -1,4 +1,5 @@
 
+
 <template>
   <div class="min-h-full">
 
@@ -68,6 +69,7 @@ import {
   ChevronRightIcon,
   SearchIcon,
 UsersIcon,
+ShoppingCartIcon
 } from '@heroicons/vue/solid'
 import MobileSideBar from './MobileSideBar.vue'
 import DesktopSideBar from './DesktopSideBar.vue'
@@ -76,6 +78,8 @@ import FlashMessages from './FlashMessages.vue'
 
 const navigation = [
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
+
+  { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
@@ -111,6 +115,10 @@ export default {
     FlashMessages,
     OfficeBuildingIcon,
     LocationMarkerIcon,
+  },
+  props: ['title'],
+  mounted(){
+    document.title = this.title
   },
   setup() {
     const sidebarOpen = ref(false)

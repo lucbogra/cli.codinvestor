@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Jetstream/Welcome.vue';
+import { onMounted } from '@vue/runtime-core';
 </script>
 
 <template>
@@ -20,3 +21,11 @@ import Welcome from '@/Jetstream/Welcome.vue';
         </div>
     </AppLayout>
 </template>
+
+<script>
+    export default {
+        mounted() {
+
+        }
+    }
+</script>

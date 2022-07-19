@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MarketplaceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,6 +25,8 @@ Route::get('/', function () {
     ]);
 });
 
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -33,3 +36,6 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+
+Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
