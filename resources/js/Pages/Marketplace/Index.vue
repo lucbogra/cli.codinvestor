@@ -53,20 +53,20 @@ const products = ref(listProducts());
                                         <div class="text-sm text-slate-800 gh ro">Categories</div>
                                         <ul class="text-sm gp fb">
                                             <li v-for="category in datas" :key="category.id">
-                                                <inertia-link class="g_ xp capitalize"  :href="route('marketplace.index') + '?category=' + category.id">{{ category.name }}</inertia-link>
+                                                <inertia-link class="g_ xp capitalize text-base font-bold"  :href="route('marketplace.index') + '?category=' + category.id">{{ category.name }}</inertia-link>
                                                 <!-- <img src={{ category.photo }} alt=""> -->
                                             </li>
                                         </ul>
                                     </div>
                                     <!-- Price Range -->
                                     <div>
-                                        <div class="text-sm text-slate-800 gh ro">Price Range</div>
-                                        <label class="d">Price</label>
+                                        <div class="text-sm text-slate-800 gh ro">Country Range</div>
+                                        <label class="d">Country</label>
                                         <select class="a ou">
-                                            <option>Less than $20</option>
-                                            <option>$20 - $40</option>
-                                            <option>$40 - $80</option>
-                                            <option>More than $80</option>
+                                            <option>Morocco</option>
+                                            <option>France</option>
+                                            <option>England</option>
+                                            <option>Togo</option>
                                         </select>
                                     </div>
                                     <!-- Group 3 -->
@@ -229,10 +229,9 @@ const products = ref(listProducts());
                             </div>
 
                             <div class="text-sm text-slate-500 gm ri">{{ products.length }} {{ (products.length > 1) ? 'Items' : 'Item' }}</div>
-
                             <!-- Cards 1 (Video Courses) -->
                             <div>
-                                <div class="sn ag fn">
+                                <div class="sn ag fn" v-if="products.length > 0">
                                     <!-- Card 1 -->
                                     <div class="tz qd tns bg-white bd rounded-sm border border-slate-200 la" v-for="product in products" :key="product.id">
                                         <div class="flex ak sh">
@@ -277,6 +276,13 @@ const products = ref(listProducts());
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="" v-if="products.length === 0">
+                                    <div class="flex justify-center">
+                                        <div class="inline-flex items-center justify-center go gp vp vf bg-white border border-slate-200 rounded-full ny">
+                                            Pas de produit disponible pour cette catégorie 😪
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
