@@ -39,3 +39,4 @@ Route::middleware([
 
 
 Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
+Route::get('marketplace/{categoory}', [MarketplaceController::class, 'categoryProducts'])->name('marketplace.category.products');

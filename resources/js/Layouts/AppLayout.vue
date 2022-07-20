@@ -77,7 +77,7 @@ import Top from './Top.vue'
 import FlashMessages from './FlashMessages.vue'
 
 const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current: true },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
 

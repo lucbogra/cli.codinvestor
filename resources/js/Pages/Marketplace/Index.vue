@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, onMounted, computed } from 'vue';
+import { InertiaLink } from '@inertiajs/inertia-vue3'
 const props = defineProps({
     categories: Array,
     products: Array,
@@ -52,7 +53,7 @@ const products = ref(listProducts());
                                         <div class="text-sm text-slate-800 gh ro">Categories</div>
                                         <ul class="text-sm gp fb">
                                             <li v-for="category in datas" :key="category.id">
-                                                <a  class="g_ xp capitalize"  href="#0" >{{ category.name }}</a>
+                                                <inertia-link class="g_ xp capitalize"  :href="route('marketplace.index') + '?category=' + category.id">{{ category.name }}</inertia-link>
                                                 <!-- <img src={{ category.photo }} alt=""> -->
                                             </li>
                                         </ul>
@@ -206,7 +207,6 @@ const products = ref(listProducts());
 
                         <!-- Content -->
                         <div>
-
                             <!-- Filters -->
                             <div class="ii">
                                 <ul class="flex flex-wrap -m-1">
