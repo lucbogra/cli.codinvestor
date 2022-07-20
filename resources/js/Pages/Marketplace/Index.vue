@@ -214,9 +214,6 @@ const products = ref(listProducts());
                                         <button class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border cp bv ho ye wi wu">View All</button>
                                     </li>
                                     <li class="m-1">
-                                        <button class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Featured</button>
-                                    </li>
-                                    <li class="m-1">
                                         <button class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Newest</button>
                                     </li>
                                     <li class="m-1">
@@ -225,9 +222,11 @@ const products = ref(listProducts());
                                     <li class="m-1">
                                         <button class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Price - High to Low</button>
                                     </li>
+                                    <li class="m-1">
+                                        <input class="s ou me xq border-1 border-slate-200 rounded-full m-0 p-1" type="search" placeholder="Search product…" v-on:keyup="search"/>
+                                    </li>
                                 </ul>
                             </div>
-
                             <div class="text-sm text-slate-500 gm ri">{{ products.length }} {{ (products.length > 1) ? 'Items' : 'Item' }}</div>
                             <!-- Cards 1 (Video Courses) -->
                             <div>
@@ -316,7 +315,14 @@ const products = ref(listProducts());
 
 <script>
 export default {
-
+    // data: {
+    //     searchValue: ''
+    // },
+    methods: {
+        search() {
+            alert("Hello")
+        }
+    }
 }
 </script>
 
