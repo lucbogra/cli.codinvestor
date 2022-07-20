@@ -1,7 +1,41 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-</script>
+import { ref, onMounted, computed } from 'vue';
+const props = defineProps({
+    categories: Array,
+    products: Array,
+});
 
+const list = () => {
+  return props.categories.map((category) => {
+    return {
+      id: category.id,
+      name: category.name,
+      photo: category.photo
+    }
+  })
+}
+
+const listProducts = () => {
+    return props.products.map((product) => {
+        return {
+            id: product.id,
+            slug: product.slug,
+            description: product.description,
+            name: product.name,
+            photo: product.photo
+        }
+    })
+}
+
+onMounted(() => {
+  console.log(props);
+})
+
+
+const datas = ref(list());
+const products = ref(listProducts());
+</script>
 <template>
     <AppLayout title="Marketplace">
         <template #page-header >
@@ -15,25 +49,11 @@ import AppLayout from '@/Layouts/AppLayout.vue'
                                 <div class="sn zl tn_ fn">
                                     <!-- Group 1 -->
                                     <div>
-                                        <div class="text-sm text-slate-800 gh ro">Discover</div>
+                                        <div class="text-sm text-slate-800 gh ro">Categories</div>
                                         <ul class="text-sm gp fb">
-                                            <li>
-                                                <a class="text-indigo-500" href="#0">View All</a>
-                                            </li>
-                                            <li>
-                                                <a class="g_ xp" href="#0">Apps / Software</a>
-                                            </li>
-                                            <li>
-                                                <a class="g_ xp" href="#0">Design / Tech Products</a>
-                                            </li>
-                                            <li>
-                                                <a class="g_ xp" href="#0">Books &amp; Writing</a>
-                                            </li>
-                                            <li>
-                                                <a class="g_ xp" href="#0">Education</a>
-                                            </li>
-                                            <li>
-                                                <a class="g_ xp" href="#0">Drawing / Painting</a>
+                                            <li v-for="category in datas" :key="category.id">
+                                                <a  class="g_ xp capitalize"  href="#0" >{{ category.name }}</a>
+                                                <!-- <img src={{ category.photo }} alt=""> -->
                                             </li>
                                         </ul>
                                     </div>
@@ -208,17 +228,17 @@ import AppLayout from '@/Layouts/AppLayout.vue'
                                 </ul>
                             </div>
 
-                            <div class="text-sm text-slate-500 gm ri">67.975 Items</div>
+                            <div class="text-sm text-slate-500 gm ri">{{ products.length }} {{ (products.length > 1) ? 'Items' : 'Item' }}</div>
 
                             <!-- Cards 1 (Video Courses) -->
                             <div>
                                 <div class="sn ag fn">
                                     <!-- Card 1 -->
-                                    <div class="tz qd tns bg-white bd rounded-sm border border-slate-200 la" v-for="index in 9" :key="index">
+                                    <div class="tz qd tns bg-white bd rounded-sm border border-slate-200 la" v-for="product in products" :key="product.id">
                                         <div class="flex ak sh">
                                             <!-- Image -->
                                             <div class="y">
-                                                <img class="ou" src="https://via.placeholder.com/300" width="301" height="226" alt="Application 21">
+                                                <img class="ou" :src="product.photo" width="301" height="226" alt="Application 21">
                                                 <!-- Like button -->
                                                 <button class="g k q io mr-4">
                                                     <div class="yp bg-slate-900 pf rounded-full">
@@ -244,55 +264,14 @@ import AppLayout from '@/Layouts/AppLayout.vue'
                                                 <div class="uw">
                                                     <header class="ru">
                                                         <a href="#0">
-                                                            <h3 class="ga text-slate-800 gh rt">Form Builder CP</h3>
+                                                            <h3 class="ga text-slate-800 gh rt">{{ product.name }}</h3>
                                                         </a>
-                                                        <div class="text-sm">Lorem ipsum dolor sit amet adipiscing elit, sed do eiusmod.</div>
+                                                        <div class="text-sm">{{ product.description }}</div>
                                                     </header>
                                                 </div>
                                                 <!-- Rating and price -->
                                                 <div class="flex flex-wrap fe items-center">
-                                                    <!-- Rating -->
-                                                    <div class="flex items-center fc mr-2">
-                                                        <!-- Stars -->
-                                                        <div class="flex fm">
-                                                            <button>
-                                                                <span class="d">1 star</span>
-                                                                <svg class="oo sl du yn" viewBox="0 0 16 16">
-                                                                    <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <button>
-                                                                <span class="d">2 stars</span>
-                                                                <svg class="oo sl du yn" viewBox="0 0 16 16">
-                                                                    <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <button>
-                                                                <span class="d">3 stars</span>
-                                                                <svg class="oo sl du yn" viewBox="0 0 16 16">
-                                                                    <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <button>
-                                                                <span class="d">4 stars</span>
-                                                                <svg class="oo sl du yn" viewBox="0 0 16 16">
-                                                                    <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <button>
-                                                                <span class="d">5 stars</span>
-                                                                <svg class="oo sl du yf" viewBox="0 0 16 16">
-                                                                    <path d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"></path>
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        <!-- Rate -->
-                                                        <div class="inline-flex text-sm gp ya">4.7</div>
-                                                    </div>
-                                                    <!-- Price -->
-                                                    <div>
-                                                        <div class="inline-flex text-sm gp hf yo rounded-full gn vi vd">$39.00</div>
-                                                    </div>
+                                                   <button class="btn ou ho xi ye" href="#0">Details</button>
                                                 </div>
                                             </div>
                                         </div>
