@@ -22,12 +22,8 @@ class MarketplaceController extends Controller
         ]);
     }
 
-    public function categoryProducts($category) {
-        $categories = Category::all();
-        $products = Product::all();
-        return Inertia::render('Marketplace/Index', [
-            'categories' => $categories,
-            'products' => $products
-        ]);
+    public function search(Request $request) {
+        $products = Product::where('name', 'like', '%'.$request->keywords.'%')->get();
+        return $products;
     }
 }
