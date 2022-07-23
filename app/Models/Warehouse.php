@@ -5,29 +5,34 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
-class Product extends Model
+class Warehouse extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
+        'address',
+        'city',
+        'country',
+        'phone',
         'slug',
-        'photo',
-        'description',
-        'gallery',
-        'active',
-        'link',
-        'user_id'
     ];
-    protected $casts = [
-        'gallery' => 'array',
-    ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
+    }
+
+    public function scopeOrderByCity($query)
+    {
+        $query->orderBy('country')->orderBy('city');
     }
 
     public function scopeFilter($query, array $filters)
@@ -42,27 +47,8 @@ class Product extends Model
             }
         });
     }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class)->withTimestamps();
-    }
-
     public function variants()
     {
-        return $this->hasMany(Variant::class);
+        return $this->belongsToMany(Variant::class)->withTimestamps()->withPivot('qty');
     }
-
-    public function getGalleryAttribute(){
-        $tab = [];
-        foreach(json_decode($this->attributes['gallery']) as $img){
-          $tab[] = ['url' => Storage::disk('s3')->temporaryUrl($img, now()->addMinutes(10)), 'location' => $img];
-        }
-        return $tab;
-      }
-
-  public function getPhotoAttribute(){
-        return Storage::disk('s3')->temporaryUrl($this->attributes['photo'], now()->addMinutes(10));
-      }
-
 }

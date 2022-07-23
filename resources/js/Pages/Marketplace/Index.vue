@@ -5,6 +5,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
 const props = defineProps({
     categories: Array,
     products: Array,
+    countries: Array,
 });
 
 const list = () => {
@@ -28,6 +29,15 @@ const listProducts = () => {
         }
     })
 }
+const listCountries = () => {
+    return props.countries.map((country) => {
+        return {
+            id: country.id,
+            name: country.name,
+            country: country.country,
+        }
+    })
+}
 
 onMounted(() => {
     console.log(props);
@@ -36,6 +46,7 @@ onMounted(() => {
 
 const datas = ref(list());
 const products = ref(listProducts());
+const countriesData = ref(listCountries());
 </script>
 <template>
     <AppLayout title="Marketplace">
@@ -65,10 +76,8 @@ const products = ref(listProducts());
                                     <div class="text-sm text-slate-800 gh ro">Country Range</div>
                                     <label class="d">Country</label>
                                     <select class="a ou">
-                                        <option>Morocco</option>
-                                        <option>France</option>
-                                        <option>England</option>
-                                        <option>Togo</option>
+                                        <option disabled selected>Filter by country</option>
+                                        <option v-for="country in countriesData" :key="country.id">{{ country.country }}</option>
                                     </select>
                                 </div>
                                 <!-- Group 3 -->
@@ -257,23 +266,23 @@ const products = ref(listProducts());
                         <div class="ii">
                             <ul class="flex flex-wrap -m-1">
                                 <li class="m-1">
-                                    <button
+                                    <inertia-link :href="route('marketplace.index')"
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border cp bv ho ye wi wu">View
-                                        All</button>
+                                        All</inertia-link>
                                 </li>
                                 <li class="m-1">
-                                    <button
-                                        class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Newest</button>
+                                    <inertia-link :href="route('marketplace.index') + '?sort_by=newest'"
+                                        class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Newest</inertia-link>
                                 </li>
                                 <li class="m-1">
-                                    <button
+                                    <inertia-link
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Price
-                                        - Low To High</button>
+                                        - Low To High</inertia-link>
                                 </li>
                                 <li class="m-1">
-                                    <button
+                                    <inertia-link
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Price
-                                        - High to Low</button>
+                                        - High to Low</inertia-link>
                                 </li>
                                 <li class="m-1">
                                     <input class="s ou me xq border-1 border-slate-200 rounded-full m-0 p-1"
@@ -343,7 +352,7 @@ const products = ref(listProducts());
                                 <div class="flex justify-center">
                                     <div
                                         class="inline-flex items-center justify-center go gp vp vf bg-white border border-slate-200 rounded-full ny">
-                                        Pas de produit disponible pour cette catégorie 😪
+                                        No product available for this category 😪
                                     </div>
                                 </div>
                             </div>
