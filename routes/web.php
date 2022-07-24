@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -45,5 +46,11 @@ Route::middleware([
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
     Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
+
+
+    // User profile
+    Route::prefix('user')->as('user.')->group(function () {
+        Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+    });
 });
 
