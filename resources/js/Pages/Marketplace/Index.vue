@@ -275,6 +275,10 @@ const countriesData = ref(listCountries());
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Newest</inertia-link>
                                 </li>
                                 <li class="m-1">
+                                    <inertia-link :href="route('marketplace.index') + '?sort_by=oldest'"
+                                        class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Oldest</inertia-link>
+                                </li>
+                                <li class="m-1">
                                     <inertia-link
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Price
                                         - Low To High</inertia-link>
@@ -341,7 +345,7 @@ const countriesData = ref(listCountries());
                                             </div>
                                             <!-- Rating and price -->
                                             <div class="flex flex-wrap fe items-center">
-                                                <button class="btn ou ho xi ye" href="#0">Details</button>
+                                                <inertia-link class="btn ou ho xi ye" :href="route('marketplace.detail', product.slug)">Details</inertia-link>
                                             </div>
                                         </div>
                                     </div>

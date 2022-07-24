@@ -44,5 +44,6 @@ Route::middleware([
 ])->group(function () {
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
     Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
+    Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
 });
 

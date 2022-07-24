@@ -22,7 +22,9 @@ class MarketplaceController extends Controller
                 case 'newest':
                     $products = Product::where('active', 1)->orderBy('created_at', 'desc')->get();
                     break;
-
+                case 'oldest':
+                    $products = Product::where('active', 1)->orderBy('created_at', 'asc')->get();
+                    break;
                 default:
                     break;
             }
@@ -38,5 +40,16 @@ class MarketplaceController extends Controller
     public function search(Request $request) {
         $products = Product::where('name', 'like', '%'.$request->keywords.'%')->get();
         return $products;
+    }
+
+    public function detail($slug) {
+        $product = Product::where('slug', $slug)->first();
+        if($product) {
+            $variants = $product->variants;
+        }
+        return Inertia::render('Marketplace/Detail', [
+            'product' => $product,
+            'variants' => $variants
+        ]);
     }
 }
