@@ -46,7 +46,7 @@ Route::middleware([
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
     Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
-
+    Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
 
     // User profile
     Route::prefix('user')->as('user.')->group(function () {

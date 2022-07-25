@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 import { StarIcon } from '@heroicons/vue/solid'
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 import { InertiaLink } from '@inertiajs/inertia-vue3'
+import axios from 'axios'
 const product = {
   name: 'Basic Tee 6-Pack',
   price: '$192',
@@ -166,7 +167,7 @@ onMounted(() =>{
             </div>
           </div>
 
-          <form class="mt-10">
+          <div class="mt-10">
             <!-- Colors -->
             <div>
               <h3 class="text-sm text-gray-900 font-medium">Color</h3>
@@ -175,11 +176,11 @@ onMounted(() =>{
                 <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
                 <div class="flex items-center space-x-3">
                   <RadioGroupOption as="template" v-for="color in colors" :key="color.name" :value="color" >
-                    <div class=" relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none" :style="'background-color:' + color">
+                    <div class=" relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none" :style="'background-color:red'">
                       <RadioGroupLabel as="span" class="sr-only">
                         {{ color }}
                       </RadioGroupLabel>
-                      <span aria-hidden="true" :class="[color.class, 'h-8 w-8 border border-black border-opacity-10 rounded-full']" />
+                      <span aria-hidden="true" :class="['bg-red-500 h-8 w-8 border border-black border-opacity-10 rounded-full']" />
                     </div>
                   </RadioGroupOption>
                 </div>
@@ -213,8 +214,8 @@ onMounted(() =>{
               </RadioGroup>
             </div>
 
-            <button type="submit" class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Request</button>
-          </form>
+            <button type="submit" v-on:click="submitRequest(props.product.id)" class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Request</button>
+          </div>
         </div>
 
         <div class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
@@ -235,7 +236,18 @@ onMounted(() =>{
 </template>
 
 <script>
-
+    export default {
+        props: {
+            product: Object,
+        },
+        methods: {
+            submitRequest(product_id) {
+                axios.post(route('marketplace.request'), { productId: product_id } ).then((response) => {
+                    console.log(response.data)
+                })
+            }
+        }
+    }
 </script>
 
 <style>

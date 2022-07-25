@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Investor;
 use App\Models\Product;
 use App\Models\Warehouse;
+use App\Notifications\ProductRequestNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class MarketplaceController extends Controller
@@ -51,5 +55,21 @@ class MarketplaceController extends Controller
             'product' => $product,
             'variants' => $variants
         ]);
+    }
+
+    public function request(Request $request) {
+        $investor = Investor::where('user_id', auth()->id())->first();
+        DB::table('investor_product')->insert([
+            'investor_id' => $investor->id,
+            'product_id' => $request->productId,
+            'status' => 'request',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $product_request = DB::table('investor_product')->latest()->first();
+        // $investor->notify(new ProductRequestNotification();
+        Notification::send($investor, new ProductRequestNotification($product_request));
+        // return $product_request;
+
     }
 }

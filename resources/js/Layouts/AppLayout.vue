@@ -69,7 +69,8 @@ import {
   ChevronRightIcon,
   SearchIcon,
 UsersIcon,
-ShoppingCartIcon
+ShoppingCartIcon,
+ViewListIcon
 } from '@heroicons/vue/solid'
 import MobileSideBar from './MobileSideBar.vue'
 import DesktopSideBar from './DesktopSideBar.vue'
@@ -80,6 +81,8 @@ const navigation = [
   { name: 'Home', href: route('dashboard'), icon: HomeIcon, current: true },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
+
+  { name: 'Products', href: route('marketplace.index'), icon: ViewListIcon, current: false },
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
