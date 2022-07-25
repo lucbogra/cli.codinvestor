@@ -1,66 +1,64 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { onMounted, ref } from 'vue'
-import { StarIcon } from '@heroicons/vue/solid'
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 import { InertiaLink } from '@inertiajs/inertia-vue3'
 import axios from 'axios'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  RadioGroup,
+  RadioGroupLabel,
+  RadioGroupOption,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from '@headlessui/vue'
+import { StarIcon } from '@heroicons/vue/solid'
+import { HeartIcon, MinusSmIcon, PlusSmIcon } from '@heroicons/vue/outline'
+
 const product = {
-  name: 'Basic Tee 6-Pack',
-  price: '$192',
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Men', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
+  name: 'Zip Tote Basket',
+  price: '$140',
+  rating: 4,
   images: [
     {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-      alt: 'Two each of gray, white, and black shirts laying flat.',
+      id: 1,
+      name: 'Angled view',
+      src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
+      alt: 'Angled front view with bag zipped and handles upright.',
     },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-      alt: 'Model wearing plain black basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-      alt: 'Model wearing plain gray basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-      alt: 'Model wearing plain white basic tee.',
-    },
+    // More images...
   ],
   colors: [
-    { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-    { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-    { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
+    { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
+    { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
+    { name: 'Washed Gray', bgColor: 'bg-gray-500', selectedColor: 'ring-gray-500' },
   ],
-  sizes: [
-    { name: 'XXS', inStock: false },
-    { name: 'XS', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: true },
-    { name: '2XL', inStock: true },
-    { name: '3XL', inStock: true },
+  description: `
+    <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
+  `,
+  details: [
+    {
+      name: 'Features',
+      items: [
+        'Multiple strap configurations',
+        'Spacious interior with top zip',
+        'Leather handle and tabs',
+        'Interior dividers',
+        'Stainless strap loops',
+        'Double stitched construction',
+        'Water-resistant',
+      ],
+    },
+    // More sections...
   ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    'Hand cut and sewn locally',
-    'Dyed with our proprietary colors',
-    'Pre-washed & pre-shrunk',
-    'Ultra-soft 100% cotton',
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
-const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const selectedColor = ref(product.colors[0])
-const selectedSize = ref(product.sizes[2])
+
 
 const props = defineProps({
     product: Object,
@@ -85,10 +83,10 @@ const variants = ref(listVariants());
 let colors = []
 
 function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
+    return self.indexOf(value) === index;
 }
 
-onMounted(() =>{
+onMounted(() => {
     let tmpColors = []
     for (let i = 0; i < props.variants.length; i++) {
         tmpColors.push(props.variants[i].color);
@@ -102,152 +100,155 @@ onMounted(() =>{
     <AppLayout title="Marketplace">
         <template #page-header>
             <div class="bg-white">
-    <div class="pt-6">
-      <nav aria-label="Breadcrumb">
-        <ol role="list" class="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
-          <li>
-            <div class="flex items-center">
-              <inertia-link :href="route('marketplace.index')" class="mr-2 text-sm font-medium text-gray-900">
-                Marketplace
-              </inertia-link>
-              <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-5 text-gray-300">
-                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-              </svg>
+                <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+                        <!-- Image gallery -->
+                        <TabGroup as="div" class="flex flex-col-reverse">
+                            <!-- Image selector -->
+                            <div class="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+                                <TabList class="grid grid-cols-4 gap-6">
+                                    <Tab v-for="image in product.images" :key="image.id"
+                                        class="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
+                                        v-slot="{ selected }">
+                                        <span class="sr-only">
+                                            {{ image.name }}
+                                        </span>
+                                        <span class="absolute inset-0 rounded-md overflow-hidden">
+                                            <img :src="image.src" alt=""
+                                                class="w-full h-full object-center object-cover" />
+                                        </span>
+                                        <span
+                                            :class="[selected ? 'ring-indigo-500' : 'ring-transparent', 'absolute inset-0 rounded-md ring-2 ring-offset-2 pointer-events-none']"
+                                            aria-hidden="true" />
+                                    </Tab>
+                                </TabList>
+                            </div>
 
-            </div>
-          </li>
-          <li class="text-sm">
-            <inertia-link :href="props.product.slug" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">
-              {{ props.product.name }}
-            </inertia-link>
-          </li>
-        </ol>
-      </nav>
+                            <TabPanels class="w-full aspect-w-1 aspect-h-1">
+                                <TabPanel v-for="image in product.images" :key="image.id">
+                                    <img :src="image.src" :alt="image.alt"
+                                        class="w-full h-full object-center object-cover sm:rounded-lg" />
+                                </TabPanel>
+                            </TabPanels>
+                        </TabGroup>
 
-      <!-- Image gallery -->
-      <div class="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
-        <div class="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
-          <img :src="props.product.photo" :alt="product.images[0].alt" class="w-full h-full object-center object-cover" />
-        </div>
-        <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-          <div class="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-            <img :src="product.images[1].src" :alt="product.images[1].alt" class="w-full h-full object-center object-cover" />
-          </div>
-          <div class="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-            <img :src="product.images[2].src" :alt="product.images[2].alt" class="w-full h-full object-center object-cover" />
-          </div>
-        </div>
-        <div class="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
-          <img :src="product.images[3].src" :alt="product.images[3].alt" class="w-full h-full object-center object-cover" />
-        </div>
-      </div>
+                        <!-- Product info -->
+                        <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+                            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">{{ product.name }}</h1>
 
-      <!-- Product info -->
-      <div class="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
-        <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-            {{ props.product.name }}
-          </h1>
-        </div>
+                            <div class="mt-3">
+                                <h2 class="sr-only">Product information</h2>
+                                <p class="text-3xl text-gray-900">{{ product.price }}</p>
+                            </div>
 
-        <!-- Options -->
-        <div class="mt-4 lg:mt-0 lg:row-span-3">
-          <h2 class="sr-only">Product information</h2>
-          <p class="text-3xl text-gray-900">{{ product.price }}</p>
+                            <!-- Reviews -->
+                            <div class="mt-3">
+                                <h3 class="sr-only">Reviews</h3>
+                                <div class="flex items-center">
+                                    <div class="flex items-center">
+                                        <StarIcon v-for="rating in [0, 1, 2, 3, 4]" :key="rating"
+                                            :class="[product.rating > rating ? 'text-indigo-500' : 'text-gray-300', 'h-5 w-5 flex-shrink-0']"
+                                            aria-hidden="true" />
+                                    </div>
+                                    <p class="sr-only">{{ product.rating }} out of 5 stars</p>
+                                </div>
+                            </div>
 
-          <!-- Reviews -->
-          <div class="mt-6">
-            <h3 class="sr-only">Reviews</h3>
-            <div class="flex items-center">
-              <div class="flex items-center">
-                <StarIcon v-for="rating in [0, 1, 2, 3, 4]" :key="rating" :class="[reviews.average > rating ? 'text-gray-900' : 'text-gray-200', 'h-5 w-5 flex-shrink-0']" aria-hidden="true" />
-              </div>
-              <p class="sr-only">{{ reviews.average }} out of 5 stars</p>
-              <a :href="reviews.href" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">{{ reviews.totalCount }} reviews</a>
-            </div>
-          </div>
+                            <div class="mt-6">
+                                <h3 class="sr-only">Description</h3>
 
-          <div class="mt-10">
-            <!-- Colors -->
-            <div>
-              <h3 class="text-sm text-gray-900 font-medium">Color</h3>
+                                <div class="text-base text-gray-700 space-y-6" v-html="product.description" />
+                            </div>
 
-              <RadioGroup v-model="selectedColor" class="mt-4">
-                <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
-                <div class="flex items-center space-x-3">
-                  <RadioGroupOption as="template" v-for="color in colors" :key="color.name" :value="color" >
-                    <div class=" relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none" :style="'background-color:red'">
-                      <RadioGroupLabel as="span" class="sr-only">
-                        {{ color }}
-                      </RadioGroupLabel>
-                      <span aria-hidden="true" :class="['bg-red-500 h-8 w-8 border border-black border-opacity-10 rounded-full']" />
+                            <form class="mt-6">
+                                <!-- Colors -->
+                                <div>
+                                    <h3 class="text-sm text-gray-600">Color</h3>
+
+                                    <RadioGroup v-model="selectedColor" class="mt-2">
+                                        <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
+                                        <span class="flex items-center space-x-3">
+                                            <RadioGroupOption as="template" v-for="color in product.colors"
+                                                :key="color.name" :value="color" v-slot="{ active, checked }">
+                                                <div
+                                                    :class="[color.selectedColor, active && checked ? 'ring ring-offset-1' : '', !active && checked ? 'ring-2' : '', '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none']">
+                                                    <RadioGroupLabel as="span" class="sr-only">
+                                                        {{ color.name }}
+                                                    </RadioGroupLabel>
+                                                    <span aria-hidden="true"
+                                                        :class="[color.bgColor, 'h-8 w-8 border border-black border-opacity-10 rounded-full']" />
+                                                </div>
+                                            </RadioGroupOption>
+                                        </span>
+                                    </RadioGroup>
+                                </div>
+
+                                <div class="mt-10 flex sm:flex-col1">
+                                    <button type="submit"
+                                        class="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full">Add
+                                        to bag</button>
+
+                                    <button type="button"
+                                        class="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500">
+                                        <HeartIcon class="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+                                        <span class="sr-only">Add to favorites</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <section aria-labelledby="details-heading" class="mt-12">
+                                <h2 id="details-heading" class="sr-only">Additional details</h2>
+
+                                <div class="border-t divide-y divide-gray-200">
+                                    <Disclosure as="div" v-for="detail in product.details" :key="detail.name"
+                                        v-slot="{ open }">
+                                        <h3>
+                                            <DisclosureButton
+                                                class="group relative w-full py-6 flex justify-between items-center text-left">
+                                                <span
+                                                    :class="[open ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-medium']">
+                                                    {{ detail.name }}
+                                                </span>
+                                                <span class="ml-6 flex items-center">
+                                                    <PlusSmIcon v-if="!open"
+                                                        class="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                                        aria-hidden="true" />
+                                                    <MinusSmIcon v-else
+                                                        class="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
+                                                        aria-hidden="true" />
+                                                </span>
+                                            </DisclosureButton>
+                                        </h3>
+                                        <DisclosurePanel as="div" class="pb-6 prose prose-sm">
+                                            <ul role="list">
+                                                <li v-for="item in detail.items" :key="item">{{ item }}</li>
+                                            </ul>
+                                        </DisclosurePanel>
+                                    </Disclosure>
+                                </div>
+                            </section>
+                        </div>
                     </div>
-                  </RadioGroupOption>
                 </div>
-              </RadioGroup>
             </div>
 
-            <!-- Sizes -->
-            <div class="mt-10">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm text-gray-900 font-medium">Size</h3>
-                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
-              </div>
-
-              <RadioGroup v-model="selectedSize" class="mt-4">
-                <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
-                <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                  <RadioGroupOption as="template" v-for="size in product.sizes" :key="size.name" :value="size" :disabled="!size.inStock" v-slot="{ active, checked }">
-                    <div :class="[size.inStock ? 'bg-white shadow-sm text-gray-900 cursor-pointer' : 'bg-gray-50 text-gray-200 cursor-not-allowed', active ? 'ring-2 ring-indigo-500' : '', 'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6']">
-                      <RadioGroupLabel as="span">
-                        {{ size.name }}
-                      </RadioGroupLabel>
-                      <span v-if="size.inStock" :class="[active ? 'border' : 'border-2', checked ? 'border-indigo-500' : 'border-transparent', 'absolute -inset-px rounded-md pointer-events-none']" aria-hidden="true" />
-                      <span v-else aria-hidden="true" class="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none">
-                        <svg class="absolute inset-0 w-full h-full text-gray-200 stroke-2" viewBox="0 0 100 100" preserveAspectRatio="none" stroke="currentColor">
-                          <line x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
-                        </svg>
-                      </span>
-                    </div>
-                  </RadioGroupOption>
-                </div>
-              </RadioGroup>
-            </div>
-
-            <button type="submit" v-on:click="submitRequest(props.product.id)" class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Request</button>
-          </div>
-        </div>
-
-        <div class="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <!-- Description and details -->
-          <div>
-            <h3 class="sr-only">Description</h3>
-
-            <div class="space-y-6">
-              <p class="text-base text-gray-900">{{ props.product.description }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
         </template>
     </AppLayout>
 </template>
 
 <script>
-    export default {
-        props: {
-            product: Object,
-        },
-        methods: {
-            submitRequest(product_id) {
-                axios.post(route('marketplace.request'), { productId: product_id } ).then((response) => {
-                    console.log(response.data)
-                })
-            }
+export default {
+    props: {
+        product: Object,
+    },
+    methods: {
+        submitRequest(product_id) {
+            axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
+                console.log(response.data)
+            })
         }
     }
+}
 </script>
 
 <style>

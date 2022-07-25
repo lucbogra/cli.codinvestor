@@ -72,4 +72,16 @@ class MarketplaceController extends Controller
         // return $product_request;
 
     }
+
+    public function products()
+    {
+        $products = [];
+        $productIds = DB::table('investor_product')->where('investor_id', auth()->id)->get();
+        foreach ($productIds as $key => $id) {
+            $tmp_product = Product::where('id', $id)->first();
+            array_push($products, $tmp_product);
+        }
+
+        return $products;
+    }
 }
