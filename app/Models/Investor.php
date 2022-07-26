@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Investor extends Model
 {
@@ -94,10 +95,10 @@ class Investor extends Model
      */
     public function routeNotificationForMail($notification)
     {
-        // Return email address only...
         return $this->email;
+    }
 
-        // // Return email address and name...
-        // return [$this->email_address => $this->name];
+    public function products(){
+        return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status');
     }
 }

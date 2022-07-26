@@ -2,6 +2,26 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, onMounted, computed } from 'vue';
 import { InertiaLink } from '@inertiajs/inertia-vue3'
+
+const props = defineProps({
+    products: Array,
+});
+const listProducts = () => {
+    return props.products.map((product) => {
+        return {
+            id: product.id,
+            slug: product.slug,
+            description: product.description,
+            name: product.name,
+            photo: product.photo
+        }
+    })
+}
+
+onMounted(() => {
+    console.log(props.products[0]);
+})
+
 </script>
 <template>
     <AppLayout title="Products">
@@ -68,7 +88,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                     <!-- Table body -->
                                     <tbody class="text-sm le lr">
                                         <!-- Row -->
-                                        <tr>
+                                        <tr v-for="product in props.products" :key="product.id">
                                             <td class="vi wy w_ vo lm of">
                                                 <div class="flex items-center">
                                                     <label class="inline-flex">
@@ -81,10 +101,10 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                                 <div class="gp yv">#143567</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
-                                                <div class="gp yl">$129.00</div>
+                                                <div class="gp ">{{ product.name }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
-                                                <div class="inline-flex gp hf yl rounded-full gn vp vd">Overdue</div>
+                                                <div class="inline-flex gp hf yl rounded-full gn vp vd">{{ product.pivot.status }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
                                                 <div class="gp text-slate-800">Dominik Lamakani</div>

@@ -83,7 +83,10 @@ class MarketplaceController extends Controller
             $tmp_product = Product::where('id', $productId->id)->first();
             array_push($products, $tmp_product);
         }
-
-        return Inertia::render('Marketplace/Product');
+        $investor = Investor::where('user_id', auth()->id())->first();
+        // return $investor->products;
+        return Inertia::render('Marketplace/Product', [
+            'products' => $investor->products
+        ]);
     }
 }
