@@ -59,18 +59,22 @@ class MarketplaceController extends Controller
 
     public function request(Request $request) {
         $investor = Investor::where('user_id', auth()->id())->first();
-        DB::table('investor_product')->insert([
-            'investor_id' => $investor->id,
-            'product_id' => $request->productId,
-            'status' => 'request',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        $product_request = DB::table('investor_product')->latest()->first();
-        // $investor->notify(new ProductRequestNotification();
-        Notification::send($investor, new ProductRequestNotification($product_request));
-        // return $product_request;
-        return 1;
+        if($investor) {
+            DB::table('investor_product')->insert([
+                'investor_id' => $investor->id,
+                'product_id' => $request->productId,
+                'status' => 'request',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            $product_request = DB::table('investor_product')->latest()->first();
+            // $investor->notify(new ProductRequestNotification();
+            Notification::send($investor, new ProductRequestNotification($product_request));
+            // return $product_request;
+            return 1;
+        } else {
+            return 0;
+        }
 
     }
 

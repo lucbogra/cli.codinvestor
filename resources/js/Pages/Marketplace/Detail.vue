@@ -120,35 +120,31 @@ let prices = []
                                         </span>
                                     </RadioGroup>
 
-                                    <fieldset class="mt-4">
-                                        <legend class="sr-only">Choose a size</legend>
-                                        <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                                            <!-- Active: "ring-2 ring-indigo-500" -->
-                                            <label
-                                                class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 bg-gray-50 text-gray-200 cursor-not-allowed">
-                                                <input type="radio" name="size-choice" value="XXS" disabled
-                                                    class="sr-only" aria-labelledby="size-choice-0-label">
-                                                <span id="size-choice-0-label"> XXS </span>
+                                     <div class="mt-10">
+                                        <div class="flex items-center justify-between">
+                                            <h3 class="text-sm text-gray-900 font-medium">Size</h3>
+                                            <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
+                                        </div>
 
-                                                <span aria-hidden="true"
-                                                    class="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none">
-                                                    <svg class="absolute inset-0 w-full h-full text-gray-200 stroke-2"
-                                                        viewBox="0 0 100 100" preserveAspectRatio="none"
-                                                        stroke="currentColor">
-                                                        <line x1="0" y1="100" x2="100" y2="0"
-                                                            vector-effect="non-scaling-stroke" />
+                                        <RadioGroup v-model="selectedSize" class="mt-4">
+                                            <RadioGroupLabel class="sr-only"> Choose a size </RadioGroupLabel>
+                                            <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                                            <RadioGroupOption as="template" v-for="size in sizes" :key="size.name" :value="size" :disabled="!size.inStock" v-slot="{ active, checked }">
+                                                <div :class="[size ? 'bg-white shadow-sm text-gray-900 cursor-pointer' : 'bg-gray-50 text-gray-200 cursor-not-allowed', active ? 'ring-2 ring-indigo-500' : '', 'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6']">
+                                                <RadioGroupLabel as="span">
+                                                    {{ size }}
+                                                </RadioGroupLabel>
+                                                <span v-if="size" :class="[active ? 'border' : 'border-2', checked ? 'border-indigo-500' : 'border-transparent', 'absolute -inset-px rounded-md pointer-events-none']" aria-hidden="true" />
+                                                <span v-else aria-hidden="true" class="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none">
+                                                    <svg class="absolute inset-0 w-full h-full text-gray-200 stroke-2" viewBox="0 0 100 100" preserveAspectRatio="none" stroke="currentColor">
+                                                    <line x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
                                                     </svg>
                                                 </span>
-                                            </label>
-
-                                            <!-- Active: "ring-2 ring-indigo-500" -->
-                                            <label v-for="size in sizes" :key="size" class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 bg-white shadow-sm text-gray-900 cursor-pointer">
-                                                <input type="radio" name="size-choice" :value="size" class="sr-only" aria-labelledby="size-choice-1-label">
-                                                <span id="size-choice-1-label"> {{ size }} </span>
-                                                <span class="absolute -inset-px rounded-md pointer-events-none" aria-hidden="true"></span>
-                                            </label>
+                                                </div>
+                                            </RadioGroupOption>
+                                            </div>
+                                        </RadioGroup>
                                         </div>
-                                    </fieldset>
                                 </div>
 
                                 <div class="mt-10 flex sm:flex-col1">
@@ -206,6 +202,8 @@ export default {
         sizes: [],
         colors: [],
         prices: [],
+        selectedColor: null,
+        selectedSize : null
     },
     methods: {
         submitRequest(product_id) {
@@ -234,6 +232,8 @@ export default {
         this.sizes = this.getAllAttributes('size', this.product.variants)
         this.colors = this.getAllAttributes('color', this.product.variants)
         this.prices = this.getAllAttributes('pu', this.product.variants)
+        this.selectedColor = ref(this.colors[0])
+        this.selectedSize = ref(this.sizes[0])
     }
 }
 </script>

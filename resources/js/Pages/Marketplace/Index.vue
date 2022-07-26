@@ -188,7 +188,7 @@ export default {
             })
         },
         filterByCategory(event) {
-            this.$inertia.get(route('marketplace.index'))
+            this.$inertia.get(route('marketplace.index') + '?category=' + event.target.value)
         }
     }
 }

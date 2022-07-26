@@ -104,7 +104,8 @@ onMounted(() => {
                                                 <div class="gp ">{{ product.name }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
-                                                <div class="inline-flex gp hf yl rounded-full gn vp vd">{{ product.pivot.status }}</div>
+                                                <div class="inline-flex gp hf yl rounded-full gn vp vd" v-if="product.pivot.status === 'request'">{{ product.pivot.status }}</div>
+                                                <div class="inline-flex gp hc ys rounded-full gn vp vd" v-if="product.pivot.status === 'access'">{{ product.pivot.status }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
                                                 <div class="gp text-slate-800">Dominik Lamakani</div>
