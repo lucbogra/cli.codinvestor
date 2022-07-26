@@ -2,68 +2,29 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { onMounted, ref } from 'vue'
 import { InertiaLink } from '@inertiajs/inertia-vue3'
+import helpers from '@/helpers.js'
 import axios from 'axios'
 import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  RadioGroup,
-  RadioGroupLabel,
-  RadioGroupOption,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    RadioGroup,
+    RadioGroupLabel,
+    RadioGroupOption,
+    Tab,
+    TabGroup,
+    TabList,
+    TabPanel,
+    TabPanels,
 } from '@headlessui/vue'
 import { StarIcon } from '@heroicons/vue/solid'
 import { HeartIcon, MinusSmIcon, PlusSmIcon } from '@heroicons/vue/outline'
-
-const product = {
-  name: 'Zip Tote Basket',
-  price: '$140',
-  rating: 4,
-  images: [
-    {
-      id: 1,
-      name: 'Angled view',
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg',
-      alt: 'Angled front view with bag zipped and handles upright.',
-    },
-    // More images...
-  ],
-  colors: [
-    { name: 'Washed Black', bgColor: 'bg-gray-700', selectedColor: 'ring-gray-700' },
-    { name: 'White', bgColor: 'bg-white', selectedColor: 'ring-gray-400' },
-    { name: 'Washed Gray', bgColor: 'bg-gray-500', selectedColor: 'ring-gray-500' },
-  ],
-  description: `
-    <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
-  `,
-  details: [
-    {
-      name: 'Features',
-      items: [
-        'Multiple strap configurations',
-        'Spacious interior with top zip',
-        'Leather handle and tabs',
-        'Interior dividers',
-        'Stainless strap loops',
-        'Double stitched construction',
-        'Water-resistant',
-      ],
-    },
-    // More sections...
-  ],
-}
-
-const selectedColor = ref(product.colors[0])
 
 
 const props = defineProps({
     product: Object,
     variants: Array,
-    colors: Array
+    colors: Array,
 });
 
 const listVariants = () => {
@@ -71,9 +32,9 @@ const listVariants = () => {
         return {
             id: variant.id,
             product_id: variant.product_id,
-            price: variant.price,
+            price: variant.pu,
             colors: variant.color,
-            sizes: variant.size,
+            size: variant.size,
             genre: variant.genre
         }
     })
@@ -81,19 +42,10 @@ const listVariants = () => {
 const variants = ref(listVariants());
 
 let colors = []
+let sizes = []
+let prices = []
 
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
 
-onMounted(() => {
-    let tmpColors = []
-    for (let i = 0; i < props.variants.length; i++) {
-        tmpColors.push(props.variants[i].color);
-    }
-    colors = tmpColors.filter(onlyUnique)
-    console.log(colors);
-})
 </script>
 
 <template>
@@ -107,14 +59,14 @@ onMounted(() => {
                             <!-- Image selector -->
                             <div class="hidden mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
                                 <TabList class="grid grid-cols-4 gap-6">
-                                    <Tab v-for="image in product.images" :key="image.id"
+                                    <Tab v-for="image in props.product.gallery" :key="image.id"
                                         class="relative h-24 bg-white rounded-md flex items-center justify-center text-sm font-medium uppercase text-gray-900 cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-offset-4 focus:ring-opacity-50"
                                         v-slot="{ selected }">
                                         <span class="sr-only">
-                                            {{ image.name }}
+                                            <!-- {{ image.name }} -->
                                         </span>
                                         <span class="absolute inset-0 rounded-md overflow-hidden">
-                                            <img :src="image.src" alt=""
+                                            <img :src="image.url" alt=""
                                                 class="w-full h-full object-center object-cover" />
                                         </span>
                                         <span
@@ -125,8 +77,8 @@ onMounted(() => {
                             </div>
 
                             <TabPanels class="w-full aspect-w-1 aspect-h-1">
-                                <TabPanel v-for="image in product.images" :key="image.id">
-                                    <img :src="image.src" :alt="image.alt"
+                                <TabPanel v-for="image in props.product.gallery" :key="image.id">
+                                    <img :src="image.url"
                                         class="w-full h-full object-center object-cover sm:rounded-lg" />
                                 </TabPanel>
                             </TabPanels>
@@ -134,33 +86,19 @@ onMounted(() => {
 
                         <!-- Product info -->
                         <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-                            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">{{ product.name }}</h1>
-
+                            <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">{{ props.product.name }}</h1>
                             <div class="mt-3">
                                 <h2 class="sr-only">Product information</h2>
-                                <p class="text-3xl text-gray-900">{{ product.price }}</p>
-                            </div>
-
-                            <!-- Reviews -->
-                            <div class="mt-3">
-                                <h3 class="sr-only">Reviews</h3>
-                                <div class="flex items-center">
-                                    <div class="flex items-center">
-                                        <StarIcon v-for="rating in [0, 1, 2, 3, 4]" :key="rating"
-                                            :class="[product.rating > rating ? 'text-indigo-500' : 'text-gray-300', 'h-5 w-5 flex-shrink-0']"
-                                            aria-hidden="true" />
-                                    </div>
-                                    <p class="sr-only">{{ product.rating }} out of 5 stars</p>
-                                </div>
+                                <p class="text-3xl text-blue-700 font-bold">{{ prices[0] }} - {{ prices[1] + ' DHS' }}</p>
                             </div>
 
                             <div class="mt-6">
                                 <h3 class="sr-only">Description</h3>
 
-                                <div class="text-base text-gray-700 space-y-6" v-html="product.description" />
+                                <div class="text-base text-gray-700 space-y-6" v-html="props.product.description" />
                             </div>
 
-                            <form class="mt-6">
+                            <div class="mt-6">
                                 <!-- Colors -->
                                 <div>
                                     <h3 class="text-sm text-gray-600">Color</h3>
@@ -168,35 +106,60 @@ onMounted(() => {
                                     <RadioGroup v-model="selectedColor" class="mt-2">
                                         <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
                                         <span class="flex items-center space-x-3">
-                                            <RadioGroupOption as="template" v-for="color in product.colors"
-                                                :key="color.name" :value="color" v-slot="{ active, checked }">
+                                            <RadioGroupOption as="template" v-for="color in colors" :key="color.name"
+                                                :value="color" v-slot="{ active, checked }">
                                                 <div
                                                     :class="[color.selectedColor, active && checked ? 'ring ring-offset-1' : '', !active && checked ? 'ring-2' : '', '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none']">
                                                     <RadioGroupLabel as="span" class="sr-only">
-                                                        {{ color.name }}
+                                                        {{ color }}
                                                     </RadioGroupLabel>
-                                                    <span aria-hidden="true"
-                                                        :class="[color.bgColor, 'h-8 w-8 border border-black border-opacity-10 rounded-full']" />
+                                                    <span aria-hidden="true" :style="'background-color:'+ color"
+                                                        :class="['h-8 w-8 border border-black border-opacity-10 rounded-full']" />
                                                 </div>
                                             </RadioGroupOption>
                                         </span>
                                     </RadioGroup>
+
+                                    <fieldset class="mt-4">
+                                        <legend class="sr-only">Choose a size</legend>
+                                        <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                                            <!-- Active: "ring-2 ring-indigo-500" -->
+                                            <label
+                                                class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 bg-gray-50 text-gray-200 cursor-not-allowed">
+                                                <input type="radio" name="size-choice" value="XXS" disabled
+                                                    class="sr-only" aria-labelledby="size-choice-0-label">
+                                                <span id="size-choice-0-label"> XXS </span>
+
+                                                <span aria-hidden="true"
+                                                    class="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none">
+                                                    <svg class="absolute inset-0 w-full h-full text-gray-200 stroke-2"
+                                                        viewBox="0 0 100 100" preserveAspectRatio="none"
+                                                        stroke="currentColor">
+                                                        <line x1="0" y1="100" x2="100" y2="0"
+                                                            vector-effect="non-scaling-stroke" />
+                                                    </svg>
+                                                </span>
+                                            </label>
+
+                                            <!-- Active: "ring-2 ring-indigo-500" -->
+                                            <label v-for="size in sizes" :key="size" class="group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6 bg-white shadow-sm text-gray-900 cursor-pointer">
+                                                <input type="radio" name="size-choice" :value="size" class="sr-only" aria-labelledby="size-choice-1-label">
+                                                <span id="size-choice-1-label"> {{ size }} </span>
+                                                <span class="absolute -inset-px rounded-md pointer-events-none" aria-hidden="true"></span>
+                                            </label>
+                                        </div>
+                                    </fieldset>
                                 </div>
 
                                 <div class="mt-10 flex sm:flex-col1">
-                                    <button type="submit"
-                                        class="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full">Add
-                                        to bag</button>
-
-                                    <button type="button"
-                                        class="ml-4 py-3 px-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500">
-                                        <HeartIcon class="h-6 w-6 flex-shrink-0" aria-hidden="true" />
-                                        <span class="sr-only">Add to favorites</span>
+                                    <button type="button" v-on:click="submitRequest(props.product.id)"
+                                        class="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full">
+                                        Request
                                     </button>
                                 </div>
-                            </form>
+                            </div>
 
-                            <section aria-labelledby="details-heading" class="mt-12">
+                            <!-- <section aria-labelledby="details-heading" class="mt-12">
                                 <h2 id="details-heading" class="sr-only">Additional details</h2>
 
                                 <div class="border-t divide-y divide-gray-200">
@@ -226,7 +189,7 @@ onMounted(() => {
                                         </DisclosurePanel>
                                     </Disclosure>
                                 </div>
-                            </section>
+                            </section> -->
                         </div>
                     </div>
                 </div>
@@ -240,13 +203,33 @@ onMounted(() => {
 export default {
     props: {
         product: Object,
+        sizes: [],
+        colors: [],
+        prices: [],
     },
     methods: {
         submitRequest(product_id) {
             axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
                 console.log(response.data)
             })
-        }
+        },
+        filterDuplicateData(arr) {
+            return arr.filter(function (value, index, array) {
+                return array.indexOf(value) === index;
+            });
+        },
+        getVariants(attribute, value) {
+            const variants = this.product.variants.filter(x => x[attribute] == value)
+            console.log(variants)
+        },
+         getAllAttributes(attribute, array) {
+            return this.filterDuplicateData(array.map(el => el[attribute]))
+        },
+    },
+     created() {
+        this.sizes = this.getAllAttributes('size', this.product.variants)
+        this.colors = this.getAllAttributes('color', this.product.variants)
+        this.prices = this.getAllAttributes('pu', this.product.variants)
     }
 }
 </script>

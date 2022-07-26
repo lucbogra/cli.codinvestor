@@ -118,9 +118,9 @@ const countriesData = ref(listCountries());
                                     </select>
                                 </li>
                                 <li class="m-1">
-                                    <select class="a ou rounded-full">
-                                        <option disabled selected>Filter by category</option>
-                                        <option v-for="category in datas" :key="category.id"><inertia-link :href="route('marketplace.index') + '?category=' + category.id">{{ category.name }}</inertia-link></option>
+                                    <select  v-model="seletedCategory" class="a ou rounded-full" @change="filterByCategory($event)">
+                                        <option disabled selected value="0">Filter by category</option>
+                                        <option v-for="category in datas" :key="category.id" :value="category.id">{{ category.name }}</option>
                                     </select>
                                 </li>
                                 <li class="m-1">
@@ -210,7 +210,8 @@ export default {
     data() {
         return {
             searchValue: null,
-            products: []
+            products: [],
+            seletedCategory: 0,
         }
     },
     methods: {
@@ -218,6 +219,9 @@ export default {
             axios.get(route('marketplace.search'), { params: { keywords: this.searchValue } }).then(response => {
                 this.products = response.data
             })
+        },
+        filterByCategory(event) {
+            this.$inertia.get(route('marketplace.index'))
         }
     }
 }
