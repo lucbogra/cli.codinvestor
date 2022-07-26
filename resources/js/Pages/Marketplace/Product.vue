@@ -41,7 +41,7 @@ onMounted(() => {
                     <!-- Table -->
                     <div class="bg-white bd rounded-sm border border-slate-200 rc">
                         <header class="vc vu">
-                            <h2 class="gh text-slate-800">Products <span class="gq gp">67</span></h2>
+                            <h2 class="gh text-slate-800">Products <span class="gq gp">{{ props.products.length }}</span></h2>
                         </header>
                         <div x-data="handleSelect">
 
@@ -60,10 +60,10 @@ onMounted(() => {
                                                 </div>
                                             </th>
                                             <th class="vi wy w_ vo lm">
-                                                <div class="gh gt">Invoice</div>
+                                                <div class="gh gt">#</div>
                                             </th>
                                             <th class="vi wy w_ vo lm">
-                                                <div class="gh gt">Total</div>
+                                                <div class="gh gt">Name</div>
                                             </th>
                                             <th class="vi wy w_ vo lm">
                                                 <div class="gh gt">Status</div>
@@ -88,7 +88,7 @@ onMounted(() => {
                                     <!-- Table body -->
                                     <tbody class="text-sm le lr">
                                         <!-- Row -->
-                                        <tr v-for="product in props.products" :key="product.id">
+                                        <tr v-for="(product, index) in props.products" :key="product.id">
                                             <td class="vi wy w_ vo lm of">
                                                 <div class="flex items-center">
                                                     <label class="inline-flex">
@@ -98,7 +98,7 @@ onMounted(() => {
                                                 </div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
-                                                <div class="gp yv">#143567</div>
+                                                <div class="gp yv">{{ index + 1 }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
                                                 <div class="gp ">{{ product.name }}</div>

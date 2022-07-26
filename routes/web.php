@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
 use Illuminate\Foundation\Application;
@@ -24,7 +25,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('index');
 
 
 
@@ -52,5 +53,6 @@ Route::middleware([
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
     });
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
