@@ -1867,6 +1867,12 @@ span.flatpickr-weekday {
     width: 100%
 }
 
+.resize-img {
+    width: 306px;
+    height: 226px;
+    object-fit: cover;
+}
+
 .oa {
     width: .625rem
 }

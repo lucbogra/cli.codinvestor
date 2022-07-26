@@ -49,7 +49,7 @@ let prices = []
 </script>
 
 <template>
-    <AppLayout title="Marketplace">
+    <AppLayout :title="product.name">
         <template #page-header>
             <div class="bg-white">
                 <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -210,7 +210,11 @@ export default {
     methods: {
         submitRequest(product_id) {
             axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
-                console.log(response.data)
+                if(response.data) {
+                    alert('Request envoyé avec succès')
+                } else {
+                    alert('Nous rencontré une erreur')
+                }
             })
         },
         filterDuplicateData(arr) {

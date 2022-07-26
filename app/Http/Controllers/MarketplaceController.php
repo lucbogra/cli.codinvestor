@@ -70,6 +70,7 @@ class MarketplaceController extends Controller
         // $investor->notify(new ProductRequestNotification();
         Notification::send($investor, new ProductRequestNotification($product_request));
         // return $product_request;
+        return 1;
 
     }
 

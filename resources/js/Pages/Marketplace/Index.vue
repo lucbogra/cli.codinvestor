@@ -55,44 +55,11 @@ const countriesData = ref(listCountries());
                 <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
                 <div class="flex ak fq ja jv jm zh zx zk tnq trr tri iv">
 
-                     <!-- Sidebar -->
-                    <!-- <div>
-                        <div class="bg-white bd rounded-sm border border-slate-200 dz ur">
-                            <div class="sn zl tn_ fn"> -->
-                                <!-- Group 1 -->
-                                <!-- <div>
-                                    <div class="text-sm text-slate-800 gh ro">Categories</div>
-                                    <ul class="text-sm gp fb">
-                                        <li v-for="category in datas" :key="category.id">
-                                            <inertia-link class="g_ xp capitalize text-base font-bold"
-                                                :href="route('marketplace.index') + '?category=' + category.id">{{
-                                                category.name }}</inertia-link>
-                                        </li>
-                                    </ul>
-                                </div> -->
-                                <!-- Price Range -->
-                                <!-- <div>
-                                    <div class="text-sm text-slate-800 gh ro">Country Range</div>
-                                    <label class="d">Country</label>
-                                    <select class="a ou">
-                                        <option disabled selected>Filter by country</option>
-                                        <option v-for="country in countriesData" :key="country.id">{{ country.country }}</option>
-                                    </select>
-                                </div> -->
-                            <!-- </div>
-                        </div>
-                    </div> -->
-
                     <!-- Content -->
                     <div>
                         <!-- Filters -->
                         <div class="ii">
                             <ul class="flex flex-wrap -m-1">
-                                <!-- <li class="m-1">
-                                    <inertia-link :href="route('marketplace.index')"
-                                        class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border cp bv ho ye wi wu py-2">View
-                                        All</inertia-link>
-                                </li> -->
                                 <li class="m-1">
                                     <inertia-link :href="route('marketplace.index') + '?sort_by=newest'"
                                         class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">Newest</inertia-link>
@@ -141,7 +108,7 @@ const countriesData = ref(listCountries());
                                     <div class="flex ak sh">
                                         <!-- Image -->
                                         <div class="y">
-                                            <img class="ou" :src="product.photo" width="301" height="226"
+                                            <img class="ou resize-img" :src="product.photo"
                                                 alt="Application 21">
                                         </div>
                                         <!-- Card Content -->
