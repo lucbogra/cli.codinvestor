@@ -76,12 +76,13 @@ class MarketplaceController extends Controller
     public function products()
     {
         $products = [];
-        $productIds = DB::table('investor_product')->where('investor_id', auth()->id)->get();
-        foreach ($productIds as $key => $id) {
-            $tmp_product = Product::where('id', $id)->first();
+        $productIds = DB::table('investor_product')->where('investor_id', auth()->id())->get();
+        // return $productIds;
+        foreach ($productIds as $key => $productId) {
+            $tmp_product = Product::where('id', $productId->id)->first();
             array_push($products, $tmp_product);
         }
 
-        return $products;
+        return Inertia::render('Marketplace/Product');
     }
 }

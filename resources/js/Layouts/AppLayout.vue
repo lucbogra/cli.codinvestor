@@ -82,7 +82,7 @@ const navigation = [
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
 
-  { name: 'Products', href: route('marketplace.index'), icon: ViewListIcon, current: false },
+  { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: false },
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
