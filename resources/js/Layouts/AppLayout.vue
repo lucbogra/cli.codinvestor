@@ -12,18 +12,18 @@
       <desktop-side-bar :navigation="navigation" :secondaryNavigation="secondaryNavigation" />
     </div>
 
-    <div class="lg:pl-64 flex flex-col flex-1">
-      <div class="z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none">
+    <div class="lg:pl-64 flex flex-col flex-1 bg-slate-100">
+      <div class="z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none sticky top-0">
         <button type="button" class="px-4 border-r border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden" @click="sidebarOpen = true">
           <span class="sr-only">Open sidebar</span>
           <MenuAlt1Icon class="h-6 w-6" aria-hidden="true" />
         </button>
         <top />
       </div>
-      <main class="flex-1 pb-8" scroll-region>
+      <main class="flex-1 pb-8  bg-slate-100" scroll-region>
         <!-- Page header -->
         <slot name="page-header" />
-        <div class="md:flex-1 px-4 py-8">
+        <div class="md:flex-1 px-4 py-8 bg-slate-100">
           <flash-messages />
           <slot name="content"/>
         </div>

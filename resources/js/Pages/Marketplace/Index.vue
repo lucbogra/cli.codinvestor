@@ -51,7 +51,7 @@ const countriesData = ref(listCountries());
 <template>
     <AppLayout title="Marketplace">
         <template #page-header>
-            <div class="mx-3">
+            <div class="bg-slate-100 m-10">
                 <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
                 <div class="flex ak fq ja jv jm zh zx zk tnq trr tri iv">
 
@@ -119,7 +119,7 @@ const countriesData = ref(listCountries());
                                                     <inertia-link :href="route('marketplace.detail', product.slug)">
                                                         <h3 class="ga text-slate-800 gh rt">{{ product.name }}</h3>
                                                     </inertia-link>
-                                                    <div class="text-sm">{{ product.description }}</div>
+                                                    <div class="text-sm">{{ product.description.substring(0, 40) + '...' }}</div>
                                                 </header>
                                             </div>
                                             <!-- Rating and price -->
