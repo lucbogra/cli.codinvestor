@@ -209,9 +209,27 @@ export default {
         submitRequest(product_id) {
             axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
                 if(response.data) {
-                    alert('Request envoyé avec succès')
+                    // alert('Request envoyé avec succès')
+                    Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Product requested successfully. ',
+                    })
                 } else {
-                    alert('Nous rencontré une erreur')
+                    // alert('Nous rencontré une erreur')
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timer: 5000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        icon: 'error',
+                        title: 'We encountered an error',
+                        })
                 }
             })
         },
