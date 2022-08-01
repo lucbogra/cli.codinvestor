@@ -106,21 +106,29 @@ let prices = []
                         <!-- Product info -->
                         <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                             <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">{{ props.product.name }}</h1>
+                            <hr class="border-1 my-3">
                             <div class="mt-3">
                                 <h2 class="sr-only">Product information</h2>
-                                <p class="text-3xl text-blue-700 font-bold">{{ prices[0] }} - {{ prices[1] + ' DHS' }}</p>
+                                <div class="text-xl">
+                                    Recommanded Price :
+                                    <span class=" text-blue-700 font-bold"> {{ '$' + prices[0] }}</span>
+                                </div>
+                                <hr class="border-1  my-3">
+                                <div class="text-xl">
+                                    Original Price :
+                                <span class=" text-blue-700 font-bold"> {{ '$' + prices[1] }}</span>
+                                </div>
                             </div>
 
-                            <div class="mt-6">
+                            <div class="mt-4">
                                 <h3 class="sr-only">Description</h3>
-
                                 <div class="text-base text-gray-700 space-y-6" v-html="props.product.description" />
                             </div>
 
                             <div class="mt-6">
                                 <!-- Colors -->
                                 <div>
-                                    <h3 class="text-sm text-gray-600">Color</h3>
+                                    <h3 class="text-md text-gray-600">Select by Colors</h3>
 
                                     <RadioGroup v-model="selectedColor" class="mt-2">
                                         <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
@@ -141,7 +149,7 @@ let prices = []
 
                                      <div class="mt-10">
                                         <div class="flex items-center justify-between">
-                                            <h3 class="text-sm text-gray-900 font-medium">Size</h3>
+                                            <h3 class="text-md text-gray-600">Select by Sizes</h3>
                                             <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
                                         </div>
 
@@ -166,11 +174,17 @@ let prices = []
                                         </div>
                                 </div>
 
-                                <div class="mt-10 flex sm:flex-col1">
+                                <div class="mt-10 flex sm:flex-col1 justify-around">
                                     <button type="button" v-on:click="submitRequest(props.product.id)"
                                         class="max-w-xs flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full">
                                         Request
                                     </button>
+                                    <div class="flex items-center">
+                                        <svg class="oo sl du ub gq" viewBox="0 0 16 16">
+                                            <path d="M11 0c1.3 0 2.6.5 3.5 1.5 1 .9 1.5 2.2 1.5 3.5 0 1.3-.5 2.6-1.4 3.5l-1.2 1.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l1.1-1.2c.6-.5.9-1.3.9-2.1s-.3-1.6-.9-2.2C12 1.7 10 1.7 8.9 2.8L7.7 4c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l1.2-1.1C8.4.5 9.7 0 11 0ZM8.3 12c.4-.4 1-.5 1.4-.1.4.4.4 1 0 1.4l-1.2 1.2C7.6 15.5 6.3 16 5 16c-1.3 0-2.6-.5-3.5-1.5C.5 13.6 0 12.3 0 11c0-1.3.5-2.6 1.5-3.5l1.1-1.2c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L2.9 8.9c-.6.5-.9 1.3-.9 2.1s.3 1.6.9 2.2c1.1 1.1 3.1 1.1 4.2 0L8.3 12Zm1.1-6.8c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4l-4.2 4.2c-.2.2-.5.3-.7.3-.2 0-.5-.1-.7-.3-.4-.4-.4-1 0-1.4l4.2-4.2Z"></path>
+                                        </svg>
+                                        <a target="_blank" class="text-md gp lm text-indigo-500 xh nq" :href="props.product.link">Voir le lien</a>
+                                    </div>
                                 </div>
                             </div>
 
