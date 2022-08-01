@@ -16,18 +16,21 @@ class MarketplaceController extends Controller
 {
     public function index(Request $request){
         $categories = Category::all();
-        $products = Product::where('active', 1)->get();
+        $products = Product::where('active', 1)->paginate(12);
         if ($request->category) {
             $category = Category::findOrFail($request->category);
             $products = $category->products;
         }
+        if ($request->showing) {
+            $products = Product::where('active', 1)->take($request->showing)->paginate(12);
+        }
         if ($request->sort_by) {
             switch ($request->sort_by) {
                 case 'newest':
-                    $products = Product::where('active', 1)->orderBy('created_at', 'desc')->get();
+                    $products = Product::where('active', 1)->orderBy('created_at', 'desc')->paginate(12);
                     break;
                 case 'oldest':
-                    $products = Product::where('active', 1)->orderBy('created_at', 'asc')->get();
+                    $products = Product::where('active', 1)->orderBy('created_at', 'asc')->paginate(12);
                     break;
                 default:
                     break;
@@ -89,8 +92,12 @@ class MarketplaceController extends Controller
         }
         $investor = Investor::where('user_id', auth()->id())->first();
         // return $investor->products;
-        return Inertia::render('Marketplace/Product', [
-            'products' => $investor->products
-        ]);
+        if($investor) {
+            return Inertia::render('Marketplace/Product', [
+                'products' => $investor->products
+            ]);
+        } else {
+            return "Investor don't exist";
+        }
     }
 }

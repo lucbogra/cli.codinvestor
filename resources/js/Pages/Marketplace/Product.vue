@@ -69,10 +69,7 @@ onMounted(() => {
                                                 <div class="gh gt">Status</div>
                                             </th>
                                             <th class="vi wy w_ vo lm">
-                                                <div class="gh gt">Customer</div>
-                                            </th>
-                                            <th class="vi wy w_ vo lm">
-                                                <div class="gh gt">Issued on</div>
+                                                <div class="gh gt">Demand on</div>
                                             </th>
                                             <th class="vi wy w_ vo lm">
                                                 <div class="gh gt">Paid on</div>
@@ -107,11 +104,9 @@ onMounted(() => {
                                                 <div class="inline-flex gp hf yl rounded-full gn vp vd" v-if="product.pivot.status === 'request'">{{ product.pivot.status }}</div>
                                                 <div class="inline-flex gp hc ys rounded-full gn vp vd" v-if="product.pivot.status === 'access'">{{ product.pivot.status }}</div>
                                             </td>
+
                                             <td class="vi wy w_ vo lm">
-                                                <div class="gp text-slate-800">Dominik Lamakani</div>
-                                            </td>
-                                            <td class="vi wy w_ vo lm">
-                                                <div>22/07/2021</div>
+                                                <div>{{ product.created_at }}</div>
                                             </td>
                                             <td class="vi wy w_ vo lm">
                                                 <div>-</div>

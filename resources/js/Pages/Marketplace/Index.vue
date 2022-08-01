@@ -40,19 +40,27 @@ const listCountries = () => {
 }
 
 onMounted(() => {
-    console.log(props);
+    console.log(props.products);
 })
 
 
 const datas = ref(list());
-const products = ref(listProducts());
+const products = props.products;
 const countriesData = ref(listCountries());
 </script>
 <template>
     <AppLayout title="Marketplace">
         <template #page-header>
             <div class="bg-slate-100 m-10">
-                <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
+                <div class="flex justify-between">
+                    <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
+                     <select v-model="seleledShowing" id="country" class="a" @change="filterByShowing($event)">
+                        <option disabled selected>Showing</option>
+                        <option :value="10">10</option>
+                        <option :value="20">20</option>
+                        <option :value="50">50</option>
+                    </select>
+                </div>
                 <div class="flex ak fq ja jv jm zh zx zk tnq trr tri iv">
 
                     <!-- Content -->
@@ -97,14 +105,14 @@ const countriesData = ref(listCountries());
                                 </li>
                             </ul>
                         </div>
-                        <div class="text-sm text-slate-500 gm ri">{{ products.length }} {{ (products.length > 1) ?
+                        <div class="text-sm text-slate-500 gm ri">{{ products.data.length }} {{ (products.data.length > 1) ?
                             'Products' : 'Product' }}</div>
                         <!-- Cards 1 (Video Courses) -->
                         <div>
-                            <div class="sn ag fn" v-if="products.length > 0">
+                            <div class="sn ag fn" v-if="products.data.length > 0">
                                 <!-- Card 1 -->
                                 <div class="tz qd tns bg-white bd rounded-sm border border-slate-200 la"
-                                    v-for="product in products" :key="product.id">
+                                    v-for="product in products.data" :key="product.id">
                                     <div class="flex ak sh">
                                         <!-- Image -->
                                         <div class="y">
@@ -141,23 +149,23 @@ const countriesData = ref(listCountries());
                             </div>
                         </div>
                         <!-- Pagination -->
-                        <div class="rk">
+                        <div class="rk" >
                             <div class="flex ak ja jc jd">
-                                <nav class="ri _y _f" role="navigation" aria-label="Navigation">
+                                <nav class="ri _y _f" role="navigation" aria-label="Navigation" v-if="products.next_page_url && products.prev_page_url">
                                     <ul class="flex justify-center">
                                         <li class="ml-3 first--ml-0">
-                                            <a class="btn bg-white border-slate-200 yf af" href="#0" disabled="">&lt;-
-                                                Previous</a>
+                                            <inertia-link :href="products.prev_page_url" class="btn bg-white border-slate-200 yf af"  disabled="">&lt;-
+                                                Previous</inertia-link>
                                         </li>
                                         <li class="ml-3 first--ml-0">
-                                            <a class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500"
-                                                href="#0">Next -&gt;</a>
+                                            <inertia-link :href="products.next_page_url" class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500"
+                                                >Next -&gt;</inertia-link>
                                         </li>
                                     </ul>
                                 </nav>
                                 <div class="text-sm text-slate-500 gn qe">
-                                    Showing <span class="gp g_">1</span> to <span class="gp g_">10</span> of <span
-                                        class="gp g_">467</span> results
+                                    Showing <span class="gp g_">{{ products.to }}</span> to <span class="gp g_">{{ products.per_page }}</span> of <span
+                                        class="gp g_">{{ products.total }}</span> results
                                 </div>
                             </div>
                         </div>
@@ -179,6 +187,7 @@ export default {
             searchValue: null,
             products: [],
             seletedCategory: 0,
+            seleledShowing: 10
         }
     },
     methods: {
@@ -189,6 +198,9 @@ export default {
         },
         filterByCategory(event) {
             this.$inertia.get(route('marketplace.index') + '?category=' + event.target.value)
+        },
+        filterByShowing(event) {
+            this.$inertia.get(route('marketplace.index') + '?showing=' + event.target.value)
         }
     }
 }

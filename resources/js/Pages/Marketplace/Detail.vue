@@ -52,7 +52,26 @@ let prices = []
     <AppLayout :title="product.name">
         <template #page-header>
             <div class="bg-slate-100">
-                <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 ">
+                    <nav aria-label="Breadcrumb" class="mb-3">
+                        <ol role="list" class="max-w-2xl mx-auto flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
+                        <li>
+                            <div class="flex items-center">
+                            <inertia-link :href="route('marketplace.index')" class="mr-2 text-sm font-medium text-gray-900">
+                                Marketplace
+                            </inertia-link>
+                            <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-5 text-gray-300">
+                                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+                            </svg>
+                            </div>
+                        </li>
+                        <li class="text-sm">
+                            <inertia-link :href="product.href" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">
+                            {{ product.name }}
+                            </inertia-link>
+                        </li>
+                        </ol>
+                    </nav>
                     <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
                         <!-- Image gallery -->
                         <TabGroup as="div" class="flex flex-col-reverse">
@@ -155,37 +174,6 @@ let prices = []
                                 </div>
                             </div>
 
-                            <!-- <section aria-labelledby="details-heading" class="mt-12">
-                                <h2 id="details-heading" class="sr-only">Additional details</h2>
-
-                                <div class="border-t divide-y divide-gray-200">
-                                    <Disclosure as="div" v-for="detail in product.details" :key="detail.name"
-                                        v-slot="{ open }">
-                                        <h3>
-                                            <DisclosureButton
-                                                class="group relative w-full py-6 flex justify-between items-center text-left">
-                                                <span
-                                                    :class="[open ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-medium']">
-                                                    {{ detail.name }}
-                                                </span>
-                                                <span class="ml-6 flex items-center">
-                                                    <PlusSmIcon v-if="!open"
-                                                        class="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                                        aria-hidden="true" />
-                                                    <MinusSmIcon v-else
-                                                        class="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                                        aria-hidden="true" />
-                                                </span>
-                                            </DisclosureButton>
-                                        </h3>
-                                        <DisclosurePanel as="div" class="pb-6 prose prose-sm">
-                                            <ul role="list">
-                                                <li v-for="item in detail.items" :key="item">{{ item }}</li>
-                                            </ul>
-                                        </DisclosurePanel>
-                                    </Disclosure>
-                                </div>
-                            </section> -->
                         </div>
                     </div>
                 </div>
