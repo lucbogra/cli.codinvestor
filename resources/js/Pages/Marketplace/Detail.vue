@@ -52,8 +52,8 @@ let prices = []
     <AppLayout :title="product.name">
         <template #page-header>
             <div class="bg-slate-100">
-                <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 ">
-                    <nav aria-label="Breadcrumb" class="mb-3">
+                <div class="max-w-2xl mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 " style="margin-top:-70px ;">
+                    <nav aria-label="Breadcrumb" class="mb-4">
                         <ol role="list" class="max-w-2xl mx-auto flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                         <li>
                             <div class="flex items-center">

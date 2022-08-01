@@ -12,17 +12,48 @@
             </form>
         </div>
           <div class="ml-4 flex items-center md:ml-6">
-            <button type="button" class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-              <span class="sr-only">View notifications</span>
-              <BellIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
+            <Menu as="div" class="ml-3 relative">
+              <div>
+                <MenuButton class="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
+                  <BellIcon class="h-6 w-6" aria-hidden="true" />
+                </MenuButton>
+              </div>
+              <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                <MenuItems class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItem >
+                    <a class="block vr vs xr" href="#0">
+                        <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">Edit your information in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
+                        <span class="block go gp gq">Feb 12, 2021</span>
+                    </a>
+                  </MenuItem>
+                  <hr>
+                  <MenuItem >
+                    <a class="block vr vs xr" href="#0">
+                        <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">Edit your information in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
+                        <span class="block go gp gq">Feb 12, 2021</span>
+                    </a>
+                  </MenuItem>
+                  <hr>
+                  <MenuItem >
+                    <a class="block vr vs xr" href="#0">
+                        <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">Edit your information in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</span>
+                        <span class="block go gp gq">Feb 12, 2021</span>
+                    </a>
+                  </MenuItem>
+                  <hr>
+                  <MenuItem>
+                    <Link href="#" class="go gh gq gv mi ms vs">View all notifications</Link>
+                  </MenuItem>
+                </MenuItems>
+              </transition>
+            </Menu>
 
             <!-- Profile dropdown -->
             <Menu as="div" class="ml-3 relative">
               <div>
                 <MenuButton class="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
-                  <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                  <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block"><span class="sr-only">Open user menu for </span>Emilia Birch</span>
+                  <img class="h-8 w-8 rounded-full" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                  <span class="hidden ml-3 text-gray-700 text-sm font-medium lg:block"><span class="sr-only">Open user menu for </span>{{ $page.props.user.name }}</span>
                   <ChevronDownIcon class="hidden flex-shrink-0 ml-1 h-5 w-5 text-gray-400 lg:block" aria-hidden="true" />
                 </MenuButton>
               </div>
@@ -40,7 +71,9 @@
                 </MenuItems>
               </transition>
             </Menu>
+
         </div>
+
     </div>
 </template>
 <script>
