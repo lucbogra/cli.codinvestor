@@ -53,6 +53,7 @@ class Product extends Model
         return $this->hasMany(Variant::class);
     }
 
+
     public function getGalleryAttribute(){
         $tab = [];
         foreach(json_decode($this->attributes['gallery']) as $img){

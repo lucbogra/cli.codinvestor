@@ -56,7 +56,7 @@ class MarketplaceController extends Controller
         }
         return Inertia::render('Marketplace/Detail', [
             'product' => $product,
-            'variants' => $variants
+            'variants' => $variants,
         ]);
     }
 

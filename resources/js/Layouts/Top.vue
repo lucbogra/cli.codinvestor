@@ -7,7 +7,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none" aria-hidden="true">
                   <SearchIcon class="h-5 w-5" aria-hidden="true" />
                 </div>
-                <input id="search-field" name="search-field" class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-sm" placeholder="Search transactions" type="search" />
+                <input id="search-field" v-on:focusin="showSearch()" v-on:focusout="showSearchBox = false" name="search-field" class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-sm" placeholder="Search transactions" type="search" />
               </div>
             </form>
         </div>
@@ -72,6 +72,34 @@
               </transition>
             </Menu>
 
+
+            <div id="search-modal" class="m w tx la flex aj _ ri justify-center vs jj" v-show="showSearchBox" role="dialog" aria-modal="true" x-show="searchOpen" x-transition:enter="wt wu wr" x-transition:enter-start="opacity-0 u_" x-transition:enter-end="ba uj" x-transition:leave="wt wu wr" x-transition:leave-start="ba uj" x-transition:leave-end="opacity-0 u_">
+                <div class="bg-white lu ua ou oe rounded bd" >
+                    <!-- Search form -->
+                    <form class="cs border-slate-200">
+                        <div class="y">
+                            <label for="modal-search" class="d">Search</label>
+                            <input id="modal-search" class="ou cn kf bo av vo mn mr border-none" type="search" placeholder="Search Anything…" x-ref="searchInput">
+                        </div>
+                    </form>
+                    <div class="vu vi">
+                        <!-- Recent searches -->
+                        <div class="ro ww">
+                            <div class="go gh gq gv vi ru">Recent searches</div>
+                            <ul class="text-sm">
+                                <li>
+                                    <a class="flex items-center dx text-slate-800 xc xn rounded kk" href="#0" @click="searchOpen = false" @focus="searchOpen = true" @focusout="searchOpen = false">
+                                        <svg class="oo sl du gq kq _t ub ra" viewBox="0 0 16 16">
+                                            <path d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z"></path>
+                                        </svg>
+                                        <span>Form Builder - 23 hours on-demand video</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -80,19 +108,9 @@
 import { ref } from 'vue'
 import { Link } from '@inertiajs/inertia-vue3'
 
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from '@headlessui/vue'
-import {
-  BellIcon,
-} from '@heroicons/vue/outline'
-import {
-  ChevronDownIcon,
-  SearchIcon,
-} from '@heroicons/vue/solid'
+import { Menu, MenuButton, MenuItem, MenuItems, } from '@headlessui/vue'
+import { BellIcon, } from '@heroicons/vue/outline'
+import { ChevronDownIcon, SearchIcon, } from '@heroicons/vue/solid'
 
 export default {
   components: {
@@ -104,6 +122,16 @@ export default {
     ChevronDownIcon,
     SearchIcon,
     Link,
+  },
+  data() {
+    return {
+        showSearchBox: false
+    }
+  },
+  methods: {
+    showSearch() {
+        this.showSearchBox = !this.showSearchBox
+    }
   },
   setup() {
     return {

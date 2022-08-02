@@ -4,19 +4,8 @@ import { onMounted, ref } from 'vue'
 import { InertiaLink } from '@inertiajs/inertia-vue3'
 import helpers from '@/helpers.js'
 import axios from 'axios'
-import {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    RadioGroup,
-    RadioGroupLabel,
-    RadioGroupOption,
-    Tab,
-    TabGroup,
-    TabList,
-    TabPanel,
-    TabPanels,
-} from '@headlessui/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLabel, RadioGroupOption, Tab,
+    TabGroup, TabList, TabPanel, TabPanels, } from '@headlessui/vue'
 import { StarIcon } from '@heroicons/vue/solid'
 import { HeartIcon, MinusSmIcon, PlusSmIcon } from '@heroicons/vue/outline'
 
@@ -44,7 +33,6 @@ const variants = ref(listVariants());
 let colors = []
 let sizes = []
 let prices = []
-
 
 </script>
 
@@ -254,6 +242,7 @@ export default {
         this.prices = this.getAllAttributes('pu', this.product.variants)
         this.selectedColor = ref(this.colors[0])
         this.selectedSize = ref(this.sizes[0])
+        console.log(this.product.variants);
     }
 }
 </script>
