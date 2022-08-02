@@ -91,10 +91,9 @@ class MarketplaceController extends Controller
             array_push($products, $tmp_product);
         }
         $investor = Investor::where('user_id', auth()->id())->first();
-        // return $investor->products;
         if($investor) {
             return Inertia::render('Marketplace/Product', [
-                'products' => $investor->products
+                'products' => $investor->products()->paginate(8)
             ]);
         } else {
             return "Investor don't exist";

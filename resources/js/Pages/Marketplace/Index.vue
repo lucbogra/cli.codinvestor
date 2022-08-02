@@ -150,25 +150,25 @@ const countriesData = ref(listCountries());
                         </div>
                         <!-- Pagination -->
                         <div class="rk" >
-                            <div class="flex ak ja jc jd">
-                                <nav class="ri _y _f" role="navigation" aria-label="Navigation" v-if="products.next_page_url && products.prev_page_url">
-                                    <ul class="flex justify-center">
-                                        <li class="ml-3 first--ml-0">
-                                            <inertia-link :href="products.prev_page_url" class="btn bg-white border-slate-200 yf af"  disabled="">&lt;-
-                                                Previous</inertia-link>
-                                        </li>
-                                        <li class="ml-3 first--ml-0">
-                                            <inertia-link :href="products.next_page_url" class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500"
-                                                >Next -&gt;</inertia-link>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="text-sm text-slate-500 gn qe">
-                                    Showing <span class="gp g_">{{ products.to }}</span> to <span class="gp g_">{{ products.per_page }}</span> of <span
-                                        class="gp g_">{{ products.total }}</span> results
-                                </div>
+                        <div class="flex ak ja jc jd">
+                            <nav class="ri _y _f" role="navigation" aria-label="Navigation" v-if="products.next_page_url || products.prev_page_url">
+                                <ul class="flex justify-center">
+                                    <li class="ml-3 first--ml-0">
+                                        <inertia-link :href="products.prev_page_url" class="btn bg-white border-slate-200 yf af hover--border-slate-300 text-indigo-500" >&lt;-
+                                            Previous</inertia-link>
+                                    </li>
+                                    <li class="ml-3 first--ml-0">
+                                        <inertia-link :href="products.next_page_url" class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500"
+                                            >Next -&gt;</inertia-link>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="text-sm text-slate-500 gn qe">
+                                Showing <span class="gp g_">{{ products.per_page }}</span> to <span class="gp g_">{{ products.to }}</span> of <span
+                                    class="gp g_">{{ products.total }}</span> results
                             </div>
                         </div>
+                    </div>
 
                     </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\WebSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'logo' => asset(WebSetting::first()->logo),
+            'notifications' => (Auth::check()) ? Auth::user()->notifications : []
         ]);
     }
 }
