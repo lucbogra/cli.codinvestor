@@ -6,6 +6,7 @@ import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOther
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
+import Setting from '../Setting/Index.vue';
 
 defineProps({
     confirmsTwoFactorAuthentication: Boolean,
@@ -14,8 +15,8 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Profile">
-        <template #page-header>
+    <Setting title="Profile">
+        <template #setting>
             <div>
                 <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-5">
@@ -54,5 +55,5 @@ defineProps({
         </template>
 
 
-    </AppLayout>
+    </Setting>
 </template>

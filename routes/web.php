@@ -3,20 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\WebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -52,6 +43,7 @@ Route::middleware([
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+        Route::get('setting', [WebController::class, 'setting'])->name('setting');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });

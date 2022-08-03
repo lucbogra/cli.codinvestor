@@ -89,7 +89,7 @@ const navigation = [
   { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
 ]
 const secondaryNavigation = [
-  { name: 'Settings', href: '#', icon: CogIcon },
+  { name: 'Settings', href: route('user.profile'), icon: CogIcon },
   { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
