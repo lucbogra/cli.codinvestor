@@ -43,7 +43,7 @@ Route::middleware([
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
-        Route::get('setting', [WebController::class, 'setting'])->name('setting');
+        Route::get('plans', [WebController::class, 'plans'])->name('plans');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
