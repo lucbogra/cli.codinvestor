@@ -40,7 +40,7 @@ onMounted(() => {
                         <!-- Pricing tabs -->
                         <div class="sn ag fn">
                             <!-- Tab 1 -->
-                            <div v-for="pack in props.packs" :key="pack.id" class="y tz tns bg-white shadow-md rounded-sm border border-slate-200">
+                            <div v-for="pack in props.packs" :key="pack.id" class="y tz carlos bg-white shadow-md rounded-sm border border-slate-200">
                                 <div class="g k x q s_ hd" aria-hidden="true"></div>
                                 <div class="vc mb mp cs border-slate-200">
                                     <header class="flex items-center ru">
