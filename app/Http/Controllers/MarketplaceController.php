@@ -51,12 +51,21 @@ class MarketplaceController extends Controller
 
     public function detail($slug) {
         $product = Product::where('slug', $slug)->first();
+        $rq = DB::table('products')->join('variants', 'products.id', '=', 'variants.product_id')
+                                   ->join('variant_warehouse', 'variants.id', '=', 'variant_warehouse.variant_id')
+                                   ->join('warehouses', 'variant_warehouse.warehouse_id', '=', 'warehouses.id')
+                                   ->where('products.id', $product->id)
+                                   ->select('warehouses.id', 'warehouses.name', 'warehouses.country')
+                                   ->distinct()->get();
+        return $rq;
+
         if($product) {
             $variants = $product->variants;
         }
         return Inertia::render('Marketplace/Detail', [
             'product' => $product,
             'variants' => $variants,
+            'warehouses' => $rq
         ]);
     }
 

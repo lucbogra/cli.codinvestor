@@ -40,7 +40,7 @@ const listCountries = () => {
 }
 
 onMounted(() => {
-    console.log(props.products);
+    console.log(products);
 })
 
 
@@ -105,11 +105,11 @@ const countriesData = ref(listCountries());
                                 </li>
                             </ul>
                         </div>
-                        <div class="text-sm text-slate-500 gm ri">{{ products.data.length }} {{ (products.data.length > 1) ?
+                        <div class="text-sm text-slate-500 gm ri" v-if="products?.data">{{ products.data.length }} {{ (products.data.length > 1) ?
                             'Products' : 'Product' }}</div>
                         <!-- Cards 1 (Video Courses) -->
                         <div>
-                            <div class="sn ag fn" v-if="products.data.length > 0">
+                            <div class="sn ag fn" v-if="products?.data && products?.data.length > 0">
                                 <!-- Card 1 -->
                                 <div class="tz qd tns bg-white bd rounded-sm border border-slate-200 la"
                                     v-for="product in products.data" :key="product.id">
@@ -142,7 +142,7 @@ const countriesData = ref(listCountries());
                             <div class="" v-if="products.length === 0">
                                 <div class="flex justify-center">
                                     <div
-                                        class="inline-flex items-center justify-center go gp vp vf bg-white border border-slate-200 rounded-full ny">
+                                        class="inline-flex items-center justify-center go gp vp vf bg-white border border-slate-200 rounded-full ny p-4 text-lg">
                                         No product available for this category 😪
                                     </div>
                                 </div>
