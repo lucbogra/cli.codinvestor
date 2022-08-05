@@ -81,19 +81,31 @@ class MarketplaceController extends Controller
 
     }
 
-    public function products()
+    public function products(Request $request)
     {
         $products = [];
-        $productIds = DB::table('investor_product')->where('investor_id', auth()->id())->get();
-        // return $productIds;
-        foreach ($productIds as $key => $productId) {
-            $tmp_product = Product::where('id', $productId->id)->first();
-            array_push($products, $tmp_product);
-        }
         $investor = Investor::where('user_id', auth()->id())->first();
+        $products = $investor->products()->paginate(8);
+        if($request->filter_by) {
+            switch ($request->filter_by) {
+                case 'request':
+                    $products = $investor->products()->where('status', 'request')->paginate(8);
+                    break;
+                case 'denied':
+                    $products = $investor->products()->where('status', 'denied')->paginate(8);
+                    break;
+                case 'access':
+                    $products = $investor->products()->where('status', 'access')->paginate(8);
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
         if($investor) {
             return Inertia::render('Marketplace/Product', [
-                'products' => $investor->products()->paginate(8)
+                'products' => $products
             ]);
         } else {
             return "Investor don't exist";

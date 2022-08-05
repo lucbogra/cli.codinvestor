@@ -110,11 +110,11 @@ const submit = () => {
                             <div class="fg">
                                 <div>
                                     <label class="block text-sm gp rt" for="email">Email Address</label>
-                                    <input id="email" v-model="form.email" type="email" class="mt-1 block w-full" required autocomplete="current-password">
+                                    <input id="email" v-model="form.email" type="email" class="mt-1 block w-full border-gray-300 shadow-md rounded" required autocomplete="current-password" placeholder="Enter your e-mail address">
                                 </div>
                                 <div>
                                     <label class="block text-sm gp rt" for="password">Password</label>
-                                    <input id="password" v-model="form.password" type="password" class="mt-1 block w-full" required autocomplete="current-password" />
+                                    <input id="password" v-model="form.password" type="password" class="mt-1 block w-full border-gray-300 shadow-md rounded" required autocomplete="current-password" placeholder="*******"/>
                                 </div>
                             </div>
                             <div class="flex items-center fe rk text-center">

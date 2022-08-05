@@ -29,11 +29,11 @@ onMounted(() => {
             <div class="vs jj ttm vl ou uf na">
                 <div class="ri _y flex justify-between mb-5">
                     <h1 class="gu teu text-slate-800 font-bold">Products ✨</h1>
-                    <select name="" class="a ou rounded-full w-52" id="">
+                    <select name="" class="a ou rounded-full w-52" v-model="seleledShowing" @change="filterByShowing($event)" id="">
                         <option value="All">See all my products</option>
-                        <option value="All">Where the status is request</option>
-                        <option value="All">Where the status is canceled</option>
-                        <option value="All">Where the status is approved</option>
+                        <option value="request">Where the status is request</option>
+                        <option value="denied">Where the status is canceled</option>
+                        <option value="access">Where the status is approved</option>
                     </select>
                 </div>
 
@@ -162,11 +162,14 @@ import axios from 'axios';
 export default {
     data() {
         return {
-
+            seleledShowing: 'All'
         }
     },
     methods: {
-
+        filterByShowing(event) {
+            this.$inertia.get(route('marketplace.products') + '?filter_by=' + event.target.value);
+            this.seleledShowing = event.target.value
+        }
     }
 }
 </script>
