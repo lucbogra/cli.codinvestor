@@ -84,6 +84,8 @@ const navigation = [
 
   { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: false },
 
+  { name: 'Orders', href: route('marketplace.products'), icon: CollectionIcon, current: false },
+
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
   { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },

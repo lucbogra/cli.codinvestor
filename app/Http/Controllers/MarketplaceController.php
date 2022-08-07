@@ -57,7 +57,6 @@ class MarketplaceController extends Controller
                                    ->where('products.id', $product->id)
                                    ->select('warehouses.id', 'warehouses.name', 'warehouses.country')
                                    ->distinct()->get();
-        return $rq;
 
         if($product) {
             $variants = $product->variants;

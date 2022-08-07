@@ -70,6 +70,9 @@ onMounted(() => {
                                             <div class="gh gt">Name</div>
                                         </th>
                                         <th class="vi wy w_ vo lm">
+                                            <div class="gh gt">Link</div>
+                                        </th>
+                                        <th class="vi wy w_ vo lm">
                                             <div class="gh gt">Status</div>
                                         </th>
                                         <th class="vi wy w_ vo lm">
@@ -100,6 +103,9 @@ onMounted(() => {
                                         </td>
                                         <td class="vi wy w_ vo lm">
                                             <a :href="product.link" target="_blank" class="gp ">{{ product.name }}</a>
+                                        </td>
+                                        <td class="vi wy w_ vo lm">
+                                            <a :href="product.link" target="_blank" class="gp ">View Link</a>
                                         </td>
                                         <td class="vi wy w_ vo lm">
                                             <div class="inline-flex gp hf yl rounded-full gn vp vd"
