@@ -40,6 +40,7 @@ Route::middleware([
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
     Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
+    Route::get('orders', [MarketplaceController::class, 'orders'])->name('marketplace.orders');
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');

@@ -119,4 +119,8 @@ class MarketplaceController extends Controller
             return "Investor don't exist";
         }
     }
+
+    public function orders() {
+        return Inertia::render('Marketplace/Order');
+    }
 }

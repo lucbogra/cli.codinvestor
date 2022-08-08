@@ -76,15 +76,24 @@ import MobileSideBar from './MobileSideBar.vue'
 import DesktopSideBar from './DesktopSideBar.vue'
 import Top from './Top.vue'
 import FlashMessages from './FlashMessages.vue'
+import { usePage } from '@inertiajs/inertia-vue3';
+
+function isUrl(...urls) {
+    let currentUrl = usePage().url.value;
+    if (urls[0] === "") {
+        return currentUrl === "";
+    }
+    return urls.filter((url) => currentUrl.startsWith(url)).length;
+}
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current: true },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  true },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
 
   { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: false },
 
-  { name: 'Orders', href: route('marketplace.products'), icon: CollectionIcon, current: false },
+  { name: 'Orders', href: route('marketplace.orders'), icon: CollectionIcon, current: false },
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
