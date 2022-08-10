@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "^3.1",
+        "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^5.5",
         "tightenco/ziggy": "^1.0"
     },
@@ -59,7 +60,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1.8"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
