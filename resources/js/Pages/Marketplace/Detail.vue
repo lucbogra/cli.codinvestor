@@ -36,6 +36,7 @@ const variants = ref(listVariants());
 let colors = []
 let sizes = []
 let prices = []
+let skus = []
 
 </script>
 
@@ -246,15 +247,13 @@ let prices = []
                                     <table class="border-collapse border border-slate-400 w-96">
                                     <thead>
                                     <tr>
-                                        <th class="border border-slate-300 ...">State</th>
-                                        <th class="border border-slate-300 ...">City</th>
+                                        <th class="border border-slate-300">Country Available</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td class="border border-slate-300 ...">Indiana</td>
-                                        <td class="border border-slate-300 ...">Indianapolis</td>
-                                    </tr>
+                                        <tr v-for="warehouse in props.warehouses" :key="warehouse">
+                                            <td class="border border-slate-300 text-center">{{ warehouse.country }}</td>
+                                        </tr>
                                     </tbody>
                                     </table>
                                 </div>
@@ -262,24 +261,20 @@ let prices = []
                         </div>
                         <div class="flex ak tz _c bg-white bd rounded-sm border border-slate-200">
                             <header class="vc vu cs ch">
-                                <h2 class="gh text-slate-800">Cash Flow</h2>
+                                <h2 class="gh text-slate-800">SKU Available</h2>
                             </header>
                             <div class="vc vo">
                                 <div class="flex flex-wrap fe items-center">
                                     <div class="flex items-center">
-                                        <div class="text-3xl font-bold text-slate-800 mr-2">$1,347.09</div>
-                                        <div class="text-sm">Net</div>
-                                    </div>
-                                    <div id="fintech-card-03-legend" class="uw nq rt">
-                                        <ul class="flex flex-wrap justify-end"><li style="margin-right: 16px;"><button style="display: inline-flex; align-items: center;"><span style="display: block; width: 12px; height: 12px; border-radius: 9999px; margin-right: 8px; border-width: 3px; border-color: rgb(99, 102, 241); pointer-events: none;"></span><span style="color: rgb(100, 116, 139); font-size: 0.875rem; line-height: 1.5715;">Inflow</span></button></li><li style="margin-right: 16px;"><button style="display: inline-flex; align-items: center;"><span style="display: block; width: 12px; height: 12px; border-radius: 9999px; margin-right: 8px; border-width: 3px; border-color: rgb(203, 213, 225); pointer-events: none;"></span><span style="color: rgb(100, 116, 139); font-size: 0.875rem; line-height: 1.5715;">Outflow</span></button></li></ul>
+                                        <table class="border-collapse border border-slate-400 w-96">
+                                            <thead>
+                                                <tr v-for="sku in skus" :key="sku">
+                                                    <th class="border border-slate-300">{{ sku }}</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Chart built with Chart.js 3 -->
-                            <!-- Check out src/js/components/fintech-card-03.js for config -->
-                            <div class="uw">
-                                <!-- Change the height attribute to adjust the chart height -->
-                                <canvas id="fintech-card-03" width="375" height="272" style="display: block; box-sizing: border-box; height: 272px; width: 375px;"></canvas>
                             </div>
                         </div>
                 </div>
@@ -297,6 +292,7 @@ export default {
         sizes: [],
         colors: [],
         prices: [],
+        skus: [],
         selectedColor: null,
         selectedSize: null,
         requestModal : false
@@ -351,6 +347,7 @@ export default {
         this.sizes = this.getAllAttributes('size', this.product.variants)
         this.colors = this.getAllAttributes('color', this.product.variants)
         this.prices = this.getAllAttributes('pu', this.product.variants)
+        this.skus = this.getAllAttributes('sku', this.product.variants)
         this.selectedColor = ref(this.colors[0])
         this.selectedSize = ref(this.sizes[0])
         console.log(this.product.variants);
