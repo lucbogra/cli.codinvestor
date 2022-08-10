@@ -41,6 +41,8 @@ Route::middleware([
     Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
     Route::get('orders', [MarketplaceController::class, 'orders'])->name('marketplace.orders');
+    Route::post('orders/import', [MarketplaceController::class, 'import'])->name('marketplace.orders.import');
+
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
