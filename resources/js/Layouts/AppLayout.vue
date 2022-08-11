@@ -34,6 +34,7 @@
 
 <script>
 import { ref } from 'vue'
+import 'animate.css';
 import {
   Dialog,
   DialogOverlay,
