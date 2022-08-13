@@ -129,7 +129,7 @@ class MarketplaceController extends Controller
         $request->validate([
             'file' => 'required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'
         ]);
-        (new OrderImport(auth()->id))->import($request->file('file'));
+        (new OrderImport(auth()->id()))->import($request->file('file'));
         return 1;
     }
 }
