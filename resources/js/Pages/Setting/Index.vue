@@ -43,14 +43,14 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                                 <span class="text-sm gp g_ xp">My Notifications</span>
                                             </a>
                                         </li>
-                                        <li class="rv qm qg">
+                                        <!-- <li class="rv qm qg">
                                             <a class="flex items-center vp vr rounded lm" href="#">
                                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                                                     <path d="M3.414 2L9 7.586V16H7V8.414l-5-5V6H0V1a1 1 0 011-1h5v2H3.414zM15 0a1 1 0 011 1v5h-2V3.414l-3.172 3.172-1.414-1.414L12.586 2H10V0h5z"></path>
                                                 </svg>
                                                 <span class="text-sm gp g_ xp">Connected Apps</span>
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li class="rv qm qg">
                                             <inertia-link class="flex items-center vp vr rounded lm" :href="route('user.plans')">
                                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
@@ -59,14 +59,14 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                                 <span class="text-sm gp g_ xp">Plans</span>
                                             </inertia-link>
                                         </li>
-                                        <li class="rv qm qg">
+                                        <!-- <li class="rv qm qg">
                                             <a class="flex items-center vp vr rounded lm" href="#">
                                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                                                     <path d="M15 4c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-1.7 0-3-1.3-3-3V3c0-1.7 1.3-3 3-3h7c.6 0 1 .4 1 1v3h4zM2 3v1h7V2H3c-.6 0-1 .4-1 1zm12 11V6H2v7c0 .6.4 1 1 1h11zm-3-5h2v2h-2V9z"></path>
                                                 </svg>
                                                 <span class="text-sm gp g_ xp">Billing &amp; Invoices</span>
                                             </a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                                 <!-- Group 2 -->
@@ -78,7 +78,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                                                     <path d="M7.001 3h2v4h-2V3zm1 7a1 1 0 110-2 1 1 0 010 2zM15 16a1 1 0 01-.6-.2L10.667 13H1a1 1 0 01-1-1V1a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1zM2 11h9a1 1 0 01.6.2L14 13V2H2v9z"></path>
                                                 </svg>
-                                                <span class="text-sm gp g_ xp">Give Feedback</span>
+                                                <span class="text-sm gp g_ xp">Create Ticket</span>
                                             </a>
                                         </li>
                                     </ul>
