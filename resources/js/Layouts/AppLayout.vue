@@ -23,9 +23,9 @@
       <main class="flex-1 pb-8  bg-slate-100" scroll-region>
         <!-- Page header -->
         <slot name="page-header" />
-        <div class="md:flex-1 px-4 py-8 bg-slate-100">
+        <div class="md:flex-1 px-4 py-8 bg-slate-100 ">
           <flash-messages />
-          <slot name="content"/>
+          <slot name="content" />
         </div>
       </main>
     </div>
@@ -102,8 +102,8 @@ const navigation = [
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon },
-  { name: 'Help', href: '#', icon: QuestionMarkCircleIcon },
-  { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
+  { name: 'Help', href: route('help'), icon: QuestionMarkCircleIcon },
+//   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
 
 export default {
