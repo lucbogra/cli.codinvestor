@@ -14,4 +14,8 @@ class WebController extends Controller
             'packs' => $packs
         ]);
     }
+
+    public function help() {
+        return Inertia::render('Setting/Help');
+    }
 }
