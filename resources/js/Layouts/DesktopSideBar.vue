@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col flex-grow bg-primary-800 pt-5 pb-4 overflow-y-auto">
         <div class="flex items-center flex-shrink-0 px-4">
-          <!-- <img class="h-8 w-auto" :src="$page.props.logo" alt="Easywire logo" /> -->
+          <img class="h-8 w-auto text-white" :src="$page.props.logo" :alt="$page.props.name ? $page.props.name : 'CodInvestor'" />
         </div>
         <nav class="mt-5 flex-1 flex flex-col divide-y divide-primary-800 overflow-y-auto" aria-label="Sidebar">
           <div class="px-2 space-y-1">
