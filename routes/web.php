@@ -49,5 +49,7 @@ Route::middleware([
         Route::get('plans', [WebController::class, 'plans'])->name('plans');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('help-us', [WebController::class, 'help'])->name('help');
 });
 
