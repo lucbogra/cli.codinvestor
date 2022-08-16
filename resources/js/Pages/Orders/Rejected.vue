@@ -124,22 +124,21 @@ const form = useForm({
   </div>
 </template>
 
-
 <style>
-    ul{
+    .pagination{
         display: flex;
         justify-content: center;
         margin: 20px 0;
     }
-     ul li {
+     .pagination li {
         padding: 8px 17px;
      }
 
-     ul li{
+     .pagination li{
        border: 1px solid #ddd;
      }
 
-     ul .active {
+     .pagination .active {
         background-color: #1B2E51;
         color: white;
      }
