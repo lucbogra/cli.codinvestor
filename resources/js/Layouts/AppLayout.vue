@@ -32,8 +32,8 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+import { onMounted, ref } from 'vue'
 import 'animate.css';
 import {
   Dialog,
@@ -79,7 +79,12 @@ import Top from './Top.vue'
 import FlashMessages from './FlashMessages.vue'
 import { usePage } from '@inertiajs/inertia-vue3';
 
-function isUrl(...urls) {
+
+const props = defineProps({
+    title: String
+})
+
+const isUrl  = (...urls) => {
     let currentUrl = usePage().url.value;
     if (urls[0] === "") {
         return currentUrl === "";
@@ -88,61 +93,28 @@ function isUrl(...urls) {
 }
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  true },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl('/dashboard') },
 
-  { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: false },
+  { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace') },
 
-  { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: false },
+  { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: isUrl('/products') },
 
-  { name: 'Orders', href: route('marketplace.orders'), icon: CollectionIcon, current: false },
+  { name: 'Orders', href: route('orders.index'), icon: CollectionIcon, current: isUrl('/orders') },
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
   { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
 ]
 const secondaryNavigation = [
-  { name: 'Settings', href: route('user.profile'), icon: CogIcon },
+  { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },
   { name: 'Help', href: route('help'), icon: QuestionMarkCircleIcon },
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
 
-export default {
-  components: {
-    Dialog,
-    DialogOverlay,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    TransitionChild,
-    TransitionRoot,
-    BellIcon,
-    CashIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
-    GiftIcon,
-    MenuAlt1Icon,
-    SearchIcon,
-    XIcon,
-    MobileSideBar,
-    DesktopSideBar,
-    Top,
-    FlashMessages,
-    OfficeBuildingIcon,
-    LocationMarkerIcon,
-  },
-  props: ['title'],
-  mounted(){
-    document.title = this.title
-  },
-  setup() {
-    const sidebarOpen = ref(false)
+onMounted(() => {
 
-    return {
-      navigation,
-      secondaryNavigation,
-      sidebarOpen,
-    }
-  },
-}
+    document.title = this.title
+})
+const sidebarOpen = ref(false)
+
 </script>

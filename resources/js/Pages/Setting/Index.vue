@@ -74,12 +74,12 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                     <div class="go gh gq gv ro">Experience</div>
                                     <ul class="flex a_ qx ra qm">
                                         <li class="rv qm qg">
-                                            <a class="flex items-center vp vr rounded lm" href="feedback.html">
+                                            <inertia-link class="flex items-center vp vr rounded lm" :href="route('user.create.ticket')">
                                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                                                     <path d="M7.001 3h2v4h-2V3zm1 7a1 1 0 110-2 1 1 0 010 2zM15 16a1 1 0 01-.6-.2L10.667 13H1a1 1 0 01-1-1V1a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1zM2 11h9a1 1 0 01.6.2L14 13V2H2v9z"></path>
                                                 </svg>
                                                 <span class="text-sm gp g_ xp">Create Ticket</span>
-                                            </a>
+                                            </inertia-link>
                                         </li>
                                     </ul>
                                 </div>

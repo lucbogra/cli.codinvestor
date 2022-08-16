@@ -11,6 +11,7 @@ use App\Notifications\ProductRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class MarketplaceController extends Controller
@@ -121,15 +122,5 @@ class MarketplaceController extends Controller
         }
     }
 
-    public function orders() {
-        return Inertia::render('Marketplace/Order');
-    }
 
-    public function import(Request $request) {
-        $request->validate([
-            'file' => 'required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'
-        ]);
-        (new OrderImport(auth()->id()))->import($request->file('file'));
-        return 1;
-    }
 }

@@ -12,7 +12,7 @@
           </div>
           <div class="mt-6 pt-6">
             <div class="px-2 space-y-1">
-              <inertia-link v-for="item in secondaryNavigation" :key="item.name" :href="item.href" class="group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md text-white hover:text-white hover:bg-primary-700">
+              <inertia-link v-for="item in secondaryNavigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-primary-600 text-white' : 'text-white hover:text-white hover:bg-primary-700', 'group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md']" :aria-current="item.current ? 'page' : undefined">
                 <component :is="item.icon" class="mr-4 h-6 w-6 text-white" aria-hidden="true" />
                 {{ item.name }}
               </inertia-link>

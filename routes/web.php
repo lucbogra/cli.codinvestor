@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -40,13 +41,14 @@ Route::middleware([
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
     Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
-    Route::get('orders', [MarketplaceController::class, 'orders'])->name('marketplace.orders');
-    Route::post('orders/import', [MarketplaceController::class, 'import'])->name('marketplace.orders.import');
+    Route::get('orders', [OrderController::class, 'orders'])->name('orders.index');
+    Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import');
 
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
         Route::get('plans', [WebController::class, 'plans'])->name('plans');
+        Route::get('create-ticket', [WebController::class, 'createTicket'])->name('create.ticket');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 

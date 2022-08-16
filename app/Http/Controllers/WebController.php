@@ -18,4 +18,9 @@ class WebController extends Controller
     public function help() {
         return Inertia::render('Setting/Help');
     }
+
+    public function createTicket()
+    {
+        return Inertia::render('Setting/Ticket');
+    }
 }
