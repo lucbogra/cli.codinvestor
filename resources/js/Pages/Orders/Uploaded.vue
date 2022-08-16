@@ -10,7 +10,7 @@ const filters = ref({
 })
 
 onMounted(() =>{
-    console.log(orders);
+    console.log(props.orders);
 });
 
 const selectedOrders = ref([])
@@ -25,24 +25,6 @@ const form = useForm({
   rows: ''
 })
 
-const submit = () => {
-  form.put(route('orders.affect.agents'), {
-    preserveScroll: true,
-    preserveState: false,
-    onSuccess: () => {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        timer: 3000,
-        showConfirmButton: false,
-        timerProgressBar: true,
-        icon: 'success',
-        title: usePage().props.value.flash.success,
-      }),
-        form.reset()
-    }
-  })
-}
 
 </script>
 
@@ -59,7 +41,7 @@ const submit = () => {
                 v-model="filters.all.value" />
             </div>
             <VTable :data="orders" :filters="filters" class="min-w-full table-fixed divide-y divide-gray-300"
-              :page-size="20" v-model:currentPage="currentPage" @totalPagesChanged="totalPages = $event">
+              :page-size="8" v-model:currentPage="currentPage" @totalPagesChanged="totalPages = $event">
               <template #head>
                 <tr class="bg-gray-50">
                   <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8">
@@ -68,7 +50,7 @@ const submit = () => {
                       :checked="indeterminate || selectedOrders.length === orders.length" :indeterminate="indeterminate"
                       @change="selectedOrders = $event.target.checked ? orders.map((p) => p.id) : []" />
                   </th>
-                  <th class="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                  <th class="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Customer Name</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
@@ -116,8 +98,8 @@ const submit = () => {
             </VTable>
 
             <VTPagination v-model:currentPage="currentPage" :total-pages="totalPages" :boundary-links="false"
-              :maxPageLinks="9">
-              <template #firstPage>
+              :maxPageLinks="9" class="flex">
+              <template #firstPage class="flex">
                 <i class="fas fa-arrow-left" />
               </template>
 
@@ -141,3 +123,24 @@ const submit = () => {
 
   </div>
 </template>
+
+
+<style>
+    ul{
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+     ul li {
+        padding: 8px 17px;
+     }
+
+     ul li{
+       border: 1px solid #ddd;
+     }
+
+     ul .active {
+        background-color: #1B2E51;
+        color: white;
+     }
+</style>
