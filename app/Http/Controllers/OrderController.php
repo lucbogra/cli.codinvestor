@@ -12,8 +12,12 @@ class OrderController extends Controller
 {
     public function orders() {
         $uploadeds = Order::where('investor_id', auth()->id())->get();
+        $duplicates = Order::where('duplicate', 1)->get();
+        $rejecteds = Order::where('status', 'rejected')->get();
         return Inertia::render('Orders/Index', [
-            'uploadeds' => $uploadeds
+            'uploadeds' => $uploadeds,
+            'duplicates' => $duplicates,
+            'rejecteds' => $rejecteds
         ]);
     }
 

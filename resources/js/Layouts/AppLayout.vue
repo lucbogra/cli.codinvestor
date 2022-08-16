@@ -112,8 +112,7 @@ const secondaryNavigation = [
 ]
 
 onMounted(() => {
-
-    document.title = this.title
+    document.title = props.title
 })
 const sidebarOpen = ref(false)
 

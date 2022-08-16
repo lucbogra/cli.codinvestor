@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,4 +16,13 @@ class Order extends Model
         'delayed_date', 'delivered_at', 'delayed_date', 'delivered_at', 'returned_at', 'closed_at', 'duplicate', 'note',
         'affected_at', 'tries', 'reaffected_at', 'product_link', 'can_affect', 'tracking_number', 'delivery_status', 'order_number', 'last_mile', 'shiper'
       ];
+
+
+    public function getCreatedAtAttribute($value) {
+        return  Carbon::parse($value)->diffForHumans();
+    }
+
+    public function getUpdatedAtAttribute($value) {
+        return  Carbon::parse($value)->diffForHumans();
+    }
 }

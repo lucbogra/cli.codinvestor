@@ -1,4 +1,51 @@
 
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue'
+import FileInput from '@/Components/FileInput.vue';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
+import Input from '@/Jetstream/Input.vue';
+import InputError from '@/Jetstream/InputError.vue';
+import { ref, computed, onMounted } from 'vue';
+import {
+  TabGroup, TabList, Tab, TabPanels, TabPanel
+} from '@headlessui/vue'
+import Uploaded from './Uploaded.vue'
+import Duplicated from './Duplicated.vue'
+import Rejected from './Rejected.vue'
+const props = defineProps({
+  uploadeds: Array,
+  rejecteds: Array,
+  duplicates: Array
+})
+
+
+const filters = ref({
+  all: { value: '', keys: ['customer_name', 'phone', 'country', 'city', 'product_name', 'price', 'website', 'created_at'] }
+})
+const colorx = ref('#0F7490')
+
+const form = useForm({
+  file: null,
+})
+
+const submitImport = () => {
+  form.post('orders/import', {
+    onSuccess: () => {
+         Swal.fire({
+            toast: true,
+            position: 'top-end',
+            timer: 3000,
+            showConfirmButton: false,
+            timerProgressBar: true,
+            icon: 'success',
+            title: "Orders were uploaded successfully",
+
+      }),
+        form.reset()
+    }
+  });
+}
+</script>
 <template>
     <AppLayout title="Orders">
         <template #page-header>
@@ -27,7 +74,7 @@
                             'ring-white ring-opacity-60 ring-offset-2 ring-offset-cyan-400 focus:outline-none focus:ring-2',
                             selected ? 'bg-white shadow text-cyan-500' : 'text-white hover:bg-white/[0.12] hover:text-white',]">
                             <!-- <UploadIcon class=" mr-1.5 h-5 w-5 text-cyan-500" aria-hidden="true"/> -->
-                            Uploaded <span class=" rounded px-2 bg-cyan-500 text-white">{{ '0' }}</span>
+                            Uploaded <span class=" rounded px-2 bg-cyan-500 text-white">{{ uploadeds.length }}</span>
                         </button>
                         </Tab>
 
@@ -36,7 +83,7 @@
                             :class="['w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white',
                             'ring-white ring-opacity-60 ring-offset-2 ring-offset-primary-500 focus:outline-none focus:ring-2',
                             selected ? 'bg-white shadow text-primary-800' : 'text-white hover:bg-white/[0.12] hover:text-white',]">
-                            Duplicate <span class=" rounded px-2 bg-primary-800 text-white">{{ '8' }}</span>
+                            Duplicate <span class=" rounded px-2 bg-primary-800 text-white">{{ duplicates.length }}</span>
                         </button>
                         </Tab>
 
@@ -45,7 +92,7 @@
                             :class="['w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white',
                             'ring-white ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
                             selected ? 'bg-white shadow text-primary-700' : 'text-white hover:bg-white/[0.12] hover:text-white',]">
-                            Rejected <span class=" rounded px-2 bg-primary-700 text-white">{{ '9' }}</span>
+                            Rejected <span class=" rounded px-2 bg-primary-700 text-white">{{ rejecteds.length }}</span>
                         </button>
                         </Tab>
 
@@ -55,20 +102,18 @@
                     <TabPanels class="mt-2">
                         <TabPanel
                         :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
-                        <Uploaded :orders="uploaded" />
+                        <Uploaded :orders="uploadeds" />
 
                         </TabPanel>
 
                         <TabPanel
                         :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
-                        <!-- <Duplicate :agents="agents" :orders="duplicate"></Duplicate> -->
-                        sdlihfezih
+                            <Duplicated :orders="duplicates" />
                         </TabPanel>
 
                         <TabPanel
                         :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
-                        <!-- <Pending :agents="agents" :orders="pendings"/> -->
-                        sqdcomheomfh
+                        <Rejected :orders="rejecteds" />
                         </TabPanel>
 
 
@@ -79,48 +124,6 @@
     </AppLayout>
 </template>
 
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue'
-import FileInput from '@/Components/FileInput.vue';
-import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import Input from '@/Jetstream/Input.vue';
-import InputError from '@/Jetstream/InputError.vue';
-import { ref, computed, onMounted } from 'vue';
-import {
-  TabGroup, TabList, Tab, TabPanels, TabPanel
-} from '@headlessui/vue'
-import Uploaded from './Uploaded.vue'
-const props = defineProps({
-  orders: Array,
-  investors: Array
-})
-const filters = ref({
-  all: { value: '', keys: ['customer_name', 'phone', 'country', 'city', 'product_name', 'price', 'website', 'created_at'] }
-})
-const colorx = ref('#0F7490')
-
-const form = useForm({
-  file: null,
-})
-
-const submitImport = () => {
-  form.post('orders/import', {
-    onSuccess: () => {
-         Swal.fire({
-            toast: true,
-            position: 'top-end',
-            timer: 3000,
-            showConfirmButton: false,
-            timerProgressBar: true,
-            icon: 'success',
-            title: "Orders were uploaded successfully",
-
-      }),
-        form.reset()
-    }
-  });
-}
-</script>
 
 <script >
 
