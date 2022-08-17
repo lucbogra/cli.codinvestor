@@ -49,6 +49,7 @@ Route::middleware([
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
         Route::get('plans', [WebController::class, 'plans'])->name('plans');
         Route::get('create-ticket', [WebController::class, 'createTicket'])->name('create.ticket');
+        Route::post('store-ticket', [WebController::class, 'storeTicket'])->name('store.ticket');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 

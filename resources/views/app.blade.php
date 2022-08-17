@@ -12,7 +12,6 @@
         <!-- Scripts -->
         {{-- font awesome --}}
         <script src="https://kit.fontawesome.com/276305b3f3.js" crossorigin="anonymous"></script>
-
         {{-- sweetalert --}}
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @routes

@@ -24,6 +24,8 @@
         "@headlessui/vue": "^1.6.7",
         "@heroicons/vue": "^1.0.6",
         "animate.css": "^4.1.1",
+        "vue2-editor": "^2.10.3",
+        "vue3-summernote-editor": "^1.0.2",
         "vuejs-smart-table": "^1.0.0-beta.6"
     }
 }
