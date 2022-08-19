@@ -14,6 +14,9 @@ const props = defineProps({
     cancelled: Number,
     no_answer: Number,
     delayed: Number,
+    request: Number,
+    denied: Number,
+    access: Number
 });
 
 const datas = ref(null)
@@ -101,7 +104,7 @@ lineChartOptions.value = {
                                     <p class="font-bold text-gray-600">Products Requests</p>
                                 </div>
                                 <p class="text-lg font-bold text-cyan-500">
-                                    30
+                                    {{ $request ? $request : 0 }}
                                 </p>
                             </div>
                         </div>
@@ -115,7 +118,7 @@ lineChartOptions.value = {
                                     <p class="font-bold text-gray-600">Products cancelled</p>
                                 </div>
                                 <p class="text-lg font-bold text-danger">
-                                    20
+                                    {{ $denied ? $denied : 0 }}
                                 </p>
                             </div>
                         </div>
@@ -129,7 +132,7 @@ lineChartOptions.value = {
                                     <p class="font-bold text-gray-600">Products Access</p>
                                 </div>
                                 <p class="text-lg font-bold text-green-600">
-                                    10
+                                    {{ $access ? $access : 0 }}
                                 </p>
                             </div>
                         </div>

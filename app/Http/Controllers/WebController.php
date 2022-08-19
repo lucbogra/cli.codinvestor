@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Investor;
 use App\Models\Order;
 use App\Models\Pack;
 use App\Models\Ticket;
@@ -46,6 +47,10 @@ class WebController extends Controller
 
         if ($request->time == 'today') $date = date('Y-m-d');
         if ($request->time == 'yesterday') $date = date('Y-m-d', strtotime('- 1 days'));
+    $investor = Investor::where('user_id', auth()->id())->first();
+    $request = $investor->products()->where('status', 'request')->count();
+    $denied = $investor->products()->where('status', 'denied')->count();
+    $access = $investor->products()->where('status', 'access')->count();
 
     $uploaded = Order::where('investor_id', auth()->id())->whereDate('created_at', $date)->count();
     $duplicate = Order::where('investor_id', auth()->id())->whereDate('created_at', $date)->duplicate()->count();
@@ -79,6 +84,9 @@ class WebController extends Controller
             'confirmation_rate' => $confirmation_rate,
             'reaffected' => $reaffected,
             'aov' => $aov,
+            'request' => $request,
+            'denied' => $denied,
+            'access' => $access
         ]);
     }
 
