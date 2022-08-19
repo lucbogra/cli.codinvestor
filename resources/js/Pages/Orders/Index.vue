@@ -55,11 +55,11 @@ const submitImport = () => {
                 </div>
             </div>
             <form @submit.prevent="submitImport" enctype="multipart/form-data" class="-mt-8">
-                <div class="flex justify-center">
+                <div class="flex justify-start ml-5">
                     <div class="flex bg-white shadow-md p-2 rounded justify-between">
                         <FileInput v-model="form.file" class="pr-6 pb-8 w-96" type="file" accept=".xlsx, .xls, .csv" label="Your order file" />
 
-                        <div class="ml-9 mt-8">
+                        <div class="ml-9 mt-7">
                             <button class="btn ho xi ye disabled:opacity-50" :disabled="form.file === null">Import orders</button>
                         </div>
                     </div>
@@ -87,12 +87,12 @@ const submitImport = () => {
                         </button>
                         </Tab>
 
-                        <Tab v-slot="{ selected }" @click="colorx = '#0C4687'" as="template">
+                        <Tab v-slot="{ selected }" @click="colorx = '#EF4444'" as="template">
                         <button
                             :class="['w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white',
-                            'ring-white ring-opacity-60 ring-offset-2 ring-offset-primary-400 focus:outline-none focus:ring-2',
+                            'ring-white ring-opacity-60 ring-offset-2 ring-offset-red-400 focus:outline-none focus:ring-2',
                             selected ? 'bg-white shadow text-primary-700' : 'text-white hover:bg-white/[0.12] hover:text-white',]">
-                            Rejected <span class=" rounded px-2 bg-primary-700 text-white">{{ rejecteds.length }}</span>
+                            Rejected <span class=" rounded px-2 bg-red-500 text-white">{{ rejecteds.length }}</span>
                         </button>
                         </Tab>
 

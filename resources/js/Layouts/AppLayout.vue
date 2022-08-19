@@ -107,7 +107,7 @@ const navigation = [
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },
-  { name: 'Help', href: route('help'), icon: QuestionMarkCircleIcon },
+  { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon },
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
 
