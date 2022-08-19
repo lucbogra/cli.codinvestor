@@ -44,13 +44,7 @@ const form = useForm({
               :page-size="8" v-model:currentPage="currentPage" @totalPagesChanged="totalPages = $event">
               <template #head>
                 <tr class="bg-gray-50">
-                  <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8">
-                    <input type="checkbox"
-                      class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500 sm:left-6"
-                      :checked="indeterminate || selectedOrders.length === orders.length" :indeterminate="indeterminate"
-                      @change="selectedOrders = $event.target.checked ? orders.map((p) => p.id) : []" />
-                  </th>
-                  <th class="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                  <th class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Date</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Customer Name</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                   <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
@@ -62,15 +56,8 @@ const form = useForm({
               <template #body="{ rows }">
                 <tr v-for="row in rows" :key="row.id" class="divide-y divide-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100"
                   :class="[selectedOrders.includes(row.id) && 'bg-gray-50']">
-                  <td class="relative w-12 px-6 sm:w-16 sm:px-8">
-                    <div v-if="selectedOrders.includes(row.id)" class="absolute inset-y-0 left-0 w-0.5 bg-cyan-600">
-                    </div>
-                    <input type="checkbox"
-                      class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500 sm:left-6"
-                      :value="row.id" v-model="selectedOrders" />
-                  </td>
                   <td
-                    :class="['whitespace-nowrap py-4 pr-3 text-sm font-medium', selectedOrders.includes(row.id) ? 'text-cyan-600' : 'text-gray-900']">
+                    :class="['whitespace-nowrap py-4 px-3 text-sm font-medium', selectedOrders.includes(row.id) ? 'text-cyan-600' : 'text-gray-900']">
                     {{ row.created_at }}</td>
                   <td
                     :class="['whitespace-nowrap px-3 py-4 text-sm', selectedOrders.includes(row.id) ? 'text-cyan-600' : ' text-gray-500']">

@@ -16,8 +16,39 @@ const props = defineProps({
     product: Object,
     variants: Array,
     colors: Array,
-    warehouses: Array
+    warehouses: Array,
+    requestModal : false
 });
+
+const submitRequest = (product_id) => {
+
+            axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
+                if (response.data) {
+                    // alert('Request envoyé avec succès')
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timer: 5000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Product requested successfully. ',
+                    })
+                } else {
+                    // alert('Nous rencontré une erreur')
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        timer: 5000,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        icon: 'error',
+                        title: 'We encountered an error',
+                    })
+                }
+            })
+
+        }
 
 const listVariants = () => {
     return props.variants.map((variant) => {
@@ -225,7 +256,7 @@ let skus = []
                                                 <!-- Modal footer -->
                                                 <div class="flex flex-wrap justify-end fc">
                                                     <button class="r border-slate-200 hover--border-slate-300 g_" v-on:click="requestModal = false">Cancel</button>
-                                                    <button class="r ho xi ye" v-on:click="submitRequest(props.product.id)">Yes, Create it</button>
+                                                    <button class="r ho xi ye" v-on:click="submitRequest(props.product.id), requestModal = false">Yes, Create it</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,38 +326,8 @@ export default {
         skus: [],
         selectedColor: null,
         selectedSize: null,
-        requestModal : false
     },
     methods: {
-        submitRequest(product_id) {
-            this.requestModal = false
-            axios.post(route('marketplace.request'), { productId: product_id }).then((response) => {
-                if (response.data) {
-                    // alert('Request envoyé avec succès')
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        timer: 5000,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        icon: 'success',
-                        title: 'Product requested successfully. ',
-                    })
-                } else {
-                    // alert('Nous rencontré une erreur')
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        timer: 5000,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        icon: 'error',
-                        title: 'We encountered an error',
-                    })
-                }
-            })
-
-        },
         filterDuplicateData(arr) {
             return arr.filter(function (value, index, array) {
                 return array.indexOf(value) === index;
