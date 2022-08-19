@@ -270,7 +270,7 @@ lineChartOptions.value = {
                 </div>
             </div>
 
-            <div class="mx-7 bg-white p-4 rounded">
+            <div class="mx-7 bg-white p-4 rounded animate__animated animate__zoomIn">
                 <apexchart type="line" height="350" :options="lineChartOptions" :series="lineSeries"></apexchart>
             </div>
         </template>

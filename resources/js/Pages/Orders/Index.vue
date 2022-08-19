@@ -55,13 +55,20 @@ const submitImport = () => {
                 </div>
             </div>
             <form @submit.prevent="submitImport" enctype="multipart/form-data" class="-mt-8">
-                <div class="flex justify-start ml-5">
+                <div class="flex justify-between ml-5">
                     <div class="flex bg-white shadow-md p-2 rounded justify-between">
                         <FileInput v-model="form.file" class="pr-6 pb-8 w-96" type="file" accept=".xlsx, .xls, .csv" label="Your order file" />
 
                         <div class="ml-9 mt-7">
                             <button class="btn ho xi ye disabled:opacity-50" :disabled="form.file === null">Import orders</button>
                         </div>
+                    </div>
+                    <div class="mr-5">
+                        <select name="" id="" class="w-96 rounded border-gray-400 shadow-md">
+                            <option value="today">Filter by Today</option>
+                            <option value="yesterday">Filter by Yesterday</option>
+                            <option value="last_week">Filter by Last Week</option>
+                        </select>
                     </div>
                 </div>
             </form>

@@ -11,9 +11,9 @@ use Inertia\Inertia;
 class OrderController extends Controller
 {
     public function orders() {
-        $uploadeds = Order::where('investor_id', auth()->id())->get();
-        $duplicates = Order::where('duplicate', 1)->get();
-        $rejecteds = Order::where('status', 'rejected')->get();
+        $uploadeds = Order::where('investor_id', auth()->id())->whereDate('created_at', 'Y-m-d')->get();
+        $duplicates = Order::where('duplicate', 1)->whereDate('created_at', 'Y-m-d')->get();
+        $rejecteds = Order::where('status', 'rejected')->whereDate('created_at', 'Y-m-d')->get();
         return Inertia::render('Orders/Index', [
             'uploadeds' => $uploadeds,
             'duplicates' => $duplicates,
