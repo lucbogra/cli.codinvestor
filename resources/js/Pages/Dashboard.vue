@@ -16,7 +16,8 @@ const props = defineProps({
     delayed: Number,
     request: Number,
     denied: Number,
-    access: Number
+    access: Number,
+    affected: Number
 });
 
 const datas = ref(null)
@@ -226,7 +227,7 @@ lineChartOptions.value = {
                             <p class="font-bold text-gray-600">Process</p>
                         </div>
                         <p class="text-lg font-bold text-cyan-500">
-                            30
+                            {{ affected }}
                         </p>
                     </div>
                 </div>

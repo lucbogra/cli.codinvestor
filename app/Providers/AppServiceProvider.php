@@ -30,5 +30,7 @@ class AppServiceProvider extends ServiceProvider
                 'loggedIn' => Auth::check()
             ];
         });
+
+
     }
 }

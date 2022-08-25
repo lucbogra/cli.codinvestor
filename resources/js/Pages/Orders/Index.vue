@@ -12,10 +12,12 @@ import {
 import Uploaded from './Uploaded.vue'
 import Duplicated from './Duplicated.vue'
 import Rejected from './Rejected.vue'
+import WrongNumber from './WrongNumber.vue'
 const props = defineProps({
   uploadeds: Array,
   rejecteds: Array,
-  duplicates: Array
+  duplicates: Array,
+  wrong_number: Array
 })
 
 
@@ -55,20 +57,13 @@ const submitImport = () => {
                 </div>
             </div>
             <form @submit.prevent="submitImport" enctype="multipart/form-data" class="-mt-8">
-                <div class="flex justify-between ml-5">
+                <div class="flex justify-start ml-5">
                     <div class="flex bg-white shadow-md p-2 rounded justify-between">
                         <FileInput v-model="form.file" class="pr-6 pb-8 w-96" type="file" accept=".xlsx, .xls, .csv" label="Your order file" />
 
                         <div class="ml-9 mt-7">
                             <button class="btn ho xi ye disabled:opacity-50" :disabled="form.file === null">Import orders</button>
                         </div>
-                    </div>
-                    <div class="mr-5">
-                        <select name="" id="" class="w-96 rounded border-gray-400 shadow-md">
-                            <option value="today">Filter by Today</option>
-                            <option value="yesterday">Filter by Yesterday</option>
-                            <option value="last_week">Filter by Last Week</option>
-                        </select>
                     </div>
                 </div>
             </form>
@@ -103,6 +98,15 @@ const submitImport = () => {
                         </button>
                         </Tab>
 
+                        <Tab v-slot="{ selected }" @click="colorx = '#F7C600'" as="template">
+                        <button
+                            :class="['w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white',
+                            'ring-white ring-opacity-60 ring-offset-2 ring-offset-yellow-400 focus:outline-none focus:ring-2',
+                            selected ? 'bg-white shadow text-primary-700' : 'text-white hover:bg-white/[0.12] hover:text-white',]">
+                            Wrong Number <span class=" rounded px-2 bg-yellow-500 text-white">{{ wrong_number.length }}</span>
+                        </button>
+                        </Tab>
+
 
                     </TabList>
 
@@ -121,6 +125,11 @@ const submitImport = () => {
                         <TabPanel
                         :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
                         <Rejected :orders="rejecteds" />
+                        </TabPanel>
+
+                        <TabPanel
+                        :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
+                        <WrongNumber :orders="wrong_number" />
                         </TabPanel>
 
 

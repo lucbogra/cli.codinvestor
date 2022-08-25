@@ -30,10 +30,10 @@
                         class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <MenuItem  v-for="notify in $page.props.notifications" :key="notify.id">
                         <a class="block vr vs xr" href="#0">
-                            <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">Edit your information
-                                    in a swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                deserunt mollit anim.</span>
-                            <span class="block go gp gq">Feb 12, 2021</span>
+                            <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">
+                                <span class="italic">{{notify.data.name}}</span> changed status to : <span class="font-bold">{{notify.data.message}}</span>
+                                </span></span>
+                            <span class="block go gp gq">{{ notify.created_at }}</span>
                         </a>
                         </MenuItem>
                         <MenuItem v-if="$page.props.notifications.length == 0">
