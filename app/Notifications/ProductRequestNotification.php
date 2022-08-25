@@ -56,7 +56,10 @@ class ProductRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'investor_product' => $this->request
+            'id' => $this->request->id,
+            'message' => 'request sent',
+            'name' => $this->request->product->name,
+            'investor' => $this->request->investor->first_name . ' ' . $this->request->investor->last_name
         ];
     }
 }
