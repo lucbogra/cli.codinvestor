@@ -106,6 +106,7 @@ const submit = () => {
 
                         <h1 class="text-3xl text-slate-800 font-bold rh">Welcome back! ✨</h1>
                         <!-- Form -->
+                         <JetValidationErrors class="mb-4" />
                         <form @submit.prevent="submit">
                             <div class="fg">
                                 <div>
@@ -129,17 +130,6 @@ const submit = () => {
                                 <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">
                                     Forgot your password?
                                 </Link>
-                            </div>
-                            <!-- Warning -->
-                            <div class="rw">
-                                <div class="hb ya vn vr rounded">
-                                    <svg class="inline w-3 h-3 ub du" viewBox="0 0 12 12">
-                                        <path d="M10.28 1.28L3.989 7.575 1.695 5.28A1 1 0 00.28 6.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 1.28z"></path>
-                                    </svg>
-                                    <span class="text-sm">
-                                        To support you during the pandemic super pro features are free until March 31st.
-                                    </span>
-                                </div>
                             </div>
                         </div>
 

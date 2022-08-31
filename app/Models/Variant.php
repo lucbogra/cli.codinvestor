@@ -34,6 +34,11 @@ class Variant extends Model
       return $this->belongsToMany(Warehouse::class)->withTimestamps()->withPivot('qty');
     }
 
+    public function suppliers()
+    {
+      return $this->hasMany(SupplierProduct::class)->with('supplier')->with('location');
+    }
+
     public function histories()
     {
       return $this->hasMany(ProductHistory::class);

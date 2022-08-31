@@ -14,7 +14,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['poppins', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 grape: colors.purple,
@@ -29,6 +29,8 @@ module.exports = {
                     800 : '#1B2E51'
                 },
                 secondary: '#0096C7',
+                danger : '#F2135D',
+                success : '#17C964',
                 bluegradient: 'rgb(17,94,182)',
               },
         },

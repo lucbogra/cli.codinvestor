@@ -62,6 +62,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    public function investor(){
+      return $this->hasOne(Investor::class);
+    }
+
     public function getProfilePhotoUrlAttribute($value) {
         return (is_null($value)) ? 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name)
                 : Storage::disk('s3')->temporaryUrl($this->attributes['profile_photo_url'], now()->addMinutes(10));

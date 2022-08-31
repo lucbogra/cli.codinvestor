@@ -35,41 +35,17 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import 'animate.css';
+
 import {
-  Dialog,
-  DialogOverlay,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
-import {
-  BellIcon,
   ClockIcon,
   CogIcon,
-  CreditCardIcon,
   DocumentReportIcon,
   HomeIcon,
   MenuAlt1Icon,
   QuestionMarkCircleIcon,
-  ScaleIcon,
-  ShieldCheckIcon,
-  UserGroupIcon,
-  XIcon,
-  GiftIcon,
-  OfficeBuildingIcon,
-LocationMarkerIcon,
 CollectionIcon,
-CubeIcon,
 } from '@heroicons/vue/outline'
 import {
-  CashIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  SearchIcon,
-UsersIcon,
 ShoppingCartIcon,
 ViewListIcon
 } from '@heroicons/vue/solid'

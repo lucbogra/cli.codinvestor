@@ -99,6 +99,10 @@ class Investor extends Model
     }
 
     public function products(){
-        return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status');
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status')->withTimestamps();
+    }
+
+    public function has_requested($product_id){
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('product_id', $product_id);
     }
 }

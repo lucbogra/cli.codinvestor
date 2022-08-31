@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,10 +17,10 @@ class ProductRequestNotification extends Notification
      *
      * @return void
      */
-    public $request;
-    public function __construct($request)
+    public $product_id;
+    public function __construct($product_id)
     {
-        $this->request = $request;
+        $this->product_id = $product_id;
     }
 
     /**
@@ -56,10 +57,9 @@ class ProductRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->request->id,
             'message' => 'request sent',
-            'name' => $this->request->product->name,
-            'investor' => $this->request->investor->first_name . ' ' . $this->request->investor->last_name
+            'product' => Product::find($this->product_id)->name,
+            'investor' => auth()->user()->investor->name
         ];
     }
 }
