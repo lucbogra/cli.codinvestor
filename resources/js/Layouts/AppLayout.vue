@@ -78,7 +78,7 @@ const navigation = [
 
   { name: 'Orders', href: route('orders.index'), icon: CollectionIcon, current: isUrl('/orders') },
 
-  { name: 'History', href: '#', icon: ClockIcon, current: false },
+  // { name: 'History', href: '#', icon: ClockIcon, current: false },
 
   { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports') },
 ]
