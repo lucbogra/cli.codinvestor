@@ -18,7 +18,6 @@ module.exports = {
             },
             colors: {
                 grape: colors.purple,
-                'warm-gray': colors.warmGray,
                 teal: colors.teal,
                 // primary: '#0077B6',
                 primary : {

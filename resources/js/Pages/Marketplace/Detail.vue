@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref } from 'vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLabel, RadioGroupOption, Tab,TabGroup, TabList, TabPanel, TabPanels,} from '@headlessui/vue'
-import { ChevronRightIcon } from '@heroicons/vue/solid'
+import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link } from '@inertiajs/inertia-vue3'
 const props = defineProps({
@@ -216,11 +216,7 @@ const filterDuplicateData = (arr) => {
                     <div class="dz flex fy">
                       <!-- Icon -->
                       <div class="od sy rounded-full flex items-center justify-center ub hl">
-                        <svg class="oo sl ub du text-primary-500" viewBox="0 0 16 16">
-                          <path
-                            d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z">
-                          </path>
-                        </svg>
+                        <InformationCircleIcon class="text-primary-500 w-5"/>
                       </div>
                       <!-- Content -->
                       <div>

@@ -60,28 +60,6 @@ class Investor extends Model
         return $this->city.', '.$this->state;
     }
 
-    public function scopeFilter($query, array $filters)
-    {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('first_name', 'like', '%'.$search.'%')
-                    ->orWhere('last_name', 'like', '%'.$search.'%')
-                    ->orWhere('address', 'like', '%'.$search.'%')
-                    ->orWhere('state', 'like', '%'.$search.'%')
-                    ->orWhere('country', 'like', '%'.$search.'%')
-                    ->orWhere('email', 'like', '%'.$search.'%')
-                    ->orWhere('phone', 'like', '%'.$search.'%')
-                    ->orWhere('title', 'like', '%'.$search.'%');
-            });
-        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
-            if ($trashed === 'with') {
-                $query->withTrashed();
-            } elseif ($trashed === 'only') {
-                $query->onlyTrashed();
-            }
-        });
-    }
-
     protected static function booted()
     {
       static::addGlobalScope(new InvestorScope);
@@ -99,7 +77,11 @@ class Investor extends Model
     }
 
     public function products(){
-      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status')->withTimestamps();
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status', 'link')->withTimestamps();
+    }
+
+    public function request_state($status){
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('status', $status);
     }
 
     public function has_requested($product_id){

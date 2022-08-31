@@ -54,6 +54,7 @@ import DesktopSideBar from './DesktopSideBar.vue'
 import Top from './Top.vue'
 import FlashMessages from './FlashMessages.vue'
 import { usePage } from '@inertiajs/inertia-vue3';
+import route from '../../../vendor/tightenco/ziggy/src/js';
 
 
 const props = defineProps({
@@ -79,7 +80,7 @@ const navigation = [
 
   { name: 'History', href: '#', icon: ClockIcon, current: false },
 
-  { name: 'Reports', href: '#', icon: DocumentReportIcon, current: false },
+  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports') },
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },

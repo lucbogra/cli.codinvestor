@@ -101,30 +101,41 @@ class MarketplaceController extends Controller
   {
     $products = [];
     $investor = Investor::where('user_id', auth()->id())->first();
-    $products = $investor->products()->paginate(8);
-    if ($request->filter_by) {
-      switch ($request->filter_by) {
-        case 'request':
-          $products = $investor->products()->where('status', 'request')->paginate(8);
-          break;
-        case 'denied':
-          $products = $investor->products()->where('status', 'denied')->paginate(8);
-          break;
-        case 'access':
-          $products = $investor->products()->where('status', 'access')->paginate(8);
-          break;
 
-        default:
-          # code...
-          break;
-      }
-    }
+    $products = $investor->products()->wherePivot('status', 'access')
+      ->paginate(10)
+      ->withQueryString()
+      ->through(function ($product){
+        return [
+          'id' => $product->id,
+          'name' => $product->name,
+          'sku' => $product->pivot->status == 'access' ? $product->sku : null,
+          'photo' => $product->photo,
+          'slug' => $product->slug,
+          'categories' => $product->categories->pluck('name'),
+          'recommanded_price' => $product->recommanded_price,
+          'commission' => $product->commission,
+          'link' => $product->pivot->link,
+        ];
+      });
+
     if ($investor) {
       return Inertia::render('Marketplace/Product', [
         'products' => $products
       ]);
     } else {
-      return "Investor don't exist";
+     abort(404);
     }
+  }
+
+  public function update_link(Request $request){
+    $request->validate([
+      'link' => ['required', 'url'],
+      'product_id' => ['required', 'exists:products,id']
+    ]);
+
+    auth()->user()->investor->products()->updateExistingPivot($request->product_id, ['link' => $request->link]);
+
+    return back()->with('success', 'Link updated.');
   }
 }

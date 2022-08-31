@@ -64,14 +64,14 @@ class Product extends Model
     {
         $tab = [];
         foreach (json_decode($this->attributes['gallery']) as $img) {
-            $tab[] = ['url' => Storage::disk('s3')->temporaryUrl($img, now()->addMinutes(10)), 'location' => $img];
+            $tab[] = ['url' => Storage::disk('s3')->temporaryUrl($img, now()->addMinutes(240)), 'location' => $img];
         }
         return $tab;
     }
 
     public function getPhotoAttribute()
     {
-        return Storage::disk('s3')->temporaryUrl($this->attributes['photo'], now()->addMinutes(10));
+        return Storage::disk('s3')->temporaryUrl($this->attributes['photo'], now()->addMinutes(240));
     }
 
     public function getCreatedAtAttribute($value) {

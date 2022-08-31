@@ -1,184 +1,158 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, onMounted, computed } from 'vue';
-import { InertiaLink } from '@inertiajs/inertia-vue3'
-
+import { Link, useForm } from '@inertiajs/inertia-vue3'
+import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
 const props = defineProps({
-    products: Array,
+  products: Object,
 });
 const listProducts = () => {
-    return props.products.map((product) => {
-        return {
-            id: product.id,
-            slug: product.slug,
-            description: product.description,
-            name: product.name,
-            photo: product.photo
-        }
-    })
+  return props.products.map((product) => {
+    return {
+      id: product.id,
+      slug: product.slug,
+      description: product.description,
+      name: product.name,
+      photo: product.photo
+    }
+  })
 }
 
-onMounted(() => {
-    console.log(props.products);
+const filters = ref({
+  all: { value: '', keys: ['name', 'sku'] }
 })
 
-</script>
-<template>
-    <AppLayout title="Products">
-        <template #page-header>
-            <div class="vs jj ttm vl ou uf na">
-                <div class="ri _y flex justify-between mb-5">
-                    <h1 class="gu teu text-slate-800 font-bold">Products ✨</h1>
-                    <select name="" class="a ou rounded-full w-52" v-model="seleledShowing" @change="filterByShowing($event)" id="">
-                        <option value="All">See all my products</option>
-                        <option value="request">Where the status is request</option>
-                        <option value="denied">Where the status is canceled</option>
-                        <option value="access">Where the status is approved</option>
-                    </select>
-                </div>
+const showLinkModal = ref(false)
 
-                <!-- Table -->
-                <div class="bg-white bd rounded-sm border border-slate-200 rc">
-                    <header class="vc vu">
-                        <h2 class="gh text-slate-800">Products <span class="gq gp">{{ props.products.length }}</span>
-                        </h2>
-                    </header>
-                    <div x-data="handleSelect">
+const linkForm = useForm({
+  product: '',
+  link : '',
+  product_id : '',
+})
 
-                        <!-- Table -->
-                        <div class="lf">
-                            <table class="ux ou">
-                                <!-- Table header -->
-                                <thead class="go gh gv text-slate-500 hp co cs border-slate-200">
-                                    <tr>
-                                        <th class="vi wy w_ vo lm of">
-                                            <div class="flex items-center">
-                                                <label class="inline-flex">
-                                                    <span class="d">Select all</span>
-                                                    <input id="parent-checkbox" class="i" type="checkbox"
-                                                        @click="toggleAll">
-                                                </label>
-                                            </div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">#</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Image</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Name</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Link</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Status</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Created At</div>
-                                        </th>
-                                        <th class="vi wy w_ vo lm">
-                                            <div class="gh gt">Response At</div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <!-- Table body -->
-                                <tbody class="text-sm le lr">
-                                    <!-- Row -->
-                                    <tr v-for="(product, index) in props.products.data" :key="product.id">
-                                        <td class="vi wy w_ vo lm of">
-                                            <div class="flex items-center">
-                                                <label class="inline-flex">
-                                                    <span class="d">Select</span>
-                                                    <input class="table-item i" type="checkbox" @click="uncheckParent">
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td class="vi wy w_ vo lm">
-                                            <div class="gp yv">{{ index + 1 }}</div>
-                                        </td>
-                                        <td class="vi wy w_ vo lm">
-                                            <img :src="product.photo" alt="" width="50">
-                                        </td>
-                                        <td class="vi wy w_ vo lm">
-                                            <a :href="product.link" target="_blank" class="gp ">{{ product.name }}</a>
-                                        </td>
-                                        <td class="vi wy w_ vo lm">
-                                            <a :href="product.link" target="_blank" class="gp ">View Link</a>
-                                        </td>
-                                        <td class="vi wy w_ vo lm">
-                                            <div class="inline-flex gp hf yl rounded-full gn vp vd"
-                                                v-if="product.pivot.status === 'request'">{{ product.pivot.status }}
-                                            </div>
-                                            <div class="inline-flex gp hc ys rounded-full gn vp vd"
-                                                v-if="product.pivot.status === 'access'">{{ product.pivot.status }}
-                                            </div>
-                                            <div class="inline-flex gp hf yl rounded-full gn vp vd"
-                                                v-if="product.pivot.status === 'denied'">{{ product.pivot.status }}
-                                            </div>
-                                        </td>
+const getLinkModal = (product) => {
+  showLinkModal.value = true
+  linkForm.product = product.name
+  linkForm.link = product.link
+  linkForm.product_id = product.id
+}
 
-                                        <td class="vi wy w_ vo lm">
-                                            <div>{{ product.created_at }}</div>
-                                        </td>
-
-                                        <td class="vi wy w_ vo lm">
-                                            <div class="flex items-center">
-                                                <div v-if="product.created_at === product.updated_at">NEVER</div>
-                                                <div v-if="product.created_at !== product.updated_at">{{ product.updated_at }}</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- Pagination -->
-                <div class="rk" >
-                    <div class="flex ak ja jc jd">
-                        <nav class="ri _y _f" role="navigation" aria-label="Navigation" v-if="products.next_page_url || products.prev_page_url">
-                            <ul class="flex justify-center">
-                                <li class="ml-3 first--ml-0">
-                                    <inertia-link :href="products.prev_page_url" class="btn bg-white border-slate-200  hover--border-slate-300 text-indigo-500" >&lt;-
-                                        Previous</inertia-link>
-                                </li>
-                                <li class="ml-3 first--ml-0">
-                                    <inertia-link :href="products.next_page_url" class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500"
-                                        >Next -&gt;</inertia-link>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="text-sm text-slate-500 gn qe">
-                            Showing <span class="gp g_">{{ products.per_page }}</span> to <span class="gp g_">{{ products.to }}</span> of <span
-                                class="gp g_">{{ products.total }}</span> results
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </template>
-    </AppLayout>
-</template>
-
-<script>
-import axios from 'axios';
-export default {
-    data() {
-        return {
-            seleledShowing: 'All'
-        }
-    },
-    methods: {
-        filterByShowing(event) {
-            this.$inertia.get(route('marketplace.products') + '?filter_by=' + event.target.value);
-            this.seleledShowing = event.target.value
-        }
+const updateLink = () => {
+  linkForm.put(route('products.update_link'), {
+    preserveScroll: true,
+    onSuccess : () => {
+      showLinkModal.value= false,
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        timer: 5000,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        icon: 'success',
+        title: 'Link updated.',
+      }),
+      linkForm.reset()
     }
+  })
+}
+const copyToClipboard = (value) =>{
+  document.execCommand('copy');
 }
 </script>
+<template>
+  <AppLayout title="Products">
+    <template #page-header>
+      <div class="vs jj ttm vl ou uf na">
+        <div class="ri _y flex justify-between mb-5">
+          <h1 class="gu teu text-slate-800 font-bold">Products ✨ {{ products.total }}</h1>
+          <input name="" class="a ou rounded-full w-52" v-model="filters.all.value"/>
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <div class="vs jj ttm vl ou uf na">
+        <div class="bg-white rounded-lg border-slate-200">
+          <div class="">
+            <VTable :data="products.data" :filters="filters" class="min-w-full table-fixed bg-gray-50">
+              <template #head>
+                <tr>
+                  <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Price</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Commission</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Categories</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Link</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Actions</th>
+                </tr>
+              </template>
+              <template #body="{ rows }">
+                <tr v-for="(product, index) in rows" :key="product.slug" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                    <div class="flex items-center">
+                      <div class="h-10 w-10 flex-shrink-0">
+                        <img class="h-10 w-10" :src="product.photo" alt="" />
+                      </div>
+                      <div class="ml-4">
+                        <div class="font-medium text-gray-900">{{ product.name }}</div>
+                        <div class="text-gray-500">{{ product.sku }}</div>
+                      </div>
+                      <div class="ml-4">
+                        <button @click="copyToClipboard(product.sku)"><DocumentDuplicateIcon class="text-gray-400 w-5" /></button>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.recommanded_price+' SAR' }}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.commission+' SAR '}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
+                    <div class="flex flex-wrap items-left">
+                      <span v-for="category in product.categories"
+                        class="items-center inline-flex ml-2 bg-primary-500 p-1 rounded-full mb-1 text-sm text-white" tabindex="-1">
+                        {{ category }}
+                      </span>
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium">
+                    <button class="btn-primary" v-if="!product.link" @click="getLinkModal(product)">set Link</button>
+                    <button class="btn-primary" v-else @click="getLinkModal(product)"><PencilAltIcon class="w-5"/></button>
+                  </td>
 
-<style>
-</style>
+                  <td class="whitespace-nowrap py-4 pl-6 pr-4 text-sm font-medium text-gray-500">
+                  </td>
+
+                </tr>
+              </template>
+            </VTable>
+
+          </div>
+        </div>
+        <!-- Pagination -->
+      </div>
+
+      <div id="info-modal" v-show="showLinkModal" class="m w tx la flex items-center np justify-center vs jj"
+        role="dialog" aria-modal="true">
+        <div class="bg-white rounded bd lu up ou oe">
+          <div class="dz flex fy">
+            <div class="od sy rounded-full flex items-center justify-center ub hl">
+              <InformationCircleIcon class="text-primary-500 w-5"/>
+            </div>
+            <div>
+              <div class="ru">
+                <div class="ga gh text-slate-800">Update Link for<span class="font-weight">{{linkForm.product}}</span></div>
+              </div>
+              <div class="text-sm nx">
+                <div class="fb">
+                  <textarea class="w-full border-slate-200 rounded focus:border-primary-400" v-model="linkForm.link"></textarea>
+                  <div class="text-danger" v-if="linkForm.errors.link">{{ linkForm.errors.link }}</div>
+                </div>
+              </div>
+              <div class="flex flex-wrap justify-end fc">
+                <button class="r border-slate-200 hover--border-slate-300 g_" v-on:click="showLinkModal = false">Cancel</button>
+                <a :href="linkForm.link" target="_blank" class="bg-gray-300 r ye hover:bg-gray-200" v-if="linkForm.link != null">Open Link</a>
+                <button class="r ho xi ye bg-primary-700 hover:bg-primary-600" v-on:click="updateLink()">Update Link</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </AppLayout>
+</template>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,7 @@ Route::middleware([
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
     Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
+    Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link');
     Route::get('orders', [OrderController::class, 'orders'])->name('orders.index');
     Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import');
 
@@ -53,5 +55,11 @@ Route::middleware([
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('help-us', [WebController::class, 'help'])->name('help');
+
+    Route::get('reports', [ReportController::class, 'reports'])->name('reports');
+    // Route::get('performance/{start}/{end}', [InvestorController::class, 'performance'])->name('performance');
+
+
 });
 
+Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance');
