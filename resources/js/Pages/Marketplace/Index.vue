@@ -94,7 +94,7 @@ watch(form, (newValue) => {
               <Link v-for="product in products.data" :key="product.id" :href="route('marketplace.detail', product.slug)"
                 class="group">
               <div
-                class="aspect-w-1 aspect-h-1 w-full h-72 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 hover:shadow-xl">
+                class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 hover:shadow-xl">
                 <img :src="product.photo" :alt="product.name"
                   class="h-full w-full object-cover object-center group-hover:opacity-75" />
               </div>
