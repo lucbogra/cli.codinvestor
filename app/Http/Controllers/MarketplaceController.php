@@ -6,6 +6,7 @@ use App\Imports\OrderImport;
 use App\Models\Category;
 use App\Models\Investor;
 use App\Models\InvestorProduct;
+use App\Models\Location;
 use App\Models\Product;
 use App\Models\Warehouse;
 use App\Notifications\ProductRequestNotification;
@@ -21,32 +22,53 @@ class MarketplaceController extends Controller
 {
   public function index(Request $request)
   {
-    $categories = Category::all();
-    $products = Product::where('active', 1)->paginate(12);
-    if ($request->category) {
-      $category = Category::findOrFail($request->category);
-      $products = $category->products;
-    }
-    if ($request->showing) {
-      $products = Product::where('active', 1)->take($request->showing)->paginate(12);
-    }
-    if ($request->sort_by) {
-      switch ($request->sort_by) {
-        case 'newest':
-          $products = Product::where('active', 1)->orderBy('created_at', 'desc')->paginate(12);
-          break;
-        case 'oldest':
-          $products = Product::where('active', 1)->orderBy('created_at', 'asc')->paginate(12);
-          break;
-        default:
-          break;
-      }
-    }
-    $countries = Warehouse::all()->unique('country');
+    // $categories = Category::all();
+    // $products = Product::where('active', 1)->paginate(12);
+    // if ($request->category) {
+    //   $category = Category::findOrFail($request->category);
+    //   $products = $category->products;
+    // }
+    // if ($request->showing) {
+    //   $products = Product::where('active', 1)->take($request->showing)->paginate(12);
+    // }
+    // if ($request->sort_by) {
+    //   switch ($request->sort_by) {
+    //     case 'newest':
+    //       $products = Product::where('active', 1)->orderBy('created_at', 'desc')->paginate(12);
+    //       break;
+    //     case 'oldest':
+    //       $products = Product::where('active', 1)->orderBy('created_at', 'asc')->paginate(12);
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
+
+    $products = Product::active()->filter(request()->only('search', 'country', 'category'))
+      ->paginate(request()->paginate ?? 12)
+      ->withQueryString()
+      ->through(function ($product) {
+        return [
+          'slug' => $product->slug,
+          'name' => $product->name,
+          'photo' => $product->photo,
+          'recommanded_price' => $product->recommanded_price,
+          'commission' => $product->commission,
+        ];
+    });
+
+    // dd($products);
+
+
+    $countries = Location::select('id','country')->get();
+    $categories = Category::select('id', 'name')->get();
+
+
     return Inertia::render('Marketplace/Index', [
-      'categories' => $categories,
+      'filters' => request()->only('search', 'country', 'category', 'paginate'),
       'products' => $products,
-      'countries' => $countries
+      'countries' => $countries,
+      'categories' => $categories,
     ]);
   }
 

@@ -1,52 +1,33 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { ref, onMounted, computed } from 'vue';
-import { InertiaLink } from '@inertiajs/inertia-vue3'
+import { ref, watch } from 'vue';
+import { useForm } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3';
+import pickBy from 'lodash/pickBy'
+import { Inertia } from '@inertiajs/inertia';
 const props = defineProps({
-  categories: Array,
+  filters: Object,
   products: Array,
   countries: Array,
+  categories: Array,
 });
 
-const list = () => {
-  return props.categories.map((category) => {
-    return {
-      id: category.id,
-      name: category.name,
-      photo: category.photo
-    }
-  })
-}
-
-const listProducts = () => {
-  return props.products.map((product) => {
-    return {
-      id: product.id,
-      slug: product.slug,
-      description: product.description,
-      name: product.name,
-      photo: product.photo
-    }
-  })
-}
-const listCountries = () => {
-  return props.countries.map((country) => {
-    return {
-      id: country.id,
-      name: country.name,
-      country: country.country,
-    }
-  })
-}
-
-onMounted(() => {
-  console.log(products);
+const form = useForm({
+  paginate : props.filters.paginate,
+  search : props.filters.search,
+  country : props.filters.country ?? null,
+  category : props.filters.category ?? null,
 })
 
-const datas = ref(list());
-const products = props.products;
-const countriesData = ref(listCountries());
+const paginations = [12, 24, 50, 100]
+
+watch(form, (newValue) => {
+  if (newValue) {
+    Inertia.get(route('marketplace.index'), pickBy(newValue), { preserveState: true })
+  }
+
+})
+
 </script>
 <template>
   <AppLayout title="Marketplace">
@@ -54,11 +35,9 @@ const countriesData = ref(listCountries());
       <div class="mx-24 mt-10">
         <div class="flex justify-between">
           <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
-          <select v-model="seleledShowing" id="country" class="a" @change="filterByShowing($event)">
+          <select v-model="form.paginate" id="country" class="a">
             <option disabled selected>Showing</option>
-            <option :value="10">10</option>
-            <option :value="20">20</option>
-            <option :value="50">50</option>
+            <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
           </select>
         </div>
       </div>
@@ -69,44 +48,34 @@ const countriesData = ref(listCountries());
         <!-- Filters -->
         <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <ul class="flex flex-wrap ">
-            <li class="m-1">
-              <inertia-link :href="route('marketplace.index') + '?sort_by=newest'"
+            <!-- <li class="m-1">
+              <Link :href="route('marketplace.index') + '?sort_by=newest'"
                 class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Newest</inertia-link>
+                Newest</Link>
             </li>
             <li class="m-1">
-              <inertia-link :href="route('marketplace.index') + '?sort_by=oldest'"
+              <Link :href="route('marketplace.index') + '?sort_by=oldest'"
                 class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Oldest</inertia-link>
-            </li>
+                Oldest</Link>
+            </li> -->
             <li class="m-1">
-              <inertia-link
-                class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Price
-                - Low To High</inertia-link>
-            </li>
-            <li class="m-1">
-              <inertia-link
-                class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Price
-                - High to Low</inertia-link>
-            </li>
-            <li class="m-1">
-              <select class="a ou rounded-full">
-                <option disabled selected>Filter by country</option>
-                <option v-for="country in countriesData" :key="country.id">{{ country.country }}</option>
+              <select class="a ou rounded-full" v-model="form.country">
+                <option disabled :value="null">Filter by country</option>
+                <option value="all">All countries</option>
+                <option v-for="country in countries" :key="country.id" :value="country.country">{{ country.country }}</option>
               </select>
             </li>
             <li class="m-1">
-              <select v-model="seletedCategory" class="a ou rounded-full" @change="filterByCategory($event)">
-                <option disabled selected value="0">Filter by category</option>
-                <option v-for="category in datas" :key="category.id" :value="category.id">{{ category.name }}
+              <select v-model="form.category" class="a ou rounded-full">
+                <option disabled :value="null">Filter by category</option>
+                <option value="all">All categories</option>
+                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
                 </option>
               </select>
             </li>
             <li class="m-1">
-              <input class="s ou me xq border-1 border-slate-200 rounded-full m-0 p-1" type="search"
-                placeholder="Search product…" v-on:keyup="search" v-model="searchValue" />
+              <input class="s ou me xq border-1 border-slate-200 rounded-full w-full m-0 p-1" type="search"
+                placeholder="Search product…" v-model="form.search" />
             </li>
           </ul>
         </div>
@@ -125,7 +94,7 @@ const countriesData = ref(listCountries());
               <Link v-for="product in products.data" :key="product.id" :href="route('marketplace.detail', product.slug)"
                 class="group">
               <div
-                class="aspect-w-1 aspect-h-1 w-full h-72 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 shadow-md hover:shadow-xl">
+                class="aspect-w-1 aspect-h-1 w-full h-72 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 hover:shadow-xl">
                 <img :src="product.photo" :alt="product.name"
                   class="h-full w-full object-cover object-center group-hover:opacity-75" />
               </div>
@@ -141,7 +110,7 @@ const countriesData = ref(listCountries());
             <div class="flex justify-center">
               <div
                 class="inline-flex items-center justify-center go gp vp vf bg-white border border-slate-200 rounded-full ny p-4 text-lg">
-                No product available for this category 😪
+                No product available
               </div>
             </div>
           </div>
@@ -153,14 +122,14 @@ const countriesData = ref(listCountries());
               v-if="products.next_page_url || products.prev_page_url">
               <ul class="flex justify-center">
                 <li class="ml-3 first--ml-0">
-                  <inertia-link :href="products.prev_page_url"
+                  <Link :href="products.prev_page_url"
                     class="btn bg-white border-slate-200 yf af hover--border-slate-300 text-indigo-500">&lt;-
-                    Previous</inertia-link>
+                    Previous</Link>
                 </li>
                 <li class="ml-3 first--ml-0">
-                  <inertia-link :href="products.next_page_url"
+                  <Link :href="products.next_page_url"
                     class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500">Next -&gt;
-                  </inertia-link>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -176,33 +145,3 @@ const countriesData = ref(listCountries());
     </template>
   </AppLayout>
 </template>
-
-<script>
-import axios from 'axios';
-export default {
-  data() {
-    return {
-      searchValue: null,
-      products: [],
-      seletedCategory: 0,
-      seleledShowing: 10
-    }
-  },
-  methods: {
-    search() {
-      axios.get(route('marketplace.search'), { params: { keywords: this.searchValue } }).then(response => {
-        this.products = response.data
-      })
-    },
-    filterByCategory(event) {
-      this.$inertia.get(route('marketplace.index') + '?category=' + event.target.value)
-    },
-    filterByShowing(event) {
-      this.$inertia.get(route('marketplace.index') + '?showing=' + event.target.value)
-    }
-  }
-}
-</script>
-
-<style>
-</style>

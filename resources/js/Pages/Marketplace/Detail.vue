@@ -113,7 +113,7 @@ const filterDuplicateData = (arr) => {
               <div class="mt-3 border-t border-gray-200">
                 <h2 class="sr-only">Product information</h2>
                 <div class="text-xl border-b border-gray-200 mt-4">Price :
-                  <span class=" text-primary-700 font-bold"> {{ product.original_price + ' SAR'}}</span>
+                  <span class=" text-primary-700 font-bold"> {{ product.recommanded_price + ' SAR'}}</span>
                 </div>
                 <div class="text-xl border-b border-gray-200 mt-4"> Commission :
                   <span class=" text-primary-700 font-bold"> {{ product.commission + ' SAR' }}</span>
