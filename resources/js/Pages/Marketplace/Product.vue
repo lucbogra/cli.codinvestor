@@ -1,22 +1,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { ref, onMounted, computed } from 'vue';
+import { ref, } from 'vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
 const props = defineProps({
   products: Object,
 });
-const listProducts = () => {
-  return props.products.map((product) => {
-    return {
-      id: product.id,
-      slug: product.slug,
-      description: product.description,
-      name: product.name,
-      photo: product.photo
-    }
-  })
-}
 
 const filters = ref({
   all: { value: '', keys: ['name', 'sku'] }
@@ -118,6 +107,9 @@ const copyToClipboard = (value) =>{
                   <td class="whitespace-nowrap py-4 pl-6 pr-4 text-sm font-medium text-gray-500">
                   </td>
 
+                </tr>
+                <tr v-if="rows.length === 0">
+                 <td class="border-t px-3 py-4" colspan="6">No product found.</td>
                 </tr>
               </template>
             </VTable>
