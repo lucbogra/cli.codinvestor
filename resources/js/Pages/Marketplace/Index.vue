@@ -51,7 +51,7 @@ const countriesData = ref(listCountries());
 <template>
   <AppLayout title="Marketplace">
     <template #page-header>
-      <div class="bg-slate-100 m-10">
+      <div class="mx-24 mt-10">
         <div class="flex justify-between">
           <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
           <select v-model="seleledShowing" id="country" class="a" @change="filterByShowing($event)">
@@ -64,7 +64,7 @@ const countriesData = ref(listCountries());
       </div>
     </template>
     <template #content>
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded ">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-20">
 
         <!-- Filters -->
         <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -120,11 +120,12 @@ const countriesData = ref(listCountries());
               (products.data.length > 1) ?
                 'Products' : 'Product' }}
             </div>
-            <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+
+           <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               <Link v-for="product in products.data" :key="product.id" :href="route('marketplace.detail', product.slug)"
                 class="group">
               <div
-                class="aspect-w-1 aspect-h-1 w-full h-72 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+                class="aspect-w-1 aspect-h-1 w-full h-72 overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 shadow-md hover:shadow-xl">
                 <img :src="product.photo" :alt="product.name"
                   class="h-full w-full object-cover object-center group-hover:opacity-75" />
               </div>
@@ -133,6 +134,7 @@ const countriesData = ref(listCountries());
               <p class="mt-1 text-lg font-medium text-primary-700">Commission : {{ product.commission }} SAR</p>
               </Link>
             </div>
+
           </div>
 
           <div class="" v-if="products.length === 0">
