@@ -10,28 +10,39 @@ use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    public function orders() {
-        $uploadeds = Order::where('investor_id', auth()->id())->whereDate('created_at', date('Y-m-d'))->where('duplicate', 0)->whereNot('status', 'rejected')->get();
-        $duplicates = Order::where('duplicate', 1)->whereDate('created_at', date('Y-m-d'))->get();
-        $rejecteds = Order::where('status', 'rejected')->whereDate('created_at', date('Y-m-d'))->get();
-        $wrong_number = Order::where('status', 'wrong number')->whereDate('created_at', date('Y-m-d'))->get();
-        return Inertia::render('Orders/Index', [
-            'uploadeds' => $uploadeds,
-            'duplicates' => $duplicates,
-            'rejecteds' => $rejecteds,
-            'wrong_number' => $wrong_number
-        ]);
-    }
+  public function orders()
+  {
+    return Inertia::render('Orders/Index', [
+      'orders' => Order::whereDate('created_at', date('Y-m-d'))->get()->map(function ($order) {
+        return [
+          'id' => $order->id,
+          'duplicate' => $order->duplicate,
+          'created_at' => $order->created_at,
+          'customer_name' => $order->customer_name,
+          'phone' => $order->phone,
+          'country' => $order->country,
+          'customer_city' => $order->customer_city,
+          'customer_region' => $order->customer_region,
+          'customer_address' => $order->customer_address,
+          'product_name' => $order->product_name,
+          'price' => $order->price,
+          'website' => $order->website,
+          'status' => $order->status,
+          'product_link' => $order->product_link,
+          'note' => $order->note,
+        ];
+      }),
+    ]);
+  }
 
-    public function import(Request $request) {
-       $validateData =  Validator::make($request->all(), [
-            'file' => 'required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'
-        ]);
-        if($validateData->fails()) {
-            return 0;
-        } else {
-            (new OrderImport(auth()->id()))->import($request->file('file'));
-            return redirect()->route('orders.index');
-        }
-    }
+  public function import(Request $request)
+  {
+    $request->validate([
+      'file' => ['required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'],
+    ]);
+
+    (new OrderImport(auth()->user()->investor->id))->import($request->file('file'));
+    return redirect()->route('orders.index');
+
+  }
 }

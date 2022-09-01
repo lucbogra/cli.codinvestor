@@ -54,12 +54,12 @@ const copyToClipboard = (value) =>{
       <div class="vs jj ttm vl ou uf na">
         <div class="ri _y flex justify-between mb-5">
           <h1 class="gu teu text-slate-800 font-bold">Products ✨ {{ products.total }}</h1>
-          <input name="" class="a ou rounded-full w-52" v-model="filters.all.value"/>
+          <input name="" class="a ou rounded-full w-52" placeholder="search..." v-model="filters.all.value"/>
         </div>
       </div>
     </template>
     <template #content>
-      <div class="vs jj ttm vl ou uf na">
+      <div class="vs jj ttm vl ou uf na -mt-12">
         <div class="bg-white rounded-lg border-slate-200">
           <div class="">
             <VTable :data="products.data" :filters="filters" class="min-w-full table-fixed bg-gray-50">

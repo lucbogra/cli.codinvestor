@@ -1,5 +1,5 @@
 .btn-primary {
-  @apply px-6 py-3 rounded bg-primary-700 text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-primary-400 focus:bg-primary-400;
+  @apply px-6 py-3 rounded bg-primary-700 text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-primary-600 focus:bg-primary-600;
 }
 .btn-danger {
   @apply inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500;

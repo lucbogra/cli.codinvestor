@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\InvestorScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -58,11 +57,6 @@ class Investor extends Model
     public function getLocationAttribute()
     {
         return $this->city.', '.$this->state;
-    }
-
-    protected static function booted()
-    {
-      static::addGlobalScope(new InvestorScope);
     }
 
      /**

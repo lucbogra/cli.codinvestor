@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\OrderScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -124,13 +125,6 @@ class Order extends Model
     $query->where('status', 'returned');
   }
 
-  public function scopeUnprocessed($query)
-  {
-    $query->where('status', 'pending')->orWhere(function (Builder $query) {
-      $query->where('status', 'no answer')->where('no_answer_at', date('Y-m-d'));
-    })->orWhere('status', 'wrong number');
-  }
-
   public function scopeFilter($query, array $filters)
   {
     $query->when($filters['search'] ?? null, function ($query, $search) {
@@ -152,6 +146,11 @@ class Order extends Model
     })->when($filters['date'] ?? null, function ($query, $date) {
       $query->whereDate('confirmed_at', $date);
     });
+  }
+
+  protected static function booted()
+  {
+    static::addGlobalScope(new OrderScope);
   }
 
 }

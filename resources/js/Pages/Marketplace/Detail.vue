@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLabel, RadioGroupOption, Tab,TabGroup, TabList, TabPanel, TabPanels,} from '@headlessui/vue'
 import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, useForm } from '@inertiajs/inertia-vue3'
 const props = defineProps({
   product: Object,
 });

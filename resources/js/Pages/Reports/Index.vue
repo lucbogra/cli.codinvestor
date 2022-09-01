@@ -31,9 +31,16 @@ const submit = async () => {
 
 <template>
   <AppLayout >
-    <template #content>
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+     <template #page-header>
+      <div class="je jd jc ii mt-2 p-5 mx-10">
+        <div class="ri _y">
+          <h1 class="gu teu text-slate-800 font-bold">Reports✨</h1>
+        </div>
+      </div>
+    </template>
 
+    <template #content>
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 -mt-12">
       <div class="bg-white p-4 grid grid-cols-2 rounded mb-5 shadow-xl">
         <div class="my-2">
           <form @submit.prevent="submit">
