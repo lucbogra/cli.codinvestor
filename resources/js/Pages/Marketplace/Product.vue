@@ -3,6 +3,8 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, } from 'vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
+import useClipboard from 'vue-clipboard3'
+
 const props = defineProps({
   products: Object,
 });
@@ -44,9 +46,17 @@ const updateLink = () => {
     }
   })
 }
-const copyToClipboard = (value) =>{
-  document.execCommand('copy');
+ const { toClipboard } = useClipboard()
+
+const copyToClipboard = async (value) =>{
+  try {
+    await toClipboard(value)
+    console.log('Copied to clipboard')
+  } catch (e) {
+    console.error(e)
+  }
 }
+
 </script>
 <template>
   <AppLayout title="Products">

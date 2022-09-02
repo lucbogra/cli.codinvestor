@@ -70,7 +70,7 @@ const isUrl  = (...urls) => {
 }
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl('/dashboard') },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl('') },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace') },
 
