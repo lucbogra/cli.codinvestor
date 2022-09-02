@@ -103,8 +103,13 @@ const submit = () => {
                     </div>
 
                     <div class="ul na vs vl">
+                      <div class="flex justify-center items-center mb-4">
+                        <JetAuthenticationCardLogo class="mx-auto" />
+                      </div>
+                      <div class="flex justify-center items-center mb-4">
+                        <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
+                      </div>
 
-                        <h1 class="text-3xl text-slate-800 font-bold rh">Welcome back! ✨</h1>
                         <!-- Form -->
                          <JetValidationErrors class="mb-4" />
                         <form @submit.prevent="submit">
@@ -115,7 +120,7 @@ const submit = () => {
                                 </div>
                                 <div>
                                     <label class="block text-sm gp rt" for="password">Password</label>
-                                    <input id="password" v-model="form.password" type="password" class="mt-1 block w-full border-gray-300 shadow-md rounded" required autocomplete="current-password" placeholder="*******"/>
+                                    <input id="password" v-model="form.password" type="password" class="mt-1 block w-full border-gray-300 shadow-md rounded" required autocomplete="current-password"/>
                                 </div>
                             </div>
                             <div class="flex items-center fe rk text-center">
@@ -140,10 +145,12 @@ const submit = () => {
             </div>
 
             <!-- Image -->
-            <div class="qx g k te q zi" aria-hidden="true">
-                <img class="dy db ou sh" src="https://preview.cruip.com/mosaic/images/auth-image.jpg" width="760" height="1024" alt="Authentication image">
-                <img class="g tg x uz ig hidden tey" src="https://preview.cruip.com/mosaic/images/auth-image.jpg" width="218" height="224" alt="Authentication decoration">
+            <div class="relative hidden w-0 flex-1 lg:block bg-primary-800" aria-hidden="true">
+                <!-- <img class="dy db ou sh" src="https://preview.cruip.com/mosaic/images/auth-image.jpg" width="760" height="1024" alt="Authentication image">
+                <img class="g tg x uz ig hidden tey" src="https://preview.cruip.com/mosaic/images/auth-image.jpg" width="218" height="224" alt="Authentication decoration"> -->
             </div>
 
         </div>
+
+
 </template>

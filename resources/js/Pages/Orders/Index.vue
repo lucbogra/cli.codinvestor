@@ -29,7 +29,7 @@ const colorx = ref('#0F7490')
     <template #page-header>
       <div class="je jd jc ii mt-2 p-5 mx-10">
         <div class="ri _y">
-          <h1 class="gu teu text-slate-800 font-bold">Today's orders ✨</h1>
+          <h1 class="gu teu text-primary-800 font-bold">Today's orders ✨</h1>
         </div>
       </div>
     </template>

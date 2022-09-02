@@ -222,7 +222,7 @@ const filterDuplicateData = (arr) => {
                       <div>
                         <!-- Modal header -->
                         <div class="ru">
-                          <div class="ga gh text-slate-800">Send Request for <span class="font-weight">{{
+                          <div class="ga gh text-primary-800">Send Request for <span class="font-weight">{{
                             product.name
                           }}</span></div>
                         </div>

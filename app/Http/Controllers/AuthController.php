@@ -20,6 +20,6 @@ class AuthController extends Controller
         Cookie::forget('laravel_token');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('index');
+        return redirect('/');
     }
 }

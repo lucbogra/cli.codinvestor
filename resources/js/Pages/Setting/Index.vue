@@ -14,7 +14,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
           <div class="rc">
 
             <!-- Title -->
-            <h1 class="gu teu text-slate-800 font-bold">Account Settings ✨</h1>
+            <h1 class="gu teu text-primary-800 font-bold">Account Settings ✨</h1>
 
           </div>
 

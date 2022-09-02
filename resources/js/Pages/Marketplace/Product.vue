@@ -53,7 +53,7 @@ const copyToClipboard = (value) =>{
     <template #page-header>
       <div class="vs jj ttm vl ou uf na">
         <div class="ri _y flex justify-between mb-5">
-          <h1 class="gu teu text-slate-800 font-bold">Products ✨ {{ products.total }}</h1>
+          <h1 class="gu teu text-primary-800 font-bold">Products ✨ {{ products.total }}</h1>
           <input name="" class="a ou rounded-full w-52" placeholder="search..." v-model="filters.all.value"/>
         </div>
       </div>
@@ -128,7 +128,7 @@ const copyToClipboard = (value) =>{
             </div>
             <div>
               <div class="ru">
-                <div class="ga gh text-slate-800">Update Link for<span class="font-weight">{{linkForm.product}}</span></div>
+                <div class="ga gh text-primary-800">Update Link for<span class="font-weight">{{linkForm.product}}</span></div>
               </div>
               <div class="text-sm nx">
                 <div class="fb">

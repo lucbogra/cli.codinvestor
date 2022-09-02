@@ -34,7 +34,7 @@ watch(form, (newValue) => {
     <template #page-header>
       <div class="mx-24 mt-10">
         <div class="flex justify-between">
-          <h1 class="text-2xl text-slate-800 font-bold">Find the right product for you ✨</h1>
+          <h1 class="text-2xl text-primary-800 font-bold">Find the right product for you ✨</h1>
           <select v-model="form.paginate" id="country" class="a">
             <option disabled selected>Showing</option>
             <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
@@ -27,8 +28,10 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', [WebController::class, 'dashboard'])->name('dashboard');
-    Route::get('/dashboard/performance', [WebController::class, 'performance'])->name('dashboard.performance');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
+    Route::get('/dashboard/performance', [DashboardController::class, 'performance'])->name('dashboard.performance')->middleware('auth');
+    Route::get('/dashboard/month_reports', [DashboardController::class, 'month_reports'])->name('dashboard.month_reports');
 });
 
 Route::middleware([

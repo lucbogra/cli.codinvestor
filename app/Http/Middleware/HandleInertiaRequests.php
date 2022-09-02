@@ -46,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'logo' => WebSetting::first()->logo_white,
+            'logo_color' => WebSetting::first()->logo,
             'notifications' => (Auth::check()) ? Auth::user()->notifications : []
         ]);
     }
