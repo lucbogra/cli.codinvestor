@@ -1,8 +1,9 @@
 <script setup>
-import { UploadIcon, PhoneIcon, BanIcon, CheckCircleIcon, BadgeCheckIcon, DocumentDuplicateIcon, PhoneMissedCallIcon, ExclamationCircleIcon, XCircleIcon, ShareIcon, ChartPieIcon, TrendingUpIcon, CurrencyDollarIcon, MinusCircleIcon } from '@heroicons/vue/solid';
+import { UploadIcon, PhoneIcon, BanIcon, CheckCircleIcon, BadgeCheckIcon, DocumentDuplicateIcon, XCircleIcon, ShareIcon, ChartPieIcon, MinusCircleIcon, CurrencyDollarIcon } from '@heroicons/vue/solid';
 
 const props = defineProps({
   datas: Array,
+  commission: Number,
 })
 </script>
 
@@ -173,6 +174,20 @@ const props = defineProps({
         </div>
         <p class="text-lg font-bold text-danger">
           {{ datas.returned_rate }}
+        </p>
+      </div>
+    </div>
+     <!-- Begin Commission -->
+    <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
+      <div class="p-3 mr-4 bg-green-100 rounded-full">
+        <CurrencyDollarIcon class="w-10 h-10 text-success" />
+      </div>
+      <div>
+        <div class="mb-2 font-medium text-gray-600">
+          <p class="font-bold text-gray-600">Commission</p>
+        </div>
+        <p class="text-lg font-bold text-success">
+          {{ '$'+commission }}
         </p>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Performance from './Performance.vue';
 import ConfirmationChart from './ConfirmationChart.vue';
 import Top from './Top.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Products from './Products.vue';
 
 const props = defineProps({
   dates: Object,
@@ -17,9 +18,14 @@ const form = useForm({
 })
 
 const reports = ref(null)
+const products = ref(null)
 onMounted(async () => {
   const res = await axios.get(route('performance', { start: props.dates.start, end: props.dates.end }))
   reports.value = res.data
+
+  const prd_res = await axios.get(route('reports.products', { start: props.dates.start, end: props.dates.end }))
+  products.value = prd_res.data
+  console.log(products.value)
 })
 
 const submit = async () => {
@@ -66,7 +72,8 @@ const submit = async () => {
           </div> -->
       </div>
 
-      <Top v-if="reports != null" :datas="reports" />
+      <Top v-if="reports != null && products != null" :datas="reports" :commission="products.commission" />
+      <Products v-if="products != null" :products="products.products" />
       <Performance class="mb-5" v-if="reports != null" :performance="reports.datas" />
       <ConfirmationChart v-if="reports != null" :performance="reports.datas" />
     </div>

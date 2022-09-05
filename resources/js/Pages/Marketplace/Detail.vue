@@ -116,7 +116,7 @@ const filterDuplicateData = (arr) => {
                   <span class=" text-primary-700 font-bold"> {{ product.recommanded_price + ' SAR'}}</span>
                 </div>
                 <div class="text-xl border-b border-gray-200 mt-4"> Commission :
-                  <span class=" text-primary-700 font-bold"> {{ product.commission + ' SAR' }}</span>
+                  <span class=" text-primary-700 font-bold"> {{'$'+product.commission }}</span>
                 </div>
               </div>
 

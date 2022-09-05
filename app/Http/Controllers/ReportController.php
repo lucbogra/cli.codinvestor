@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Investor;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\ScheduledReport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -49,8 +50,7 @@ class ReportController extends Controller
     $affected = $datas->sum('affected');
     $confirmed = $datas->sum('confirmed');
     $confirmed_sum = $datas->sum('confirmed_sum');
-    $cross = $datas->sum('cross');
-    $delivered = Order::whereBetween('delivered_at', [$start, $end])->where('investor_id', $id)->selectRaw('count(delivered_at) as number, sum(codprice) as sumprice')->first();
+    $delivered = Order::whereBetween('delivered_at', [$start, $end])->where('investor_id', $id)->selectRaw('count(delivered_at) as number')->first();
     $returned = Order::whereBetween('returned_at', [$start, $end])->where('investor_id', $id)->count();
     $delivery_created = Order::whereBetween('delivery_created_at', [$start, $end])->where('investor_id', $id)->count();
 
@@ -68,6 +68,45 @@ class ReportController extends Controller
       'confirmation_rate' => $affected != 0 ? number_format((float)$confirmed * 100 / $affected, 2, '.', '') : 0,
       'delivery_rate' => $delivery_created != 0 ? number_format((float)$delivered->number * 100 / $delivery_created, 2, '.', '') : 0,
       'returned_rate' => $delivery_created != 0 ? number_format((float)$returned * 100 / $delivery_created, 2, '.', '') : 0,
+    ]);
+  }
+
+  public function products($start, $end){
+    $id = auth()->user()->investor->id;
+
+    $reports = ScheduledReport::whereBetween('date', [$start, $end])->get();
+    $products = auth()->user()->investor->products()->get()->map(function ($product) use($id, $reports){
+      $datas = $reports->map(function ($item) use($id, $product) {
+        $values = collect(json_decode($item->datas, ','))->where('id', $id)->pluck('products')->flatten(1)->where('id', $product->id)->first();
+        $delivered = Order::delivered()->where('product_name', $product->sku)->where('delivered_at', $item->date)->count();
+        return [
+          'date' => date('m-d', strtotime($item->date)),
+          'uploaded' => $values !== null ? $values['uploaded'] : null,
+          'duplicate' => $values !== null ? $values['duplicate'] : null,
+          'wrong_number' => $values !== null ? $values['wrong_number'] : null,
+          'confirmed' => $values !== null ? $values['confirmed'] : null,
+          'values' => $values,
+          'delivered' => $delivered,
+          'commission' => $values !== null ? $values['commission'] * $delivered : $product->commission * $delivered
+        ];
+      });
+      $datas = collect($datas);
+      return [
+        'name' => $product->name,
+        'sku' => $product->sku,
+        'photo' => $product->photo,
+        'uploaded' => $datas->sum('uploaded'),
+        'duplicate' => $datas->sum('duplicate'),
+        'wrong_number' => $datas->sum('wrong_number'),
+        'confirmed' => $datas->sum('confirmed'),
+        'delivered' => $datas->sum('delivered'),
+        'commission' => $datas->sum('commission'),
+      ];
+    });
+
+    return response()->json([
+      'products' => $products,
+      'commission' => collect($products)->sum('commission')
     ]);
   }
 }

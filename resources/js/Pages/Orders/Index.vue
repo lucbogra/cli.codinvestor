@@ -11,6 +11,7 @@ import Rejected from './Rejected.vue'
 import WrongNumber from './WrongNumber.vue'
 const props = defineProps({
   orders : Array,
+  demo_file: String,
 })
 
 const rejecteds = computed(() => props.orders.filter(el => el.status == 'rejected' ))
@@ -72,14 +73,12 @@ const colorx = ref('#0F7490')
                 Wrong Number <span class=" rounded px-2 bg-orange-600 text-white">{{ wrong_number.length }}</span>
               </button>
             </Tab>
-
-
           </TabList>
 
           <TabPanels class="mt-2">
             <TabPanel
               :class="['rounded-xl bg-white p-3', 'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',]">
-              <Uploaded :orders="orders" />
+              <Uploaded :orders="orders" :demo_file="demo_file" />
 
             </TabPanel>
 

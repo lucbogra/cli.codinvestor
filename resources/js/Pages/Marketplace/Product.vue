@@ -100,7 +100,7 @@ const copyToClipboard = async (value) =>{
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.recommanded_price+' SAR' }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.commission+' SAR '}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ '$'+product.commission}}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
                     <div class="flex flex-wrap items-left">
                       <span v-for="category in product.categories"

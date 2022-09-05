@@ -40,7 +40,7 @@ class DashboardController extends Controller
       'no_answer' => collect($datas)->where('id', $id)->sum('no_answer'),
       'affected' => $affected,
       'delayed' => collect($datas)->where('id', $id)->sum('delayed'),
-      'aov' => $confirmed_number != 0 ?  number_format((float)$confirmed_sum / $confirmed_number, 2, ',', '') : 0,
+      'confirmation_rate' => $affected != 0 ? number_format((float)$confirmed_number * 100 / $affected, 2, ',', '') : 0,
     ]);
   }
 

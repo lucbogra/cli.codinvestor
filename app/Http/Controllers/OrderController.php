@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\OrderImport;
+use App\Models\Demofile;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,7 @@ class OrderController extends Controller
   public function orders()
   {
     return Inertia::render('Orders/Index', [
+      'demo_file' => Demofile::where('name', 'Import Format')->first()->file,
       'orders' => Order::whereDate('created_at', date('Y-m-d'))->get()->map(function ($order) {
         return [
           'id' => $order->id,
