@@ -32,6 +32,9 @@ const submit = async () => {
   const res = await axios.get(route('performance', { start: form.start, end: form.end }))
   reports.value = res.data
 
+  const prd_res = await axios.get(route('reports.products', {start: form.start, end: form.end  }))
+  products.value = prd_res.data
+
 }
 </script>
 

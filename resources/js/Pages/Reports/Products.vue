@@ -2,6 +2,7 @@
 const props = defineProps({
   products : Array,
 })
+
 </script>
 
 <template>
