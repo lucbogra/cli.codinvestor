@@ -12,11 +12,11 @@ use Inertia\Inertia;
 
 class ReportController extends Controller
 {
-  public function reports(){
+  public function analytics(){
     $start = Request::get('start') ? Request::get('start') : date("Y-m-d", strtotime('- 29 days'));
     $end = Request::get('end') ? Request::get('end') : date("Y-m-d");
 
-    return  Inertia::render('Reports/Index', [
+    return  Inertia::render('Reports/Analytics', [
       'dates' => (object)[
         'start' => $start,
         'end' => $end,
@@ -68,6 +68,19 @@ class ReportController extends Controller
       'confirmation_rate' => $affected != 0 ? number_format((float)$confirmed * 100 / $affected, 2, '.', '') : 0,
       'delivery_rate' => $delivery_created != 0 ? number_format((float)$delivered->number * 100 / $delivery_created, 2, '.', '') : 0,
       'returned_rate' => $delivery_created != 0 ? number_format((float)$returned * 100 / $delivery_created, 2, '.', '') : 0,
+    ]);
+  }
+
+  public function reports(){
+    $start = Request::get('start') ? Request::get('start') : date("Y-m-d", strtotime('- 29 days'));
+    $end = Request::get('end') ? Request::get('end') : date("Y-m-d");
+
+    return  Inertia::render('Reports/Reports', [
+      'dates' => (object)[
+        'start' => $start,
+        'end' => $end,
+        'max' => date("Y-m-d"),
+      ],
     ]);
   }
 

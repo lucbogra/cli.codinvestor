@@ -3,7 +3,6 @@ import { UploadIcon, PhoneIcon, BanIcon, CheckCircleIcon, BadgeCheckIcon, Docume
 
 const props = defineProps({
   datas: Array,
-  commission: Number,
 })
 </script>
 
@@ -178,7 +177,7 @@ const props = defineProps({
       </div>
     </div>
      <!-- Begin Commission -->
-    <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
+    <!-- <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
       <div class="p-3 mr-4 bg-green-100 rounded-full">
         <CurrencyDollarIcon class="w-10 h-10 text-success" />
       </div>
@@ -190,6 +189,6 @@ const props = defineProps({
           {{ '$'+commission }}
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

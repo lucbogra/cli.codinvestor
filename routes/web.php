@@ -60,8 +60,9 @@ Route::middleware([
 
     Route::get('help-us', [WebController::class, 'help'])->name('help');
 
-    Route::get('reports', [ReportController::class, 'reports'])->name('reports');
+    Route::get('analytics', [ReportController::class, 'analytics'])->name('analytics');
     Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance');
+    Route::get('reports', [ReportController::class, 'reports'])->name('reports');
     Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products');
 
     Route::prefix('billing')->group(function () {
