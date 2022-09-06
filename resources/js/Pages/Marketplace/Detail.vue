@@ -76,7 +76,7 @@ const filterDuplicateData = (arr) => {
 
     <template #content>
       <div class="bg-slate-100">
-        <div class="max-w-2xl mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 " style="margin-top:-70px ;">
+        <div class="max-w-2xl mx-auto sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
             <!-- Image gallery -->
             <TabGroup as="div" class="flex flex-col-reverse">
@@ -127,7 +127,7 @@ const filterDuplicateData = (arr) => {
 
               <div class="mt-6">
                 <!-- Colors -->
-                <div>
+                <!-- <div>
                   <h3 class="text-md text-gray-600">Colors</h3>
 
                   <RadioGroup v-model="selectedColor" class="mt-2">
@@ -173,7 +173,7 @@ const filterDuplicateData = (arr) => {
                       </div>
                     </RadioGroup>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="mt-10 flex sm:flex-col1 justify-between">
                   <button type="button" v-on:click="requestModal = true" v-if="product.exist_request == null"

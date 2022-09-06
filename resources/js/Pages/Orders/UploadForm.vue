@@ -5,7 +5,7 @@
       <FileInput v-model="form.file" class="pr-6 pb-8 w-full lg:w-1/2" type="file" accept=".xlsx, .xls, .csv"
         label="file" />
       <LoadingButton :loading="form.processing" class="btn-primary ml-4" type="submit" :disabled="form.file === null">Import Orders</LoadingButton>
-      <a class="ml-4 text-primary-700 hover:text-primary-400" :href="demo_file"> To know the structure of the file to import, download the demo file</a>
+      <a class="ml-4 text-primary-700 hover:text-primary-400 hidden sm:block" :href="demo_file"> To know the structure of the file to import, download the demo file</a>
     </div>
     <div class="mb-2">
       <div class="form-error" v-for="(err, index) in form.errors" :key="index">{{ err }}</div>

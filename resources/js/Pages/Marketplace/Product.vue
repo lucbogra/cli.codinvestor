@@ -61,18 +61,18 @@ const copyToClipboard = async (value) =>{
 <template>
   <AppLayout title="Products">
     <template #page-header>
-      <div class="vs jj ttm vl ou uf na">
-        <div class="ri _y flex justify-between mb-5">
-          <h1 class="gu teu text-primary-800 font-bold">Products ✨ {{ products.total }}</h1>
-          <input name="" class="a ou rounded-full w-52" placeholder="search..." v-model="filters.all.value"/>
+      <div class="mt-2 p-5 mx-10">
+        <div class=" flex justify-between mb-5">
+          <h1 class="gu teu text-primary-800 font-bold">Products( {{ products.total }})</h1>
+          <input name="" class="a ou rounded-full w-52 hidden sm:block" placeholder="search..." v-model="filters.all.value"/>
         </div>
       </div>
     </template>
     <template #content>
       <div class="vs jj ttm vl ou uf na -mt-12">
-        <div class="bg-white rounded-lg border-slate-200">
-          <div class="">
-            <VTable :data="products.data" :filters="filters" class="min-w-full table-fixed bg-gray-50">
+        <div class="bg-white overflow-x-auto rounded-lg border-slate-200">
+          <div class="overflow-hidden">
+            <VTable :data="products.data" :filters="filters" class="min-w-full bg-gray-50">
               <template #head>
                 <tr>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>

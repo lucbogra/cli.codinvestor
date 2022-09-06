@@ -31,8 +31,8 @@ const submit = async () => {
 <template>
   <AppLayout >
      <template #page-header>
-      <div class="je jd jc ii mt-2 p-5 mx-10">
-        <div class="ri _y">
+      <div class=" mt-2 p-5 mx-10">
+        <div class="">
           <h1 class="gu teu text-primary-800 font-bold">Analytics</h1>
         </div>
       </div>
@@ -40,10 +40,10 @@ const submit = async () => {
 
     <template #content>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 -mt-12">
-      <div class="bg-white p-4 grid grid-cols-2 rounded mb-5 shadow-xl">
+      <div class="bg-white p-4 grid md:grid-cols-2 sm:grid-cols-1 rounded mb-5 shadow-xl">
         <div class="my-2">
           <form @submit.prevent="submit">
-            <div class="grid grid-cols-3 gap-8 items-center">
+            <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-8 items-center">
               <div>
                 <!-- <label class="form-label text-l text-gray-500 mx-2">Start:</label> -->
                 <input type="date" v-model="form.start" class=" w-full relative rounded-md border-slate-300" :max="form.end"
@@ -54,7 +54,7 @@ const submit = async () => {
                 <input type="date" v-model="form.end" class=" w-full relative rounded-md border-slate-300" :min="form.start"
                   :max="dates.max" required />
               </div>
-              <div>
+              <div class="mx-auto">
                 <LoadingButton :loading="form.processing" class="btn-primary ml-4" type="submit">Submit</LoadingButton>
               </div>
             </div>
@@ -66,8 +66,11 @@ const submit = async () => {
       </div>
 
       <Top v-if="reports != null" :datas="reports"/>
-      <Performance class="mb-5" v-if="reports != null" :performance="reports.datas" />
-      <ConfirmationChart v-if="reports != null" :performance="reports.datas" />
+      <div class="hidden sm:block">
+        <Performance class="mb-5" v-if="reports != null" :performance="reports.datas" />
+        <ConfirmationChart v-if="reports != null" :performance="reports.datas" />
+      </div>
+
     </div>
     </template>
 

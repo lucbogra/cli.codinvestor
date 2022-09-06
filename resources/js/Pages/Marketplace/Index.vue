@@ -5,6 +5,13 @@ import { useForm } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3';
 import pickBy from 'lodash/pickBy'
 import { Inertia } from '@inertiajs/inertia';
+import { XCircleIcon } from '@heroicons/vue/outline'
+import {
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+  TransitionRoot,
+} from '@headlessui/vue'
 const props = defineProps({
   filters: Object,
   products: Array,
@@ -27,37 +34,78 @@ watch(form, (newValue) => {
   }
 
 })
+const open = ref(false)
 
 </script>
 <template>
   <AppLayout title="Marketplace">
     <template #page-header>
-      <div class="mx-24 mt-10">
-        <div class="flex justify-between">
-          <h1 class="text-2xl text-primary-800 font-bold">Find the right product for you ✨</h1>
-          <select v-model="form.paginate" id="country" class="a">
-            <option disabled selected>Showing</option>
-            <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
-          </select>
+       <div class="mt-2 p-5 mx-10">
+        <div class="">
+          <h1 class="gu teu text-primary-800 font-bold">Marketplace</h1>
         </div>
       </div>
     </template>
     <template #content>
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-20">
+
+
+      <TransitionRoot as="template" :show="open">
+      <Dialog as="div" class="relative z-40 sm:hidden" @close="open = false">
+        <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
+          <div class="fixed inset-0 bg-black bg-opacity-25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 z-40 flex">
+          <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="translate-x-full">
+            <DialogPanel class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+              <div class="flex items-center justify-between px-4">
+                <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+                <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400" @click="open = false">
+                  <span class="sr-only">Close menu</span>
+                  <XCircleIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+              <!-- Filters -->
+              <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+                <ul class="flex flex-wrap ">
+                  <li class="m-1">
+                    <select class="a ou rounded-full" v-model="form.country">
+                      <option disabled :value="null">Filter by country</option>
+                      <option value="all">All countries</option>
+                      <option v-for="country in countries" :key="country.id" :value="country.country">{{ country.country }}</option>
+                    </select>
+                  </li>
+                  <li class="m-1">
+                    <select v-model="form.category" class="a ou rounded-full">
+                      <option disabled :value="null">Filter by category</option>
+                      <option value="all">All categories</option>
+                      <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
+                      </option>
+                    </select>
+                  </li>
+                  <li class="m-1">
+                    <input class="s ou me xq border-1 border-slate-200 rounded-full w-full m-0 p-1" type="search"
+                      placeholder="Search product…" v-model="form.search" />
+                  </li>
+                  <li>
+                    <select v-model="form.paginate" id="country" class="a ou rounded-full">
+                      <option disabled selected>Showing</option>
+                      <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
+                    </select>
+                  </li>
+                </ul>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </Dialog>
+    </TransitionRoot>
+
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-20 ">
 
         <!-- Filters -->
-        <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8 hidden sm:block">
           <ul class="flex flex-wrap ">
-            <!-- <li class="m-1">
-              <Link :href="route('marketplace.index') + '?sort_by=newest'"
-                class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Newest</Link>
-            </li>
-            <li class="m-1">
-              <Link :href="route('marketplace.index') + '?sort_by=oldest'"
-                class="inline-flex items-center justify-center text-sm gp gw rounded-full vn vf border py-2 border-slate-200 hover--border-slate-300 bv bg-white text-slate-500 wi wu">
-                Oldest</Link>
-            </li> -->
             <li class="m-1">
               <select class="a ou rounded-full" v-model="form.country">
                 <option disabled :value="null">Filter by country</option>
@@ -77,9 +125,16 @@ watch(form, (newValue) => {
               <input class="s ou me xq border-1 border-slate-200 rounded-full w-full m-0 p-1" type="search"
                 placeholder="Search product…" v-model="form.search" />
             </li>
+            <li>
+              <select v-model="form.paginate" id="country" class="a ou rounded-full">
+                <option disabled>Showing</option>
+                <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
+              </select>
+            </li>
           </ul>
         </div>
 
+        <button type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden" @click="open = true">Filters</button>
 
         <!-- Cards 1 (Video Courses) -->
         <div>
@@ -90,9 +145,9 @@ watch(form, (newValue) => {
                 'Products' : 'Product' }}
             </div>
 
-           <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+           <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
               <Link v-for="product in products.data" :key="product.id" :href="route('marketplace.detail', product.slug)"
-                class="group">
+                class="group relative">
               <div
                 class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 hover:shadow-xl">
                 <img :src="product.photo" :alt="product.name"

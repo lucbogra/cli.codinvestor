@@ -9,6 +9,7 @@ import Uploaded from './Uploaded.vue'
 import Duplicated from './Duplicated.vue'
 import Rejected from './Rejected.vue'
 import WrongNumber from './WrongNumber.vue'
+import UploadForm from './UploadForm.vue';
 const props = defineProps({
   orders : Array,
   demo_file: String,
@@ -28,15 +29,54 @@ const colorx = ref('#0F7490')
 <template>
   <AppLayout title="Orders">
     <template #page-header>
-      <div class="je jd jc ii mt-2 p-5 mx-10">
-        <div class="ri _y">
-          <h1 class="gu teu text-primary-800 font-bold">Today's orders ✨</h1>
+      <div class="mt-2 p-5 mx-10">
+        <div class="">
+          <h1 class="gu teu text-primary-800 font-bold">Today's orders</h1>
         </div>
       </div>
     </template>
     <template #content>
 
-      <div class="px-8 py-16 sm:px-0 mx-10 -mt-12">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 sm:hidden">
+      <UploadForm />
+      <div class="mt-8 flex flex-col">
+      <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Orders</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Number</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Uploaded</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{orders.length}}</td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Duplicate</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{duplicates.length}}</td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Rejected</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{rejecteds.length}}</td>
+                </tr>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Wrong Number</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{wrong_number.length}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 hidden sm:block">
         <TabGroup :defaultIndex="0">
           <TabList class="flex space-x-1 rounded-xl p-1" :style="'background-color :' + colorx">
             <Tab v-slot="{ selected }" as="template" @click="colorx = '#0F7490'">

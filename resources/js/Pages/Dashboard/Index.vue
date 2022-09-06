@@ -30,7 +30,7 @@ watch(time, async(newValue) => {
 
 <template>
     <AppLayout title="Dashboard">
-        <template #page-header>
+    <template #page-header>
       <div class="max-w-8xl pt-6 mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="sm:hidden" aria-label="Back">
           <a href="#" class="  flex items-center text-sm font-medium text-gray-400 hover:text-gray-200  ">
@@ -60,18 +60,17 @@ watch(time, async(newValue) => {
         </div>
 
         <Top v-if="topDatas !=null" :datas="topDatas" />
-        <div class="grid grid-cols-8 grid-rows-2 gap-4">
+
+        <div class="grid xl:grid-cols-8 grid-rows-2 gap-4">
           <div class="xl:col-span-2 row-span-2 md:col-span-8">
             <MonthReport />
           </div>
-          <div class=" xl:col-span-6 md:col-span-8">
+          <div class=" xl:col-span-6 md:col-span-8 hidden sm:block">
             <ConfirmationChart class="mb-8" v-if="performance !=null" :performance="performance" />
           </div>
-           <div class="xl:col-span-6 md:col-span-8">
-        <Performance v-if="performance !=null" :performance="performance" />
-
-           </div>
-
+          <div class="xl:col-span-6 md:col-span-8 hidden sm:block">
+            <Performance v-if="performance !=null" :performance="performance" />
+          </div>
         </div>
       </div>
     </template>

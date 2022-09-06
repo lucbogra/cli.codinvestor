@@ -38,20 +38,20 @@ const BankAccount = defineAsyncComponent(() =>
 <template>
   <AppLayout title="Orders">
     <template #page-header>
-      <div class="je jd jc ii mt-2 p-5 mx-10">
-        <div class="ri _y">
-          <h1 class="gu teu text-primary-800 font-bold">Billing Settings ✨</h1>
+      <div class="mt-2 p-5 mx-10">
+        <div class="">
+          <h1 class="gu teu text-primary-800 font-bold">Billing Settings</h1>
         </div>
       </div>
     </template>
     <template #content>
 
-      <div class="px-8 py-16 sm:px-0 mx-10 -mt-12">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-4">
           <div class="sm:hidden">
             <label for="tabs" class="sr-only">Select a tab</label>
             <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
-            <select id="tabs" name="tabs" class="block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500">
+            <select id="tabs" name="tabs" v-model="selected" class="block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500">
               <option v-for="tab in tabs" :key="tab.name" :selected="tab.name== selected">{{ tab.name }}</option>
             </select>
           </div>

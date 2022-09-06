@@ -9,22 +9,9 @@ const filters = ref({
   all: { value: '', keys: ['customer_name', 'phone', 'country', 'city', 'product_name', 'price', 'website', 'created_at'] }
 })
 
-onMounted(() =>{
-    console.log(props.orders);
-});
-
 const selectedOrders = ref([])
 const checked = ref(false)
 const indeterminate = computed(() => selectedOrders.value.length > 0 && selectedOrders.value.length < props.orders.length)
-
-const currentPage = ref(1)
-const totalPages = ref(0)
-const tag = ref()
-const form = useForm({
-  agents: [],
-  rows: ''
-})
-
 
 </script>
 
@@ -40,8 +27,7 @@ const form = useForm({
               <input class="form-input w-full lg:w-1/4 rounded-full" placeholder="search..."
                 v-model="filters.all.value" />
             </div>
-            <VTable :data="orders" :filters="filters" class="min-w-full table-fixed divide-y divide-gray-300"
-              :page-size="8" v-model:currentPage="currentPage" @totalPagesChanged="totalPages = $event">
+            <VTable :data="orders" :filters="filters" class="min-w-full table-fixed divide-y divide-gray-300">
               <template #head>
                 <tr class="bg-gray-50">
                   <th class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Date</th>
@@ -83,51 +69,10 @@ const form = useForm({
                 </tr>
               </template>
             </VTable>
-
-            <VTPagination v-model:currentPage="currentPage" :total-pages="totalPages" :boundary-links="false"
-              :maxPageLinks="9" class="flex">
-              <template #firstPage class="flex">
-                <i class="fas fa-arrow-left" />
-              </template>
-
-              <template #lastPage>
-                <i class="fas fa-arrow-right" />
-              </template>
-
-              <template #next>
-                <i class="fas fa-chevron-right" />
-              </template>
-
-              <template #previous>
-                <i class="fas fa-chevron-left" />
-              </template>
-            </VTPagination>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
-
-<style>
-    .pagination{
-        display: flex;
-        justify-content: center;
-        margin: 20px 0;
-    }
-     .pagination li {
-        padding: 8px 17px;
-     }
-
-     .pagination li{
-       border: 1px solid #ddd;
-     }
-
-     .pagination .active {
-        background-color: #1B2E51;
-        color: white;
-     }
-</style>
