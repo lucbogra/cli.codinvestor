@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\WebController;
 use Illuminate\Foundation\Application;
@@ -63,7 +64,10 @@ Route::middleware([
     Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance');
     Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products');
 
-
+    Route::prefix('billing')->group(function () {
+      Route::get('index', [PaymentMethodController::class, 'index'])->name('billing.index');
+      Route::put('update', [PaymentMethodController::class, 'update'])->name('billing.update');
+    });
 
 });
 

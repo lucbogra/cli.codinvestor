@@ -44,6 +44,7 @@ import {
   MenuAlt1Icon,
   QuestionMarkCircleIcon,
 CollectionIcon,
+CreditCardIcon,
 } from '@heroicons/vue/outline'
 import {
 ShoppingCartIcon,
@@ -84,6 +85,7 @@ const navigation = [
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },
+  { name: 'Billing Settings', href: route('billing.index'), icon: CreditCardIcon, current: isUrl('/billing') },
   { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon },
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]

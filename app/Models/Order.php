@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\OrderScope;
+use App\Scopes\AffiliateScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -150,7 +150,7 @@ class Order extends Model
 
   protected static function booted()
   {
-    static::addGlobalScope(new OrderScope);
+    static::addGlobalScope(new AffiliateScope);
   }
 
 }
