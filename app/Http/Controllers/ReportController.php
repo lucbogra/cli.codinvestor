@@ -119,7 +119,12 @@ class ReportController extends Controller
 
     return response()->json([
       'products' => $products,
-      'commission' => collect($products)->sum('commission')
+      'datas' => [
+        'uploaded' => collect($products)->sum('uploaded'),
+        'confirmed' => collect($products)->sum('confirmed'),
+        'delivered' => collect($products)->sum('delivered'),
+        'commission' => collect($products)->sum('commission'),
+      ]
     ]);
   }
 }

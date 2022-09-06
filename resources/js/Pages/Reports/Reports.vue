@@ -4,6 +4,7 @@ import { useForm } from '@inertiajs/inertia-vue3';
 import LoadingButton from '@/Components/LoadingButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Products from './Products.vue';
+import ReportTop from './ReportTop.vue';
 
 const props = defineProps({
   dates: Object,
@@ -63,6 +64,8 @@ const submit = async () => {
             <a :href="'/reports/export/' + form.start + '/' + form.end" class="btn-primary"> Export Reports </a>
           </div> -->
       </div>
+
+      <ReportTop v-if="products != null" :datas="products.datas" />
 
       <Products v-if="products != null" :products="products.products" />
     </div>
