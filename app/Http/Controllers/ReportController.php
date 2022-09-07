@@ -91,7 +91,7 @@ class ReportController extends Controller
     $products = auth()->user()->investor->accessProducts()->get()->map(function ($product) use($id, $reports){
       $datas = $reports->map(function ($item) use($id, $product) {
         $values = collect(json_decode($item->datas, ','))->where('id', $id)->pluck('products')->flatten(1)->where('id', $product->id)->first();
-        $delivered = Order::delivered()->where('product_name', $product->sku)->where('delivered_at', $item->date)->count();
+        $delivered = Order::delivered()->where('product_id', $product->id)->where('delivered_at', $item->date)->count();
         return [
           'date' => date('m-d', strtotime($item->date)),
           'uploaded' => $values !== null ? $values['uploaded'] : null,
