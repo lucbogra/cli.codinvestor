@@ -88,7 +88,7 @@ class ReportController extends Controller
     $id = auth()->user()->investor->id;
 
     $reports = ScheduledReport::whereBetween('date', [$start, $end])->get();
-    $products = auth()->user()->investor->products()->get()->map(function ($product) use($id, $reports){
+    $products = auth()->user()->investor->accessProducts()->get()->map(function ($product) use($id, $reports){
       $datas = $reports->map(function ($item) use($id, $product) {
         $values = collect(json_decode($item->datas, ','))->where('id', $id)->pluck('products')->flatten(1)->where('id', $product->id)->first();
         $delivered = Order::delivered()->where('product_name', $product->sku)->where('delivered_at', $item->date)->count();

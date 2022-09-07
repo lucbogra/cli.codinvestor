@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Jobs\ImportOrdersjob;
 use App\Models\Investor;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Utils\Helper;
 use App\Models\WebsiteProduct;
 use Carbon\Carbon;
@@ -37,6 +38,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row)
     {
         // ImportOrdersjob::dispatch($row);
+        $product = $this->products($row['product sku']);
 
         return new Order([
             'customer_name'              => $row['customer name'],
@@ -47,9 +49,8 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation
             'website'                    => $row['website'],
             'price'                      => $row['price'],
             'investor_id'                => $this->investor_id,
-            'status'                     => in_array($row['product sku'], $this->products()) ? 'pending' : 'rejected'
-            // 'sup_id'                     => Auth::user()->supof ? Auth::user()->id : null,
-            // 'product_link'               => WebsiteProduct::where('website_sku', Helper::_getRealSku($row['product']))->first() ? WebsiteProduct::where('website_sku', Helper::_getRealSku($row['product']))->first()->link : '#',
+            'status'                     => Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com' ? 'pending' : (isset($product) ? 'pending' : 'rejected'),
+            'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null
         ]);
     }
 
@@ -76,7 +77,10 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation
         return 300;
     }
 
-    public function products(){
-      return Investor::find($this->investor_id)->products()->pluck('sku')->toArray();
+    public function products($sku){
+      if(Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com'){
+        return Product::whereJsonContains('alias', $sku)->first();
+      }
+      return Investor::find($this->investor_id)->accessProducts()->whereJsonContains('alias', $sku)->first();
     }
 }
