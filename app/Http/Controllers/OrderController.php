@@ -15,7 +15,7 @@ class OrderController extends Controller
   {
     return Inertia::render('Orders/Index', [
       'demo_file' => Demofile::where('name', 'Import Format')->first()->file,
-      'orders' => Order::whereDate('created_at', date('Y-m-d'))->get()->map(function ($order) {
+      'orders' => Order::whereDate('created_at', date('Y-m-d'))->orderBy('created_at', 'DESC')->get()->map(function ($order) {
         return [
           'id' => $order->id,
           'duplicate' => $order->duplicate,
