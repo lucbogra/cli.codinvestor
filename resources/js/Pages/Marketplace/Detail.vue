@@ -5,7 +5,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLa
 import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
-import DialogModal from '../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DialogModal.vue'
+import DialogModal from '@/Jetstream/DialogModal.vue'
 const props = defineProps({
   product: Object,
 });
