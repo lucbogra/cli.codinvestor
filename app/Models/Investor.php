@@ -85,4 +85,12 @@ class Investor extends Model
     public function has_requested($product_id){
       return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('product_id', $product_id);
     }
+
+    public function balance_histories(){
+      return $this->hasMany(BalanceHistory::class)->where('withdrawn', 0);
+    }
+
+    public function invoices(){
+      return $this->hasMany(Invoice::class);
+    }
 }

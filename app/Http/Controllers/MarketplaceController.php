@@ -160,4 +160,9 @@ class MarketplaceController extends Controller
 
     return back()->with('success', 'Link updated.');
   }
+
+  public function product_read_notification($notification_id, $slug){
+    request()->user()->unreadNotifications->where('id', $notification_id)->markAsRead();
+    return redirect()->route('marketplace.detail', $slug);
+  }
 }

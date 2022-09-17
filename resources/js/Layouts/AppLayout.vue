@@ -46,6 +46,7 @@ import {
 CollectionIcon,
 CreditCardIcon,
 PresentationChartLineIcon,
+ClipboardListIcon,
 } from '@heroicons/vue/outline'
 import {
 ShoppingCartIcon,
@@ -85,6 +86,8 @@ const navigation = [
   { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports') },
 
   { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics') },
+
+  { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices') },
 
 ]
 const secondaryNavigation = [

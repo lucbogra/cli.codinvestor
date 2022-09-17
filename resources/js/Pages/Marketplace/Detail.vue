@@ -5,6 +5,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLa
 import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
+import DialogModal from '../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/DialogModal.vue'
 const props = defineProps({
   product: Object,
 });
@@ -210,9 +211,8 @@ const filterDuplicateData = (arr) => {
                   </Disclosure>
                 </div>
 
-                <div id="info-modal" v-show="requestModal" class="m w tx la flex items-center np justify-center vs jj"
-                  role="dialog" aria-modal="true">
-                  <div class="bg-white rounded bd lu up ou oe">
+                <DialogModal :show="requestModal" >
+                  <template #content>
                     <div class="dz flex fy">
                       <!-- Icon -->
                       <div class="od sy rounded-full flex items-center justify-center ub hl">
@@ -230,8 +230,9 @@ const filterDuplicateData = (arr) => {
                         <div class="text-sm nx">
                           <div class="fb">
                             <p>You are about to launch for this product. Your request will be processed before being
-                              validated or declined. You will receive an email after the response from our technical
-                              team.</p>
+                              validated or declined.
+                               <!-- You will receive an email after the response from our technicalteam. -->
+                              </p>
                           </div>
                         </div>
                         <!-- Modal footer -->
@@ -243,8 +244,8 @@ const filterDuplicateData = (arr) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </template>
+                </DialogModal>
               </div>
 
             </div>

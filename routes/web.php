@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
@@ -45,6 +46,7 @@ Route::middleware([
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
     Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
+    Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');
     Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link');
     Route::get('orders', [OrderController::class, 'orders'])->name('orders.index');
     Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import');
@@ -68,6 +70,12 @@ Route::middleware([
     Route::prefix('billing')->group(function () {
       Route::get('index', [PaymentMethodController::class, 'index'])->name('billing.index');
       Route::put('update', [PaymentMethodController::class, 'update'])->name('billing.update');
+    });
+
+    Route::prefix('invoices')->group(function() {
+      Route::get('index', [InvoiceController::class, 'index'])->name('invoices.index');
+      Route::get('/{slug}', [InvoiceController::class, 'show'])->name('invoice.show');
+      Route::get('/{notification}/{slug}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
     });
 
 });
