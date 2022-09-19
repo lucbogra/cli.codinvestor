@@ -29,7 +29,7 @@ class DashboardController extends Controller
     $confirmed_sum = collect($datas)->where('id', $id)->sum(function ($data) {
       return $data['confirmed']['sumprice'];
     });
-    $affected = collect($datas)->sum('affected');
+    $affected = collect($datas)->where('id', $id)->sum('affected');
     return response()->json([
       'uploaded' => collect($datas)->where('id', $id)->sum('uploaded'),
       'duplicate' => collect($datas)->where('id', $id)->sum('duplicate'),
