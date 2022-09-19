@@ -4,6 +4,7 @@
   import { Link, useForm } from '@inertiajs/inertia-vue3'
   import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
   import useClipboard from 'vue-clipboard3'
+import Pagination from '../../Components/Pagination.vue';
 
   const props = defineProps({
     invoices: Object,
@@ -57,7 +58,7 @@
 
             </div>
           </div>
-          <!-- Pagination -->
+          <pagination class="mt-6" :links="invoices.links" />
         </div>
 
 
