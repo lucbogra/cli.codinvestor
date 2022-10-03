@@ -14,6 +14,11 @@
       </form>
     </div>
     <div class="ml-4 flex items-center md:ml-6">
+      <div class="mr-4">
+        <a href="https://www.youtube.com/watch?v=eouNMhlsf4w&list=PLlduhmnwwUbappqazBkpguFdXCfwZ2u-5" target="_blank">
+          <i class="fa-brands fa-youtube fa-lg" style="color: #FF0000;"></i>
+        </a>
+      </div>
       <div class="flex">
         <ScaleIcon class=" flex-shrink-0 ml-1 h-5 w-5 mr-2 text-gray-400"/>
          {{$page.props.balance}} USD

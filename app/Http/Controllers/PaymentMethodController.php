@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class PaymentMethodController extends Controller
 {
   public function index(){
-    $payment_method = PaymentMethod::firstOrCreate(['investor_id' =>  auth()->user()->investor->id],
+    $payment_method = PaymentMethod::firstOrCreate(['user_id' =>  auth()->user()->id],
       ['datas' => json_encode(['bank_account' => '', 'maroccan_bank_account' => '', 'payoneer' => '', 'paypal' => '', 'transferwise' => '', 'default' => ''])]
     );
 
@@ -22,7 +22,7 @@ class PaymentMethodController extends Controller
 
   public function update(Request $request){
 
-    $payment_method = PaymentMethod::firstOrCreate(['investor_id' =>  auth()->user()->investor->id],
+    $payment_method = PaymentMethod::firstOrCreate(['user_id' =>  auth()->user()->id],
       ['datas' => json_encode(['bank_account' => '', 'maroccan_bank_account' => '', 'payoneer' => '', 'paypal' => '', 'transferwise' => '', 'default' => ''])]
     );
 

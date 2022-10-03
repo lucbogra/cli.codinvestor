@@ -4,6 +4,7 @@ import { ref, } from 'vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
 import useClipboard from 'vue-clipboard3'
+import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
   products: Object,
@@ -126,7 +127,7 @@ const copyToClipboard = async (value) =>{
 
           </div>
         </div>
-        <!-- Pagination -->
+        <Pagination class="mt-6" :links="products.links" />
       </div>
 
       <div id="info-modal" v-show="showLinkModal" class="m w tx la flex items-center np justify-center vs jj"

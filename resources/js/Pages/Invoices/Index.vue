@@ -3,12 +3,15 @@
   import { ref, } from 'vue';
   import { Link, useForm } from '@inertiajs/inertia-vue3'
   import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
-  import useClipboard from 'vue-clipboard3'
-import Pagination from '../../Components/Pagination.vue';
+import Pagination from '@/Components/Pagination.vue';
 
   const props = defineProps({
     invoices: Object,
   });
+
+  const filters = ref({
+  all: { value: '', keys: ['date', 'slug', 'amount', 'status'] }
+})
 
   </script>
   <template>
@@ -17,7 +20,7 @@ import Pagination from '../../Components/Pagination.vue';
         <div class="mt-2 p-5 mx-10">
           <div class=" flex justify-between mb-5">
             <h1 class="gu teu text-primary-800 font-bold">Invoices</h1>
-            <!-- <input name="" class="a ou rounded-full w-52 hidden sm:block" placeholder="search..." v-model="filters.all.value"/> -->
+            <input name="" class="a ou rounded-full w-52 hidden sm:block" placeholder="search..." v-model="filters.all.value"/>
           </div>
         </div>
       </template>

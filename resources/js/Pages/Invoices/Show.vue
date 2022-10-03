@@ -1,6 +1,6 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue'
-
+  import { PaperClipIcon } from '@heroicons/vue/outline';
   const props = defineProps({
     invoice: Object,
   });
@@ -20,7 +20,7 @@
         <div class="vs jj ttm vl ou uf na -mt-12">
           <div class="bg-white overflow-x-auto rounded-lg border-slate-200">
             <div class="overflow-hidden">
-              <VTable :data="invoice.products" :filters="filters" class="min-w-full bg-gray-50">
+              <VTable :data="invoice.products" class="min-w-full bg-gray-50">
                 <template #head>
                   <tr>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>

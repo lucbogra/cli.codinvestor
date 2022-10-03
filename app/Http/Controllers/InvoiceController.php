@@ -11,7 +11,7 @@ class InvoiceController extends Controller
 {
   public function index(){
     return Inertia::render('Invoices/Index', [
-      'invoices' => auth()->user()->investor->invoices()->paginate(12)
+      'invoices' => Invoice::paginate(12)
         ->withQueryString()
         ->through(function($invoice){
         return [
@@ -39,7 +39,7 @@ class InvoiceController extends Controller
         'created_at' => date('Y-m-d', strtotime($invoice->created_at)),
         'slug' => $invoice->slug,
         'amount' => $invoice->amount,
-        'email' => $invoice->investor->email,
+        'email' => $invoice->user->investor->email,
         'paid_date' => $invoice->paid_date,
         'payment_method' => $invoice->payment_method,
         'file_url' => $invoice->file_url,
