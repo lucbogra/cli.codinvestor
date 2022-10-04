@@ -87,9 +87,11 @@
               :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</Link>
             </MenuItem>
             <MenuItem v-slot="{ active }">
-            <Link :href="route('logout')"
-              :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Logout
-            </Link>
+              <form @submit.prevent="logout">
+                <JetDropdownLink as="button">
+                  Logout
+                </JetDropdownLink>
+              </form>
             </MenuItem>
           </MenuItems>
         </transition>
@@ -140,6 +142,8 @@ import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { Menu, MenuButton, MenuItem, MenuItems, } from '@headlessui/vue'
 import { BellIcon, ScaleIcon } from '@heroicons/vue/outline'
 import { ChevronDownIcon, SearchIcon, } from '@heroicons/vue/solid'
+import { Inertia } from '@inertiajs/inertia'
+import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 
 export default {
   components: {
@@ -152,6 +156,8 @@ export default {
     SearchIcon,
     Link,
     ScaleIcon,
+    JetDropdownLink,
+    Inertia
   },
   data() {
     return {
@@ -162,6 +168,9 @@ export default {
     showSearch() {
       this.showSearchBox = !this.showSearchBox
     },
+    logout () {
+    Inertia.post(route('logout'));
+    }
   },
   setup() {
   },
