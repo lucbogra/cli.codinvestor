@@ -34,7 +34,7 @@ class WebController extends Controller
             'content' => 'required'
         ]);
         $ticket = new Ticket();
-        $ticket->investor_id = auth()->id();
+        $ticket->user_id = auth()->id();
         $ticket->subject = $request->subject;
         $ticket->content = $request->content;
         $ticket->save();
