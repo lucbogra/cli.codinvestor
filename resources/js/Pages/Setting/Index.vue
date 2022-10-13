@@ -7,37 +7,39 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
 <template>
   <AppLayout title="Products">
     <template #page-header>
-      <main>
-        <div class="vs jj ttm vl ou uf na">
+      <div class="vs jj ttm vl ou uf na">
 
-          <!-- Page header -->
-          <div class="rc">
+        <!-- Page header -->
+        <div class="rc">
 
-            <!-- Title -->
-            <h1 class="gu teu text-primary-800 font-bold">Account Settings</h1>
+          <!-- Title -->
+          <h1 class="gu teu text-primary-800 font-bold">Account Settings</h1>
 
-          </div>
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <div class="vs jj ttm vl ou uf na">
+         <div class="bg-white bd rounded-sm rc">
+        <div class="flex ak zc qv">
 
-          <div class="bg-white bd rounded-sm rc">
-            <div class="flex ak zc qv">
-
-              <!-- Sidebar -->
-              <div class=" a_ lh l qx z_ vn vh cs zz tee border-slate-200 ur zg">
-                <!-- Group 1 -->
-                <div>
-                  <div class="go gh gq gv ro">Business settings</div>
-                  <ul class=" a_ qx ra qm">
-                    <li class="rv qm qg">
-                      <inertia-link class="flex items-center vp vr rounded lm hm" :href="route('user.profile')">
-                        <svg class="oo sl ub du text-indigo-400 mr-2" viewBox="0 0 16 16">
-                          <path
-                            d="M12.311 9.527c-1.161-.393-1.85-.825-2.143-1.175A3.991 3.991 0 0012 5V4c0-2.206-1.794-4-4-4S4 1.794 4 4v1c0 1.406.732 2.639 1.832 3.352-.292.35-.981.782-2.142 1.175A3.942 3.942 0 001 13.26V16h14v-2.74c0-1.69-1.081-3.19-2.689-3.733zM6 4c0-1.103.897-2 2-2s2 .897 2 2v1c0 1.103-.897 2-2 2s-2-.897-2-2V4zm7 10H3v-.74c0-.831.534-1.569 1.33-1.838 1.845-.624 3-1.436 3.452-2.422h.436c.452.986 1.607 1.798 3.453 2.422A1.943 1.943 0 0113 13.26V14z">
-                          </path>
-                        </svg>
-                        <span class="text-sm gp text-indigo-500">My Account</span>
-                      </inertia-link>
-                    </li>
-                    <!-- <li class="rv qm qg">
+          <!-- Sidebar -->
+          <div class=" a_ lh l qx z_ vn vh cs zz tee border-slate-200 ur zg">
+            <!-- Group 1 -->
+            <div>
+              <div class="go gh gq gv ro">Business settings</div>
+              <ul class=" a_ qx ra qm">
+                <li class="rv qm qg">
+                  <inertia-link class="flex items-center vp vr rounded lm hm" :href="route('user.profile')">
+                    <svg class="oo sl ub du text-indigo-400 mr-2" viewBox="0 0 16 16">
+                      <path
+                        d="M12.311 9.527c-1.161-.393-1.85-.825-2.143-1.175A3.991 3.991 0 0012 5V4c0-2.206-1.794-4-4-4S4 1.794 4 4v1c0 1.406.732 2.639 1.832 3.352-.292.35-.981.782-2.142 1.175A3.942 3.942 0 001 13.26V16h14v-2.74c0-1.69-1.081-3.19-2.689-3.733zM6 4c0-1.103.897-2 2-2s2 .897 2 2v1c0 1.103-.897 2-2 2s-2-.897-2-2V4zm7 10H3v-.74c0-.831.534-1.569 1.33-1.838 1.845-.624 3-1.436 3.452-2.422h.436c.452.986 1.607 1.798 3.453 2.422A1.943 1.943 0 0113 13.26V14z">
+                      </path>
+                    </svg>
+                    <span class="text-sm gp text-indigo-500">My Account</span>
+                  </inertia-link>
+                </li>
+                <!-- <li class="rv qm qg">
                       <a class="flex items-center vp vr rounded lm" href="#">
                         <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                           <path
@@ -48,7 +50,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                       </a>
                     </li> -->
 
-                    <!-- <li class="rv qm qg">
+                <!-- <li class="rv qm qg">
                       <inertia-link class="flex items-center vp vr rounded lm" :href="route('user.plans')">
                         <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                           <path
@@ -58,7 +60,7 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                         <span class="text-sm gp g_ xp">Plans</span>
                       </inertia-link>
                     </li> -->
-                    <!-- <li class="rv qm qg">
+                <!-- <li class="rv qm qg">
                             <a class="flex items-center vp vr rounded lm" href="#">
                                 <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
                                     <path d="M15 4c.6 0 1 .4 1 1v10c0 .6-.4 1-1 1H3c-1.7 0-3-1.3-3-3V3c0-1.7 1.3-3 3-3h7c.6 0 1 .4 1 1v3h4zM2 3v1h7V2H3c-.6 0-1 .4-1 1zm12 11V6H2v7c0 .6.4 1 1 1h11zm-3-5h2v2h-2V9z"></path>
@@ -66,38 +68,37 @@ import { InertiaLink } from '@inertiajs/inertia-vue3'
                                 <span class="text-sm gp g_ xp">Billing &amp; Invoices</span>
                             </a>
                         </li> -->
-                  </ul>
-                </div>
-                <!-- Group 2 -->
-                <div>
-                  <div class="go gh gq gv ro">Experience</div>
-                  <ul class="flex a_ qx ra qm">
-                    <li class="rv qm qg">
-                      <inertia-link class="flex items-center vp vr rounded lm" :href="route('user.create.ticket')">
-                        <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
-                          <path
-                            d="M7.001 3h2v4h-2V3zm1 7a1 1 0 110-2 1 1 0 010 2zM15 16a1 1 0 01-.6-.2L10.667 13H1a1 1 0 01-1-1V1a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1zM2 11h9a1 1 0 01.6.2L14 13V2H2v9z">
-                          </path>
-                        </svg>
-                        <span class="text-sm gp g_ xp">Create Ticket</span>
-                      </inertia-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Panel -->
-              <div class="uw">
-
-                <slot name="setting" />
-
-              </div>
-
+              </ul>
+            </div>
+            <!-- Group 2 -->
+            <div>
+              <div class="go gh gq gv ro">Experience</div>
+              <ul class="flex a_ qx ra qm">
+                <li class="rv qm qg">
+                  <inertia-link class="flex items-center vp vr rounded lm" :href="route('user.create.ticket')">
+                    <svg class="oo sl ub du gq mr-2" viewBox="0 0 16 16">
+                      <path
+                        d="M7.001 3h2v4h-2V3zm1 7a1 1 0 110-2 1 1 0 010 2zM15 16a1 1 0 01-.6-.2L10.667 13H1a1 1 0 01-1-1V1a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1zM2 11h9a1 1 0 01.6.2L14 13V2H2v9z">
+                      </path>
+                    </svg>
+                    <span class="text-sm gp g_ xp">Create Ticket</span>
+                  </inertia-link>
+                </li>
+              </ul>
             </div>
           </div>
 
+          <!-- Panel -->
+          <div class="uw">
+
+            <slot name="setting" />
+
+          </div>
+
         </div>
-      </main>
+      </div>
+      </div>
+
     </template>
   </AppLayout>
 </template>
