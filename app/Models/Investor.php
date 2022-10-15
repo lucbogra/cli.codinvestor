@@ -71,7 +71,7 @@ class Investor extends Model
     }
 
     public function products(){
-      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status', 'link')->withTimestamps();
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status', 'link')->where('active', true)->withTimestamps();
     }
 
     public function accessProducts(){
