@@ -50,9 +50,9 @@ class ReportController extends Controller
     $affected = $datas->sum('affected');
     $confirmed = $datas->sum('confirmed');
     $confirmed_sum = $datas->sum('confirmed_sum');
-    $delivered = Order::whereBetween('delivered_at', [$start, $end])->where('investor_id', $id)->selectRaw('count(delivered_at) as number')->first();
+    $delivered = Order::whereBetween('confirmed_at', [$start, $end])->where('status', 'Delivered')->where('investor_id', $id)->selectRaw('count(delivered_at) as number')->first();
     $returned = Order::whereBetween('returned_at', [$start, $end])->where('investor_id', $id)->count();
-    $delivery_created = Order::whereBetween('delivery_created_at', [$start, $end])->where('investor_id', $id)->count();
+    // $delivery_created = Order::whereBetween('delivery_created_at', [$start, $end])->where('investor_id', $id)->count();
 
     return response()->json([
       'datas' => $datas,
@@ -66,8 +66,8 @@ class ReportController extends Controller
       'delivered' => $delivered->number,
       'returned' => $returned,
       'confirmation_rate' => $affected != 0 ? number_format((float)$confirmed * 100 / $affected, 2, '.', '') : 0,
-      'delivery_rate' => $delivery_created != 0 ? number_format((float)$delivered->number * 100 / $delivery_created, 2, '.', '') : 0,
-      'returned_rate' => $delivery_created != 0 ? number_format((float)$returned * 100 / $delivery_created, 2, '.', '') : 0,
+      'delivery_rate' => $confirmed != 0 ? number_format((float)$delivered->number * 100 / $confirmed, 2, '.', '') : 0,
+      'returned_rate' => $confirmed != 0 ? number_format((float)$returned * 100 / $confirmed, 2, '.', '') : 0,
     ]);
   }
 
@@ -91,7 +91,7 @@ class ReportController extends Controller
     $products = auth()->user()->investor->accessProducts()->get()->map(function ($product) use($id, $reports){
       $datas = $reports->map(function ($item) use($id, $product) {
         $values = collect(json_decode($item->datas, ','))->where('id', $id)->pluck('products')->flatten(1)->where('id', $product->id)->first();
-        $delivered = Order::delivered()->where('product_id', $product->id)->where('delivered_at', $item->date)->count();
+        $delivered = Order::delivered()->where('product_id', $product->id)->where('confirmed_at', $item->date)->count();
         return [
           'date' => date('m-d', strtotime($item->date)),
           'uploaded' => $values !== null ? $values['uploaded'] : null,
