@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineAsyncComponent } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import LoadingButton from '@/Components/LoadingButton.vue';
 import Performance from './Performance.vue';
@@ -17,15 +17,23 @@ const form = useForm({
 })
 
 const reports = ref(null)
+const isLoading = ref(false)
 onMounted(async () => {
+  isLoading.value = true
   const res = await axios.get(route('performance', { start: props.dates.start, end: props.dates.end }))
   reports.value = res.data
+  isLoading.value = false
 })
 
 const submit = async () => {
+  isLoading.value = true
   const res = await axios.get(route('performance', { start: form.start, end: form.end }))
   reports.value = res.data
+  isLoading.value = false
 }
+const LoadingOverlay = defineAsyncComponent(() =>
+  import('@/Components/LoadingOverlay.vue')
+)
 </script>
 
 <template>
@@ -70,8 +78,8 @@ const submit = async () => {
         <Performance class="mb-5" v-if="reports != null" :performance="reports.datas" />
         <ConfirmationChart v-if="reports != null" :performance="reports.datas" />
       </div>
-
     </div>
+    <LoadingOverlay :is-loading="isLoading" />
     </template>
 
 

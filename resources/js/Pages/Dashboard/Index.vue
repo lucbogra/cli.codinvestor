@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { HomeIcon, ChevronLeftIcon } from '@heroicons/vue/solid';
 import axios from 'axios';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, defineAsyncComponent } from 'vue';
 import Top from './Top.vue';
 import ConfirmationChart from './ConfirmationChart.vue';
 import Performance from './Performance.vue';
@@ -18,14 +18,18 @@ onMounted(async () => {
   const perf = await axios.get(route('dashboard.performance'))
   performance.value = perf.data
 })
-
+const isLoading = ref(false)
 watch(time, async(newValue) => {
   if (newValue) {
+    isLoading.value = true
     const res = await axios.get(route('dashboard.top', {time:time.value}))
     topDatas.value = res.data
+    isLoading.value = false
   }
 })
-
+const LoadingOverlay = defineAsyncComponent(() =>
+  import('@/Components/LoadingOverlay.vue')
+)
 </script>
 
 <template>
@@ -73,6 +77,7 @@ watch(time, async(newValue) => {
           </div>
         </div>
       </div>
+      <LoadingOverlay :is-loading="isLoading" />
     </template>
 
 

@@ -58,16 +58,6 @@ const chartOptions = ref( {
 
 watch(series, async(newValue) => {
   if(newValue){
-    console.log(chart.series);
-  //   var me = this
-  //   chart.updateOptions( {
-  //     xaxis: {
-  //     enabled: false,
-  //     type: 'date',
-  //     categories: Object.values(props.performance).map((el) => el.date),
-  //   },
-  //  })
-  // chartOptions.value.xaxis.categories = Object.values(props.performance).map((el) => el.date)
   chartOptions.value = {
     xaxis : {
       categories: Object.values(props.performance).map((el) => el.date)

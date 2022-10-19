@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineAsyncComponent } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import LoadingButton from '@/Components/LoadingButton.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Products from './Products.vue';
 import ReportTop from './ReportTop.vue';
+import PageLoader from './PageLoader.vue';
 
 const props = defineProps({
   dates: Object,
@@ -19,13 +20,17 @@ const products = ref(null)
 onMounted(async () => {
   const prd_res = await axios.get(route('reports.products', { start: props.dates.start, end: props.dates.end }))
   products.value = prd_res.data
-  console.log(products.value)
 })
-
+const isLoading = ref(false)
 const submit = async () => {
+  isLoading.value = true
   const prd_res = await axios.get(route('reports.products', {start: form.start, end: form.end  }))
   products.value = prd_res.data
+  isLoading.value = false
 }
+const LoadingOverlay = defineAsyncComponent(() =>
+  import('@/Components/LoadingOverlay.vue')
+)
 </script>
 
 <template>
@@ -65,10 +70,13 @@ const submit = async () => {
           </div> -->
       </div>
 
+      <PageLoader v-if="products == null" />
+
       <ReportTop v-if="products != null" :datas="products.datas" />
 
       <Products v-if="products != null" :products="products.products" />
     </div>
+      <LoadingOverlay :is-loading="isLoading" />
     </template>
 
 

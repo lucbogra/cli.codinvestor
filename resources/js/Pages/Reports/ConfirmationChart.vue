@@ -56,7 +56,6 @@ const chartOptions = ref({
 
 watch(series, (newValue) => {
   if(newValue){
-    console.log(chart.series);
     chartOptions.value = {
       xaxis : {
         categories: Object.values(props.performance).map((el) => el.date)
