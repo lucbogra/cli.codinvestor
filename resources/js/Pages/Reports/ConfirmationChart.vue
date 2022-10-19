@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
   performance: Array
@@ -29,7 +29,7 @@ const series = computed(() =>
   }]
 )
 
-const chartOptions = {
+const chartOptions = ref({
   chart: {
     height: 350,
     type: 'area',
@@ -52,6 +52,17 @@ const chartOptions = {
     text: 'Last 30 days performance trend (uploaded)',
     align: 'left'
   },
-}
+})
+
+watch(series, (newValue) => {
+  if(newValue){
+    console.log(chart.series);
+    chartOptions.value = {
+      xaxis : {
+        categories: Object.values(props.performance).map((el) => el.date)
+      }
+    }
+  }
+})
 
 </script>

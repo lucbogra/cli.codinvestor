@@ -46,9 +46,8 @@ class DashboardController extends Controller
 
   public function performance(){
 
-    $date = Carbon::now();
-    $start = $date->startOfMonth()->format('Y-m-d');
-    $end = $date->endOfMonth()->format('Y-m-d');
+    $end = date('Y-m-d');
+    $start = date("Y-m-d", strtotime('- 30 days'));
     $id = auth()->user()->investor->id;
 
     $confirmation_chart = ScheduledReport::whereBetween('date', [$start, $end])->get()->map(function ($item) use($id){

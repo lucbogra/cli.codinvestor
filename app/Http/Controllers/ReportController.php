@@ -13,7 +13,7 @@ use Inertia\Inertia;
 class ReportController extends Controller
 {
   public function analytics(){
-    $start = Request::get('start') ? Request::get('start') : date("Y-m-d", strtotime('- 29 days'));
+    $start = Request::get('start') ? Request::get('start') : date("Y-m-d", strtotime('- 30 days'));
     $end = Request::get('end') ? Request::get('end') : date("Y-m-d");
 
     return  Inertia::render('Reports/Analytics', [

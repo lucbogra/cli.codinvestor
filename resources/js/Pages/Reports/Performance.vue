@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, nextTick  } from 'vue';
 
 const props = defineProps({
   performance: Array
@@ -56,16 +56,25 @@ const chartOptions = ref( {
   },
 })
 
-// watch(props.performance,(newValue) => {
-//   if(newValue){
-//     this.updateOptions( {
-//       xaxis: {
-//     enabled: false,
-//     type: 'date',
-//     categories: Object.values(newValue).map((el) => el.date),
-//   },
-//     })
-//   }
-// })
+watch(series, async(newValue) => {
+  if(newValue){
+    console.log(chart.series);
+  //   var me = this
+  //   chart.updateOptions( {
+  //     xaxis: {
+  //     enabled: false,
+  //     type: 'date',
+  //     categories: Object.values(props.performance).map((el) => el.date),
+  //   },
+  //  })
+  // chartOptions.value.xaxis.categories = Object.values(props.performance).map((el) => el.date)
+  chartOptions.value = {
+    xaxis : {
+      categories: Object.values(props.performance).map((el) => el.date)
+    }
+  }
+  await nextTick()
+  }
+})
 
 </script>
