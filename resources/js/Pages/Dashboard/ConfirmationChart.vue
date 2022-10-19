@@ -40,7 +40,7 @@ const lineChartOptions = {
     }
   },
   dataLabels: {
-    enabled: true
+    // enabled: true
   },
   stroke: {
     curve: 'smooth'
