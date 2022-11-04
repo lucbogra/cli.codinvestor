@@ -41,7 +41,7 @@ import Pagination from '@/Components/Pagination.vue';
                 </template>
                 <template #body="{ rows }">
                   <tr v-for="(invoice, index) in rows" :key="invoice.id" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6 font-medium text-gray-900"> {{ invoice.date }} </td>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6 font-medium text-gray-900"> {{ invoice.created_at }} </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">{{ invoice.slug }} </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ invoice.amount+' USD' }}</td>
                     <td :class="['whitespace-nowrap px-3 py-4 text-sm font-medium']">

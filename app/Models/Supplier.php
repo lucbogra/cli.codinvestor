@@ -15,4 +15,9 @@ class Supplier extends Model
     {
       return $this->hasMany(SupplierProduct::class);
     }
+
+    public function invoices()
+    {
+      return $this->morphMany(Invoice::class, 'invoiceable');
+    }
 }

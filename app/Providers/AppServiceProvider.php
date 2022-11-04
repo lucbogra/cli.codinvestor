@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -25,11 +26,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Inertia::share('auth.user', function() {
-            return [
-                'loggedIn' => Auth::check()
-            ];
-        });
+      JsonResource::withoutWrapping();
+
+      Inertia::share('auth.user', function() {
+          return [
+              'loggedIn' => Auth::check()
+          ];
+      });
 
 
     }

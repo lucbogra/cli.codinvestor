@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
+use App\Scopes\InvoiceScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -13,15 +13,16 @@ class Invoice extends Model
 
   protected static function booted()
   {
-    static::addGlobalScope(new UserScope);
+    static::addGlobalScope(new InvoiceScope);
   }
   public function getRouteKeyName()
   {
     return 'slug';
   }
 
-  public function user(){
-    return $this->belongsTo(User::class);
+  public function invoiceable()
+  {
+    return $this->morphTo();
   }
 
   public function getFileUrlAttribute(){

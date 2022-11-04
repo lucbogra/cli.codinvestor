@@ -74,8 +74,8 @@ Route::middleware([
 
     Route::prefix('invoices')->group(function() {
       Route::get('index', [InvoiceController::class, 'index'])->name('invoices.index');
-      Route::get('/{slug}', [InvoiceController::class, 'show'])->name('invoice.show');
-      Route::get('/{notification}/{slug}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
+      Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
+      Route::get('/{notification}/{invoice}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
     });
 
 });
