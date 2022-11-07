@@ -13,6 +13,7 @@ const props = defineProps({
 const form = useForm({
   type : 'Payoneer',
   account_type : props.datas.account_type,
+  account_number : props.datas.account_number,
   email : props.datas.email,
   account_holder : props.datas.account_holder,
   routing_number : props.datas.routing_number,
@@ -54,6 +55,14 @@ const submit = () => {
             <div class="mt-1 sm:col-span-2 sm:mt-0">
               <input type="text" name="account_type" id="account_type" v-model="form.account_type" placeholder="Account type" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" />
               <InputError :message="form.errors.account_type" class="mt-2" />
+            </div>
+          </div>
+
+          <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4  sm:py-5 px-1">
+            <label for="account_number" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Account Number</label>
+            <div class="mt-1 sm:col-span-2 sm:mt-0">
+              <input type="text" name="account_number" id="account_number" v-model="form.account_number" placeholder="Account number" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" />
+              <InputError :message="form.errors.account_number" class="mt-2" />
             </div>
           </div>
 

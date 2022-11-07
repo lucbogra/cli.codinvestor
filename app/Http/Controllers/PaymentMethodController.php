@@ -80,6 +80,7 @@ class PaymentMethodController extends Controller
       if ($request->default == true){
         $request->validate([
           'account_type' => ['required', 'max:100'],
+          'account_number' => ['required', 'max:255'],
           'email' => ['required', 'email', 'max:255'],
           'account_holder' => ['required', 'max:255'],
           'routing_number' => ['required', 'max:150'],
@@ -89,11 +90,11 @@ class PaymentMethodController extends Controller
         ]);
       }
       $payment_method->update([
-        'datas->payoneer' => FacadesRequest::all('account_type', 'email', 'account_holder', 'routing_number', 'address', 'country', 'account_currency'),
+        'datas->payoneer' => FacadesRequest::all('account_type', 'account_number', 'email', 'account_holder', 'routing_number', 'address', 'country', 'account_currency'),
       ]);
       if($request->default == true){
         $payment_method->update([
-          'datas->default' => FacadesRequest::all('type', 'account_type', 'email', 'account_holder', 'routing_number', 'address', 'country', 'account_currency'),
+          'datas->default' => FacadesRequest::all('type', 'account_type', 'account_number', 'email', 'account_holder', 'routing_number', 'address', 'country', 'account_currency'),
         ]);
       }
 
