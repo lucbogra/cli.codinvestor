@@ -51,7 +51,7 @@ class ReportController extends Controller
     $confirmed = $datas->sum('confirmed');
     $confirmed_sum = $datas->sum('confirmed_sum');
     $delivered = Order::whereBetween('confirmed_at', [$start, $end])->where('status', 'Delivered')->where('investor_id', $id)->selectRaw('count(delivered_at) as number')->first();
-    $returned = Order::whereBetween('returned_at', [$start, $end])->where('investor_id', $id)->count();
+    $returned = Order::whereBetween('confirmed_at', [$start, $end])->where('status', 'Returned')->where('investor_id', $id)->count();
     // $delivery_created = Order::whereBetween('delivery_created_at', [$start, $end])->where('investor_id', $id)->count();
 
     return response()->json([
