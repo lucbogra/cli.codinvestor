@@ -47,6 +47,7 @@ CollectionIcon,
 CreditCardIcon,
 PresentationChartLineIcon,
 ClipboardListIcon,
+CashIcon,
 } from '@heroicons/vue/outline'
 import {
 ShoppingCartIcon,
@@ -58,6 +59,7 @@ import Top from './Top.vue'
 import FlashMessages from './FlashMessages.vue'
 import { usePage } from '@inertiajs/inertia-vue3';
 import route from '../../../vendor/tightenco/ziggy/src/js';
+import { auth } from '../Pages/Permissions'
 
 
 const props = defineProps({
@@ -73,32 +75,34 @@ const isUrl  = (...urls) => {
 }
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl('') },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl(''), show : true },
 
-  { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace') },
+  { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace'), show : true },
 
-  { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: isUrl('/products') },
+  { name: 'Products', href: route('marketplace.products'), icon: ViewListIcon, current: isUrl('/products'), show : true },
 
-  { name: 'Orders', href: route('orders.index'), icon: CollectionIcon, current: isUrl('/orders') },
+  { name: 'Orders', href: route('orders.index'), icon: CollectionIcon, current: isUrl('/orders'), show : true },
 
   // { name: 'History', href: '#', icon: ClockIcon, current: false },
 
-  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports') },
+  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports'), show : true },
 
-  { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics') },
+  { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics'), show : true },
 
-  { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices') },
+  { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices'), show : true },
 
+  { name: 'Fundings', href: route('fundings.index'), icon: CashIcon, current: isUrl('/fundings'), show : auth.value.hasPermission('have funding')},
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },
   { name: 'Billing Settings', href: route('billing.index'), icon: CreditCardIcon, current: isUrl('/billing') },
   { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon },
+  // { name: 'Services', href: route('services.index'), icon: CollectionIcon},
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
 
 onMounted(() => {
-    document.title = props.title
+  document.title = props.title
 })
 const sidebarOpen = ref(false)
 

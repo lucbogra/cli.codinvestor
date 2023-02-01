@@ -25,6 +25,11 @@ class Invoice extends Model
     return $this->morphTo();
   }
 
+  public function fundings()
+  {
+    return $this->belongsToMany(Funding::class, 'funding_invoice')->withPivot('amount_paid');
+  }
+
   public function getFileUrlAttribute(){
     return $this->attributes['file_url'] ? Storage::disk('s3')->temporaryUrl($this->attributes['file_url'], now()->addMinutes(600)) : null;
   }

@@ -64,18 +64,36 @@ class HandleInertiaRequests extends Middleware
           'link' => route('invoice.notification.show', [$notification->id, $notification->data['slug']]),
         ];
       }) : null;
+      $new_fundings = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\FundingCreationNotification')->map(function ($notification){
+        return[
+          'id' => $notification->id,
+          'text' => $notification->data['text'],
+          'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
+          'link' => route('fundings.index'),
+        ];
+      }) : null;
 
         return array_merge(parent::share($request), [
-            'flash' => function () use ($request) {
-                return [
-                    'success' => $request->session()->get('success'),
-                    'error' => $request->session()->get('error'),
-                ];
-            },
-            'balance' => $request->user() ? $request->user()->investor->wallet : null,
-            'logo' => WebSetting::first()->logo_white,
-            'logo_color' => WebSetting::first()->logo,
-            'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications) : null,
+          'flash' => function () use ($request) {
+              return [
+                  'success' => $request->session()->get('success'),
+                  'error' => $request->session()->get('error'),
+              ];
+          },
+          'auth' => function () use ($request) {
+            return [
+              'user' => $request->user() ? [
+                'ip' => $_SERVER['REMOTE_ADDR'],
+                'role' => $request->user()->role,
+                'permissions' => $request->user()->getAllPermissions()->pluck('name'),
+                'balance' => $request->user()->investor->wallet,
+                'funding' => $request->user()->investor->funding
+              ] : null,
+            ];
+          },
+          'logo' => WebSetting::first()->logo_white,
+          'logo_color' => WebSetting::first()->logo,
+          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings) : null,
         ]);
     }
 }

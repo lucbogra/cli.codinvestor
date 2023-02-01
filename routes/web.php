@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FundingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +79,17 @@ Route::middleware([
       Route::get('index', [InvoiceController::class, 'index'])->name('invoices.index');
       Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
       Route::get('/{notification}/{invoice}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
+    });
+
+    Route::prefix('services')->group( function() {
+      Route::get('index', [ServiceController::class, 'index'])->name('services.index');
+    });
+
+    Route::get('/fundings', [FundingController::class, 'index'])->name('fundings.index');
+
+    Route::prefix('user')->group( function() {
+      Route::get('company', [UserController::class, 'company'])->name('users.company');
+      Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
     });
 
 });

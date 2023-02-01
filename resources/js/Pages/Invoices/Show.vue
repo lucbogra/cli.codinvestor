@@ -1,9 +1,13 @@
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue'
   import { PaperClipIcon } from '@heroicons/vue/outline';
+import { computed } from 'vue';
   const props = defineProps({
     invoice: Object,
   });
+
+  const products_amount = computed(() => props.invoice.products.map((el) => el.amount).reduce((a,b) => a + b, 0))
+  const fundings_amount = computed(() => props.invoice.fundings.map((el) => el.pivot.amount_paid).reduce((a,b) => a + b, 0))
 
   </script>
   <template>
@@ -44,14 +48,41 @@
                   </tr>
                   <tr>
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900"> Total</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900">{{ invoice.amount+' USD' }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900">{{ products_amount+' USD' }}</td>
                   </tr>
                   <tr v-if="rows.length === 0">
                    <td class="border-t px-3 py-4" colspan="6">No product found.</td>
                   </tr>
                 </template>
               </VTable>
+            </div>
+          </div>
 
+          <div class="bg-white overflow-x-auto rounded-lg border-slate-200 mt-4" v-if="invoice.fundings.length !== 0">
+            <div class="overflow-hidden">
+              <VTable :data="invoice.fundings" class="min-w-full bg-gray-50">
+                <template #head>
+                  <tr>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Funding</th>
+                    <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Paid amount</th>
+                  </tr>
+                </template>
+                <template #body="{ rows }">
+                  <tr v-for="(funding, index) in rows" :key="funding.slug" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                      {{ funding.slug }}
+                   </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> - {{ funding.pivot.amount_paid+' USD' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900"> Total</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900">- {{ fundings_amount+' USD' }}</td>
+                  </tr>
+                  <tr v-if="rows.length === 0">
+                   <td class="border-t px-3 py-4" colspan="6">No product found.</td>
+                  </tr>
+                </template>
+              </VTable>
             </div>
           </div>
 

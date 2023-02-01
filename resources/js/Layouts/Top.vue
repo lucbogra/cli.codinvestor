@@ -1,3 +1,24 @@
+<script setup>
+import { ref, computed } from 'vue'
+import { Link, usePage } from '@inertiajs/inertia-vue3'
+import { Menu, MenuButton, MenuItem, MenuItems, } from '@headlessui/vue'
+import { BellIcon, CashIcon, ScaleIcon } from '@heroicons/vue/outline'
+import { ChevronDownIcon, SearchIcon, } from '@heroicons/vue/solid'
+import { Inertia } from '@inertiajs/inertia'
+import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
+import { auth } from '../Pages/Permissions'
+
+const showSearchBox = ref(false)
+
+const showSearch = () => {
+  showSearchBox = !this.showSearchBox
+}
+
+const logout = () => {
+    Inertia.post(route('logout'));
+}
+
+</script>
 <template>
   <div class="flex-1 px-4 flex justify-between sm:px-6 lg:max-w-8xl lg:mx-auto lg:px-8 ">
     <div class="flex-1 flex">
@@ -19,9 +40,13 @@
           <i class="fa-brands fa-youtube fa-lg" style="color: #FF0000;"></i>
         </a>
       </div>
-      <div class="flex">
-        <ScaleIcon class=" flex-shrink-0 ml-1 h-5 w-5 mr-2 text-gray-400"/>
-         {{$page.props.balance}} USD
+      <div class="flex text-success">
+        <ScaleIcon class="flex-shrink-0 ml-1 h-5 w-5 mr-2"/>
+         +{{$page.props.auth.user.balance}} USD
+      </div>
+      <div class="ml-4 flex text-secondary" v-if="auth.hasPermission('have funding')">
+        <CashIcon class=" flex-shrink-0 ml-1 h-5 w-5 mr-2"/>
+         -{{$page.props.auth.user.funding}} USD
       </div>
 
       <Menu as="div" class="ml-3 relative">
@@ -139,43 +164,3 @@
 
   </div>
 </template>
-<script>
-import { ref, computed } from 'vue'
-import { Link, usePage } from '@inertiajs/inertia-vue3'
-import { Menu, MenuButton, MenuItem, MenuItems, } from '@headlessui/vue'
-import { BellIcon, ScaleIcon } from '@heroicons/vue/outline'
-import { ChevronDownIcon, SearchIcon, } from '@heroicons/vue/solid'
-import { Inertia } from '@inertiajs/inertia'
-import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
-
-export default {
-  components: {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    BellIcon,
-    ChevronDownIcon,
-    SearchIcon,
-    Link,
-    ScaleIcon,
-    JetDropdownLink,
-    Inertia
-  },
-  data() {
-    return {
-      showSearchBox: false
-    }
-  },
-  methods: {
-    showSearch() {
-      this.showSearchBox = !this.showSearchBox
-    },
-    logout () {
-    Inertia.post(route('logout'));
-    }
-  },
-  setup() {
-  },
-}
-</script>

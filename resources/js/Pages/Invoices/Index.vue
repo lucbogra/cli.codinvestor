@@ -35,7 +35,6 @@ import Pagination from '@/Components/Pagination.vue';
                     <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">#</th>
                     <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Amount</th>
                     <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Status</th>
-
                     <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Actions</th>
                   </tr>
                 </template>

@@ -17,6 +17,7 @@ class InvoiceResource extends JsonResource
   {
     $admin = $this->whenLoaded('admin');
     $invoiceable = $this->whenLoaded('invoiceable');
+    $fundings = $this->whenLoaded('fundings');
     return [
       'created_at' => $this->created_at->format('Y-m-d'),
       'slug' => $this->slug,
@@ -39,6 +40,7 @@ class InvoiceResource extends JsonResource
             'amount' => $line->amount,
           ];
       }),
+      'fundings' => $fundings,
     ];
   }
 }
