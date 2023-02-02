@@ -6,6 +6,7 @@ use App\Http\Controllers\FundingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReportController;
@@ -90,6 +91,7 @@ Route::middleware([
     Route::prefix('user')->group( function() {
       Route::get('company', [UserController::class, 'company'])->name('users.company');
       Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
+      Route::resource('/members', MemberController::class);
     });
 
 });

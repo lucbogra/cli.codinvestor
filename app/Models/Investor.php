@@ -44,6 +44,11 @@ class Investor extends Model
       return $this->belongsTo(User::class, 'manager_id');
     }
 
+    public function members()
+    {
+      return $this->hasMany(Member::class, 'affiliate_id');
+    }
+
     public function getNameAttribute()
     {
         return $this->first_name.' '.$this->last_name;

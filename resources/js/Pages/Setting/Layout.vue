@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { KeyIcon, OfficeBuildingIcon, UserCircleIcon } from '@heroicons/vue/outline'
+import { KeyIcon, OfficeBuildingIcon, UserCircleIcon, UserGroupIcon } from '@heroicons/vue/outline'
 import { usePage } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronLeftIcon } from '@heroicons/vue/solid'
@@ -20,6 +20,7 @@ const isUrl = (...urls) => {
 
 const navigation = [
   { name: 'Account', href: route('user.profile'), icon: UserCircleIcon, current: isUrl('user/profile') },
+  { name: 'Members', href: route('members.index'), icon: UserGroupIcon, current: isUrl('user/members') },
   { name: 'Company', href: route('users.company'), icon: OfficeBuildingIcon, current: isUrl('user/company') },
   { name: 'Tickets', href: route('user.create.ticket'), icon: KeyIcon, current: isUrl('user/create-ticket') },
 ]
