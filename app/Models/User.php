@@ -75,8 +75,16 @@ class User extends Authenticatable
       return $this->hasOne(Investor::class);
     }
 
-    public function getProfilePhotoUrlAttribute($value) {
-        return (is_null($value)) ? 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name)
-                : Storage::disk('s3')->temporaryUrl($this->attributes['profile_photo_url'], now()->addMinutes(10));
+    public function member(){
+      return $this->hasOne(Member::class);
     }
+
+    public function getRoleAttribute(){
+      return $this->getRoleNames()->first();
+    }
+
+    // public function getProfilePhotoUrlAttribute($value) {
+    //     return (is_null($value)) ? 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name)
+    //             : Storage::disk('s3')->temporaryUrl($this->attributes['profile_photo_url'], now()->addMinutes(10));
+    // }
 }

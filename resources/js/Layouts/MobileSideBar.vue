@@ -19,17 +19,22 @@
             </div>
             <nav class="mt-5 flex-shrink-0 h-full divide-y divide-primary-600 overflow-y-auto" aria-label="Sidebar">
               <div class="px-2 space-y-1">
-                <Link v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-primary-700 text-white' : 'text-white hover:text-white hover:bg-primary-700', 'group flex items-center px-2 py-2 text-base font-medium rounded-md']" :aria-current="item.current ? 'page' : undefined">
-                  <component :is="item.icon" class="mr-4 flex-shrink-0 h-6 w-6 text-white" aria-hidden="true" />
-                  {{ item.name }}
-                </Link>
+                <div v-for="item in navigation" :key="item.name">
+                  <Link v-if="item.show" :href="item.href" :class="[item.current ? 'bg-primary-700 text-white' : 'text-white hover:text-white hover:bg-primary-700', 'group flex items-center px-2 py-2 text-base font-medium rounded-md']" :aria-current="item.current ? 'page' : undefined">
+                    <component :is="item.icon" class="mr-4 flex-shrink-0 h-6 w-6 text-white" aria-hidden="true" />
+                    {{ item.name }}
+                  </Link>
+                </div>
+
               </div>
               <div class="mt-6 pt-6">
                 <div class="px-2 space-y-1">
-                  <Link v-for="item in secondaryNavigation" :key="item.name" :href="item.href" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-white hover:text-white hover:bg-primary-700">
-                    <component :is="item.icon" class="mr-4 h-6 w-6 text-white" aria-hidden="true" />
-                    {{ item.name }}
-                  </Link>
+                  <div v-for="item in secondaryNavigation" :key="item.name">
+                    <Link v-if="item.show" :href="item.href" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-white hover:text-white hover:bg-primary-700">
+                      <component :is="item.icon" class="mr-4 h-6 w-6 text-white" aria-hidden="true" />
+                      {{ item.name }}
+                    </Link>
+                  </div>
                 </div>
               </div>
             </nav>

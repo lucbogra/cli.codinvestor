@@ -35,7 +35,7 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            if ($user && $user->hasRole('Investor') &&
+            if ($user && ($user->hasRole('Investor') || $user->hasRole('Member')) &&
                 Hash::check($request->password, $user->password)) {
                 return $user;
             }

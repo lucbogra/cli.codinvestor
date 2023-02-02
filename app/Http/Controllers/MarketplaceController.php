@@ -20,30 +20,18 @@ use Inertia\Inertia;
 
 class MarketplaceController extends Controller
 {
+  protected  $investor;
+
+  public function __construct()
+  {
+    $this->middleware(function ($request, $next) {
+      $this->investor = $request->user()->hasRole('Investor') ? $request->user()->investor : ($request->user()->hasRole('Member') ? $request->user()->member->investor : null);
+      return $next($request);
+    });
+  }
+
   public function index(Request $request)
   {
-    // $categories = Category::all();
-    // $products = Product::where('active', 1)->paginate(12);
-    // if ($request->category) {
-    //   $category = Category::findOrFail($request->category);
-    //   $products = $category->products;
-    // }
-    // if ($request->showing) {
-    //   $products = Product::where('active', 1)->take($request->showing)->paginate(12);
-    // }
-    // if ($request->sort_by) {
-    //   switch ($request->sort_by) {
-    //     case 'newest':
-    //       $products = Product::where('active', 1)->orderBy('created_at', 'desc')->paginate(12);
-    //       break;
-    //     case 'oldest':
-    //       $products = Product::where('active', 1)->orderBy('created_at', 'asc')->paginate(12);
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
-
     $products = Product::active()->filter(request()->only('search', 'country', 'category'))
       ->paginate(request()->paginate ?? 12)
       ->withQueryString()
@@ -57,12 +45,8 @@ class MarketplaceController extends Controller
         ];
     });
 
-    // dd($products);
-
-
     $countries = Location::select('id','country')->get();
     $categories = Category::select('id', 'name')->get();
-
 
     return Inertia::render('Marketplace/Index', [
       'filters' => request()->only('search', 'country', 'category', 'paginate'),
@@ -100,7 +84,7 @@ class MarketplaceController extends Controller
           ->where('products.id', $product->id)
           ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
           ->groupBy('country')->get(),
-        'exist_request' => Auth::user()->investor->has_requested($product->id)->select('status')->first(),
+        'exist_request' => $this->investor->has_requested($product->id)->select('status')->first(),
       ],
 
     ]);
@@ -109,10 +93,9 @@ class MarketplaceController extends Controller
   public function request(Request $request)
   {
     $request->validate(['product_id' => ['required', 'exists:products,id']] );
-    $investor = Investor::where('user_id', auth()->id())->first();
-    if ($investor) {
-      $investor->products()->attach($request->product_id);
-      Notification::send($investor->manager, new ProductRequestNotification($request->product_id));
+    if ($this->investor) {
+      $this->investor->products()->attach($request->product_id);
+      Notification::send($this->investor->manager, new ProductRequestNotification($request->product_id, $this->investor));
       return back();
     } else {
       abort(404) ;
@@ -122,9 +105,7 @@ class MarketplaceController extends Controller
   public function products(Request $request)
   {
     $products = [];
-    $investor = Investor::where('user_id', auth()->id())->first();
-
-    $products = $investor->products()->wherePivot('status', 'access')
+    $products = $this->investor->products()->wherePivot('status', 'access')
       ->paginate(10)
       ->withQueryString()
       ->through(function ($product){
@@ -141,7 +122,7 @@ class MarketplaceController extends Controller
         ];
       });
 
-    if ($investor) {
+    if ($this->investor) {
       return Inertia::render('Marketplace/Product', [
         'products' => $products
       ]);
@@ -156,7 +137,7 @@ class MarketplaceController extends Controller
       'product_id' => ['required', 'exists:products,id']
     ]);
 
-    auth()->user()->investor->products()->updateExistingPivot($request->product_id, ['link' => $request->link]);
+    $this->investor->products()->updateExistingPivot($request->product_id, ['link' => $request->link]);
 
     return back()->with('success', 'Link updated.');
   }

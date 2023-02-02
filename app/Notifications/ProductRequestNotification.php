@@ -18,9 +18,11 @@ class ProductRequestNotification extends Notification
      * @return void
      */
     public $product_id;
-    public function __construct($product_id)
+    public $investor;
+    public function __construct($product_id, $investor)
     {
-        $this->product_id = $product_id;
+      $this->product_id = $product_id;
+      $this->investor = $investor;
     }
 
     /**
@@ -59,7 +61,7 @@ class ProductRequestNotification extends Notification
         return [
             'message' => 'request sent',
             'product' => Product::find($this->product_id)->name,
-            'investor' => auth()->user()->investor->name
+            'investor' => $this->investor->name
         ];
     }
 }

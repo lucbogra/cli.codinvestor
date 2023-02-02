@@ -75,7 +75,7 @@ const isUrl  = (...urls) => {
 }
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl(''), show : true },
+  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current:  isUrl(''), show : auth.value.hasRole('Investor') },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace'), show : true },
 
@@ -85,18 +85,18 @@ const navigation = [
 
   // { name: 'History', href: '#', icon: ClockIcon, current: false },
 
-  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports'), show : true },
+  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports'), show : auth.value.hasPermission('affiliate show reports') },
 
-  { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics'), show : true },
+  { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics'), show : auth.value.hasPermission('affiliate show analytics') },
 
-  { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices'), show : true },
+  { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices'), show : auth.value.hasPermission('affiliate show invoices') },
 
   { name: 'Fundings', href: route('fundings.index'), icon: CashIcon, current: isUrl('/fundings'), show : auth.value.hasPermission('have funding')},
 ]
 const secondaryNavigation = [
-  { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user') },
-  { name: 'Billing Settings', href: route('billing.index'), icon: CreditCardIcon, current: isUrl('/billing') },
-  { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon },
+  { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user'), show : true },
+  { name: 'Billing Settings', href: route('billing.index'), icon: CreditCardIcon, current: isUrl('/billing'), show : auth.value.hasRole('Investor') },
+  { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon, show : true },
   // { name: 'Services', href: route('services.index'), icon: CollectionIcon},
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]

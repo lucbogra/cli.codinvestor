@@ -4,6 +4,7 @@ import { KeyIcon, OfficeBuildingIcon, UserCircleIcon, UserGroupIcon } from '@her
 import { usePage } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronLeftIcon } from '@heroicons/vue/solid'
+import { auth } from '../Permissions';
 
 
 const props = defineProps({
@@ -19,10 +20,10 @@ const isUrl = (...urls) => {
 }
 
 const navigation = [
-  { name: 'Account', href: route('user.profile'), icon: UserCircleIcon, current: isUrl('user/profile') },
-  { name: 'Members', href: route('members.index'), icon: UserGroupIcon, current: isUrl('user/members') },
-  { name: 'Company', href: route('users.company'), icon: OfficeBuildingIcon, current: isUrl('user/company') },
-  { name: 'Tickets', href: route('user.create.ticket'), icon: KeyIcon, current: isUrl('user/create-ticket') },
+  { name: 'Account', href: route('user.profile'), icon: UserCircleIcon, current: isUrl('user/profile'), show : true },
+  { name: 'Members', href: route('members.index'), icon: UserGroupIcon, current: isUrl('user/members'), show : auth.value.hasRole('Investor') },
+  { name: 'Company', href: route('users.company'), icon: OfficeBuildingIcon, current: isUrl('user/company'), show : auth.value.hasRole('Investor') },
+  { name: 'Tickets', href: route('user.create.ticket'), icon: KeyIcon, current: isUrl('user/create-ticket'), show : true },
 ]
 
 </script>
@@ -57,16 +58,19 @@ const navigation = [
       <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
         <aside class="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
           <nav class="space-y-1">
-            <Link v-for="item in navigation" :key="item.name" :href="item.href"
-              :class="[item.current ? 'bg-gray-50 text-cyan-700 hover:text-cyan-700 hover:bg-white' : 'text-gray-900 hover:text-gray-900 hover:bg-gray-50', 'group rounded-md px-3 py-2 flex items-center text-sm font-medium']"
-              :aria-current="item.current ? 'page' : undefined">
-              <component :is="item.icon"
-                :class="[item.current ? 'text-cyan-500 group-hover:text-cyan-500' : 'text-gray-400 group-hover:text-gray-500', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6']"
-                aria-hidden="true" />
-              <span class="truncate">
-                {{ item.name }}
-              </span>
-            </Link>
+            <div v-for="item in navigation" :key="item.name">
+              <Link v-if="item.show" :href="item.href"
+                :class="[item.current ? 'bg-gray-50 text-cyan-700 hover:text-cyan-700 hover:bg-white' : 'text-gray-900 hover:text-gray-900 hover:bg-gray-50', 'group rounded-md px-3 py-2 flex items-center text-sm font-medium']"
+                :aria-current="item.current ? 'page' : undefined">
+                <component :is="item.icon"
+                  :class="[item.current ? 'text-cyan-500 group-hover:text-cyan-500' : 'text-gray-400 group-hover:text-gray-500', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6']"
+                  aria-hidden="true" />
+                <span class="truncate">
+                  {{ item.name }}
+                </span>
+              </Link>
+            </div>
+
           </nav>
         </aside>
 

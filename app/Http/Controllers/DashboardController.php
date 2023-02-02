@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\ScheduledReport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
   public function index(){
+    if(request()->user()->hasRole('Member')){
+      return Redirect::route('marketplace.index');
+    }
     return Inertia::render('Dashboard/Index');
   }
 

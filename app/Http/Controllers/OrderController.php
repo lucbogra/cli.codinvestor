@@ -11,6 +11,16 @@ use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+  protected  $investor;
+
+  public function __construct()
+  {
+    $this->middleware(function ($request, $next) {
+      $this->investor = $request->user()->hasRole('Investor') ? $request->user()->investor : ($request->user()->hasRole('Member') ? $request->user()->member->investor : null);
+      return $next($request);
+    });
+  }
+
   public function orders()
   {
     return Inertia::render('Orders/Index', [
@@ -43,7 +53,7 @@ class OrderController extends Controller
       'file' => ['required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'],
     ]);
 
-    (new OrderImport(auth()->user()->investor->id))->import($request->file('file'));
+    (new OrderImport($this->investor->id))->import($request->file('file'));
     return redirect()->route('orders.index');
 
   }

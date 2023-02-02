@@ -11,6 +11,7 @@ use App\Models\WebsiteProduct;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -20,7 +21,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class OrderImport implements ToModel, WithHeadingRow, WithValidation
+class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 // , WithBatchInserts, WithChunkReading
 {
   use Importable;
@@ -29,32 +30,32 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+  protected $investor_id;
+  public function __construct(int $investor_id)
+  {
+    $this->investor_id = $investor_id;
+  }
 
-    public function __construct(int $investor_id)
-    {
-      $this->investor_id = $investor_id;
-    }
+  public function model(array $row)
+  {
+      // ImportOrdersjob::dispatch($row);
+      $product = $this->products($row['product sku']);
 
-    public function model(array $row)
-    {
-        // ImportOrdersjob::dispatch($row);
-        $product = $this->products($row['product sku']);
-
-        return new Order([
-            'customer_name'              => $row['customer name'],
-            'phone'                      => $row['customer phone'],
-            'customer_city'              => $row['customer city'],
-            'product_name'               => $row['product sku'],    //Helper::_getRealSku($row['product']),
-            'country'                    => $row['country'],
-            'website'                    => $row['website'],
-            'price'                      => $row['price'],
-            'investor_id'                => $this->investor_id,
-            'status'                     => Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com' ? 'pending' : (isset($product) ? 'pending' : 'rejected'),
-            'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
-            'product_id'                 => isset($product) ? $product->id : null,
-            'commission'                 => isset($product) ? $product->commission : 0,
-        ]);
-    }
+      return new Order([
+          'customer_name'              => $row['customer name'],
+          'phone'                      => $row['customer phone'],
+          'customer_city'              => $row['customer city'],
+          'product_name'               => $row['product sku'],    //Helper::_getRealSku($row['product']),
+          'country'                    => $row['country'],
+          'website'                    => $row['website'],
+          'price'                      => $row['price'],
+          'investor_id'                => $this->investor_id,
+          'status'                     => Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com' ? 'pending' : (isset($product) ? 'pending' : 'rejected'),
+          'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
+          'product_id'                 => isset($product) ? $product->id : null,
+          'commission'                 => isset($product) ? $product->commission : 0,
+      ]);
+  }
 
     public function rules(): array
     {

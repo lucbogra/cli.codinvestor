@@ -48,35 +48,35 @@ Route::middleware([
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
     Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
     Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
-    Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request');
+    Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request')->middleware('permission:affiliate send product request');
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
     Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');
-    Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link');
-    Route::get('orders', [OrderController::class, 'orders'])->name('orders.index');
-    Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import');
+    Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link')->middleware('permission:affiliate set product link');
+    Route::get('orders', [OrderController::class, 'orders'])->name('orders.index')->middleware('permission:affiliate import order');
+    Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware('permission:affiliate import order');
 
     // User profile
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('profile', [HomeController::class, 'profile'])->name('profile');
         Route::get('plans', [WebController::class, 'plans'])->name('plans');
-        Route::get('create-ticket', [WebController::class, 'createTicket'])->name('create.ticket');
-        Route::post('store-ticket', [WebController::class, 'storeTicket'])->name('store.ticket');
+        Route::get('create-ticket', [WebController::class, 'createTicket'])->name('create.ticket')->middleware('permission:affiliate send ticket');
+        Route::post('store-ticket', [WebController::class, 'storeTicket'])->name('store.ticket')->middleware('permission:affiliate send ticket');
     });
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('help-us', [WebController::class, 'help'])->name('help');
 
-    Route::get('analytics', [ReportController::class, 'analytics'])->name('analytics');
-    Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance');
-    Route::get('reports', [ReportController::class, 'reports'])->name('reports');
-    Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products');
+    Route::get('analytics', [ReportController::class, 'analytics'])->name('analytics')->middleware('permission:affiliate show analytics');
+    Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance')->middleware('permission:affiliate show analytics');
+    Route::get('reports', [ReportController::class, 'reports'])->name('reports')->middleware('permission:affiliate show reports');
+    Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products')->middleware('permission:affiliate show reports');
 
-    Route::prefix('billing')->group(function () {
+    Route::prefix('billing')->middleware('permission:affiliate manage billing settings')->group(function () {
       Route::get('index', [PaymentMethodController::class, 'index'])->name('billing.index');
       Route::put('update', [PaymentMethodController::class, 'update'])->name('billing.update');
     });
 
-    Route::prefix('invoices')->group(function() {
+    Route::prefix('invoices')->middleware('permission:affiliate show invoices')->group(function() {
       Route::get('index', [InvoiceController::class, 'index'])->name('invoices.index');
       Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
       Route::get('/{notification}/{invoice}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
@@ -86,9 +86,9 @@ Route::middleware([
       Route::get('index', [ServiceController::class, 'index'])->name('services.index');
     });
 
-    Route::get('/fundings', [FundingController::class, 'index'])->name('fundings.index');
+    Route::get('/fundings', [FundingController::class, 'index'])->name('fundings.index')->middleware('role:Investor');
 
-    Route::prefix('user')->group( function() {
+    Route::prefix('user')->middleware('role:Investor')->group( function() {
       Route::get('company', [UserController::class, 'company'])->name('users.company');
       Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
       Route::resource('/members', MemberController::class);

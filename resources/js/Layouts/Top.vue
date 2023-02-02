@@ -40,7 +40,7 @@ const logout = () => {
           <i class="fa-brands fa-youtube fa-lg" style="color: #FF0000;"></i>
         </a>
       </div>
-      <div class="flex text-success">
+      <div class="flex text-success" v-if="auth.hasRole('Investor')">
         <ScaleIcon class="flex-shrink-0 ml-1 h-5 w-5 mr-2"/>
          +{{$page.props.auth.user.balance}} USD
       </div>
@@ -110,10 +110,10 @@ const logout = () => {
               :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile
             </Link>
             </MenuItem>
-            <MenuItem v-slot="{ active }">
+            <!-- <MenuItem v-slot="{ active }">
             <Link :href="route('user.profile')"
               :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</Link>
-            </MenuItem>
+            </MenuItem> -->
             <MenuItem v-slot="{ active }">
               <form @submit.prevent="logout">
                 <JetDropdownLink as="button">
@@ -125,41 +125,6 @@ const logout = () => {
         </transition>
       </Menu>
 
-
-      <div id="search-modal" class="m w tx la flex aj _ ri justify-center vs jj" v-show="showSearchBox" role="dialog"
-        aria-modal="true" x-show="searchOpen" x-transition:enter="wt wu wr" x-transition:enter-start="opacity-0 u_"
-        x-transition:enter-end="ba uj" x-transition:leave="wt wu wr" x-transition:leave-start="ba uj"
-        x-transition:leave-end="opacity-0 u_">
-        <div class="bg-white lu ua ou oe rounded bd">
-          <!-- Search form -->
-          <form class="cs border-slate-200">
-            <div class="y">
-              <label for="modal-search" class="d">Search </label>
-              <input id="modal-search" class="ou cn kf bo av vo mn mr border-none" type="search"
-                placeholder="Search Anything… " x-ref="searchInput">
-            </div>
-          </form>
-          <div class="vu vi">
-            <!-- Recent searches -->
-            <div class="ro ww">
-              <div class="go gh gq gv vi ru">Recent searches</div>
-              <ul class="text-sm">
-                <li>
-                  <a class="flex items-center dx text-slate-800 xc xn rounded kk" href="#0" @click="searchOpen = false"
-                    @focus="searchOpen = true" @focusout="searchOpen = false">
-                    <svg class="oo sl du gq kq _t ub ra" viewBox="0 0 16 16">
-                      <path
-                        d="M15.707 14.293v.001a1 1 0 01-1.414 1.414L11.185 12.6A6.935 6.935 0 017 14a7.016 7.016 0 01-5.173-2.308l-1.537 1.3L0 8l4.873 1.12-1.521 1.285a4.971 4.971 0 008.59-2.835l1.979.454a6.971 6.971 0 01-1.321 3.157l3.107 3.112zM14 6L9.127 4.88l1.521-1.28a4.971 4.971 0 00-8.59 2.83L.084 5.976a6.977 6.977 0 0112.089-3.668l1.537-1.3L14 6z">
-                      </path>
-                    </svg>
-                    <span>Form Builder - 23 hours on-demand video</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
   </div>
