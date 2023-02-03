@@ -34,7 +34,7 @@ class InvoiceController extends Controller
     $invoice = json_encode(new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings')));
     $invoice = json_decode( $invoice);
     $pdf = PDF::loadView('Invoice', compact('invoice'));
-    return $pdf->download('invoice.pdf');
+    return $pdf->download('invoice#-'.$invoice->slug.'.pdf');
   }
 
 }
