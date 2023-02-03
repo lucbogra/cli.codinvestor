@@ -578,6 +578,7 @@
                                                                     </table>
                                                                 </td>
                                                             </tr>
+                                                            @if ( sizeof($invoice->products) !== 0 )
                                                             <tr>
                                                                 <td align="left"
                                                                     style="padding:0;Margin:0;padding-left:35px;padding-right:35px">
@@ -681,6 +682,7 @@
                                                                     </table>
                                                                 </td>
                                                             </tr>
+                                                            @endif
                                                         </table>
                                                     </td>
                                                 </tr>
