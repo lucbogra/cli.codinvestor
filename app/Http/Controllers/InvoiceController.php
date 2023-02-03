@@ -7,10 +7,14 @@ use App\Models\Invoice;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use PDF;
 
 class InvoiceController extends Controller
 {
   public function index(){
+    // $pdf = Pdf::loadView('Invoice');
+    // return $pdf->download('invoice.pdf');
+
     return Inertia::render('Invoices/Index',[
       'invoices' => InvoiceResource::collection(Invoice::with('invoiceable')->orderBy('created_at', 'DESC')->paginate(20))
     ]);
@@ -24,6 +28,13 @@ class InvoiceController extends Controller
   public function invoice_notification($notification_id, $slug){
     request()->user()->unreadNotifications->where('id', $notification_id)->markAsRead();
     return redirect()->route('invoice.show', $slug);
+  }
+
+  public function download(Invoice $invoice){
+    $invoice = json_encode(new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings')));
+    $invoice = json_decode( $invoice);
+    $pdf = PDF::loadView('Invoice', compact('invoice'));
+    return $pdf->download('invoice.pdf');
   }
 
 }

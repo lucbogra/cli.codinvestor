@@ -2,7 +2,7 @@
   import AppLayout from '@/Layouts/AppLayout.vue'
   import { ref, } from 'vue';
   import { Link, useForm } from '@inertiajs/inertia-vue3'
-  import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
+  import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon, DownloadIcon } from '@heroicons/vue/solid';
 import Pagination from '@/Components/Pagination.vue';
 
   const props = defineProps({
@@ -12,6 +12,7 @@ import Pagination from '@/Components/Pagination.vue';
   const filters = ref({
   all: { value: '', keys: ['date', 'slug', 'amount', 'status'] }
 })
+const url =  (invoice) => { return route('invoice.download', invoice.slug) }
 
   </script>
   <template>
@@ -47,8 +48,11 @@ import Pagination from '@/Components/Pagination.vue';
                       <span :class="['px-2 py-1 rounded-xl text-white', invoice.status == 'paid' ? ' bg-green-300' : ' bg-primary-400']">{{invoice.status}}</span>
                     </td>
 
-                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-primary-500 hover:text-primary-400">
+                    <td class="whitespace-nowrap flex justify-between px-3 py-4 text-sm font-medium text-primary-500 hover:text-primary-400">
                       <Link :href="route('invoice.show', invoice.slug)">Show Details</Link>
+                      <div v-if="invoice.invoiceable.can_download" class="">
+                        <a :href="url(invoice)"><DownloadIcon class="w-5 h-5" /> </a>
+                      </div>
                     </td>
 
                   </tr>
@@ -62,8 +66,6 @@ import Pagination from '@/Components/Pagination.vue';
           </div>
           <pagination class="mt-6" :links="invoices.links" />
         </div>
-
-
       </template>
     </AppLayout>
   </template>

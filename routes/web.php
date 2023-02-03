@@ -80,6 +80,7 @@ Route::middleware([
       Route::get('index', [InvoiceController::class, 'index'])->name('invoices.index');
       Route::get('/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show');
       Route::get('/{notification}/{invoice}', [InvoiceController::class, 'invoice_notification'])->name('invoice.notification.show');
+      Route::get('pdf/download/{invoice}', [InvoiceController::class, 'download'])->name('invoice.download');
     });
 
     Route::prefix('services')->group( function() {

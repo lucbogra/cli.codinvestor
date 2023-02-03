@@ -20,6 +20,7 @@ class InvoiceResource extends JsonResource
     $fundings = $this->whenLoaded('fundings');
     return [
       'created_at' => $this->created_at->format('Y-m-d'),
+      'invoice_date' => $this->created_at->format('M d, Y'),
       'slug' => $this->slug,
       'type' => $this->type,
       'amount' => $this->amount,
@@ -41,6 +42,8 @@ class InvoiceResource extends JsonResource
           ];
       }),
       'fundings' => $fundings,
+      // 'can_download' => $this->invoiceable->company != null && $this->invoiceable->address != null && $this->invoiceable->phone != null ? true : false
+
     ];
   }
 }
