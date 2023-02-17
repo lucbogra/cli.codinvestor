@@ -32,7 +32,7 @@ import { computed } from 'vue';
                   </tr>
                 </template>
                 <template #body="{ rows }">
-                  <tr v-for="(product, index) in rows" :key="product.slug" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
+                  <tr v-for="(product, index) in rows" :key="index" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                       <div class="flex items-center">
                         <div class="h-10 w-10 flex-shrink-0">

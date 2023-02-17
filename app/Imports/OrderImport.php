@@ -54,6 +54,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
           'product_id'                 => isset($product) ? $product->id : null,
           'commission'                 => isset($product) ? $product->commission : 0,
+          'source'                     => 'importation'
       ]);
   }
 
