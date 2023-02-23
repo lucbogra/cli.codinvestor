@@ -1,6 +1,5 @@
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, computed } from 'vue';
 import {
   TabGroup, TabList, Tab, TabPanels, TabPanel
@@ -10,6 +9,7 @@ import Duplicated from './Duplicated.vue'
 import Rejected from './Rejected.vue'
 import WrongNumber from './WrongNumber.vue'
 import UploadForm from './UploadForm.vue';
+import Layout from './Layout.vue';
 const props = defineProps({
   orders : Array,
   demo_file: String,
@@ -27,15 +27,14 @@ const colorx = ref('#0F7490')
 
 </script>
 <template>
-  <AppLayout title="Orders">
-    <template #page-header>
+  <Layout :selected_menu="'Today\'s orders'">
+    <!-- <template #page-header>
       <div class="mt-2 p-5 mx-10">
         <div class="">
           <h1 class="gu teu text-primary-800 font-bold">Today's orders</h1>
         </div>
       </div>
-    </template>
-    <template #content>
+    </template> -->
 
     <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 sm:hidden">
       <UploadForm />
@@ -141,24 +140,6 @@ const colorx = ref('#0F7490')
           </TabPanels>
         </TabGroup>
       </div>
-    </template>
-  </AppLayout>
+  </Layout>
 </template>
 
-
-<script >
-
-import axios from 'axios';
-export default {
-  data() {
-    return {
-    }
-  },
-  methods: {
-
-  }
-}
-</script>
-
-<style>
-</style>

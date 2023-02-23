@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\AffiliateScope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,25 +19,24 @@ class Order extends Model
         'affected_at', 'tries', 'reaffected_at', 'product_link', 'can_affect', 'tracking_number', 'delivery_status', 'order_number', 'last_mile', 'shiper', 'product_id', 'commission'
       ];
 
-
-    public function getCreatedAtAttribute($value) {
-        return  Carbon::parse($value)->diffForHumans();
-    }
-
-    public function getUpdatedAtAttribute($value) {
-        return  Carbon::parse($value)->diffForHumans();
-    }
-
-    public function investor()
+  public function investor()
   {
     return $this->belongsTo(Investor::class);
   }
 
-
-
-  public function getDeliveredAtAttribute()
+  public function statusDate(): Attribute
   {
-    return date('d-m-Y', strtotime($this->attributes['delivered_at']));
+    return Attribute::make(
+      get: fn () => $this->status == 'no answer' ? $this->no_answer_at : (
+                    $this->status == 'cancelled' ? $this->cancelled_at : (
+                    $this->status == 'confirmed' ? $this->confirmed_at : (
+                    $this->status == 'Delivered' ? $this->delivered_at : (
+                    $this->status == 'Returned' ? $this->returned_at : (
+                    $this->status == 'Refunded' ? $this->returned_at : (
+                    $this->status == 'Delivery In Progress' ? $this->delivery_created_at :
+                    $this->created_at
+                    ))))))
+    );
   }
 
   public function scopeOrderByCreatedAt($query)

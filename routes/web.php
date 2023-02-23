@@ -53,8 +53,14 @@ Route::middleware([
     Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
     Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');
     Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link')->middleware('permission:affiliate set product link');
-    Route::get('orders', [OrderController::class, 'orders'])->name('orders.index')->middleware('permission:affiliate import order');
-    Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import')->middleware('permission:affiliate import order');
+
+    Route::prefix('orders')->middleware('permission:affiliate import order')->group(function () {
+      Route::get('index', [OrderController::class, 'orders'])->name('orders.index');
+      Route::post('orders/import', [OrderController::class, 'import'])->name('orders.import');
+      Route::get('history', [OrderController::class, 'history'])->name('orders.history');
+      Route::get('history/datas', [OrderController::class, 'uploaded'])->name('order.history.datas');
+    });
+
 
     // User profile
     Route::prefix('user')->as('user.')->group(function () {

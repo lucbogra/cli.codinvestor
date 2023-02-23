@@ -8,6 +8,9 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import helpers from './helpers'
 import SmartTable from 'vuejs-smart-table'
 import VueApexCharts from "vue3-apexcharts";
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'CodInvestor';
 
@@ -19,6 +22,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(SmartTable)
+            .use(ElementPlus)
             .use(VueApexCharts)
             .mount(el);
     },
