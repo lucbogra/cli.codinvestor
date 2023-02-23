@@ -22,6 +22,7 @@
               :aria-current="item.current ? 'page' : undefined">
               <component :is="item.icon" class="mr-4 h-6 w-6 text-white" aria-hidden="true" />
               {{ item.name }}
+              <span v-if="item.indicator" class="ml-2 bg-danger text-white rounded-full px-1 text-xs"> {{ item.indicator }}</span>
             </Link>
           </div>
 

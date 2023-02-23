@@ -94,6 +94,7 @@ class HandleInertiaRequests extends Middleware
           'logo' => WebSetting::first()->logo_white,
           'logo_color' => WebSetting::first()->logo,
           'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings) : null,
+          'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null
         ]);
     }
 }

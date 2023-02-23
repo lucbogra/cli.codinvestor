@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ReportController;
@@ -93,6 +94,12 @@ Route::middleware([
       Route::get('company', [UserController::class, 'company'])->name('users.company');
       Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
       Route::resource('/members', MemberController::class);
+    });
+
+    Route::prefix('messages')->middleware('role:Investor')->group(function() {
+      Route::get('/index', [MessageController::class, 'index'])->name('messages.index');
+      Route::get('messages/all/all', [MessageController::class, 'all'])->name('messages.all');
+      Route::get('/show/{message}', [MessageController::class, 'show'])->name('messages.show');
     });
 
 });

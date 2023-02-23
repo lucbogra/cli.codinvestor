@@ -48,6 +48,7 @@ CreditCardIcon,
 PresentationChartLineIcon,
 ClipboardListIcon,
 CashIcon,
+InboxIcon,
 } from '@heroicons/vue/outline'
 import {
 ShoppingCartIcon,
@@ -96,6 +97,8 @@ const navigation = [
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user'), show : true },
   { name: 'Billing Settings', href: route('billing.index'), icon: CreditCardIcon, current: isUrl('/billing'), show : auth.value.hasRole('Investor') },
+  { name: 'Messages', href: route('messages.index'), icon: InboxIcon, current: isUrl('/messages'), show : auth.value.hasRole('Investor'), indicator : usePage().props.value.message_notifications },
+
   { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon, show : true },
   // { name: 'Services', href: route('services.index'), icon: CollectionIcon},
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },

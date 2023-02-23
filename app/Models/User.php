@@ -79,6 +79,11 @@ class User extends Authenticatable
       return $this->hasOne(Member::class);
     }
 
+    public function messages()
+    {
+      return $this->belongsToMany(Message::class, 'user_message')->withPivot('read_at');
+    }
+
     public function getRoleAttribute(){
       return $this->getRoleNames()->first();
     }
