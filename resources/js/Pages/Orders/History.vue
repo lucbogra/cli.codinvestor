@@ -122,6 +122,7 @@ const shortcuts = [
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">sku</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'cancelled'">Cancel Reason</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'closed'">Reason for closing</th>
                         <!-- <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">website</th> -->
                       </tr>
                     </template>
@@ -140,8 +141,8 @@ const shortcuts = [
                           {{ row.product_name }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" v-if="row.status == 'cancelled'">
                           {{ row.cancel_reason }}</td>
-                        <!-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {{ row.website }}</td> -->
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" v-if="row.status == 'closed'">
+                          {{ row.before_closed }}</td>
                       </tr>
                       <tr v-if="rows.length === 0">
                         <td class="border-t px-6 py-4" colspan="4">No order found.</td>

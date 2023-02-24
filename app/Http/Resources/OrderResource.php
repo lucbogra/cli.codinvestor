@@ -42,7 +42,8 @@ class OrderResource extends JsonResource
       'returned_at' => $this->returned_at,
       'commission' => $this->commission,
       'status_date' => Carbon::parse($this->status_date)->format('Y-m-d'),
-      'cancel_reason' => $this->cancel_reason
+      'cancel_reason' => $this->cancel_reason,
+      'before_closed' => $this->before_closed,
     ];
   }
 }
