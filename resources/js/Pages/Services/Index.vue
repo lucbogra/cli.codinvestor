@@ -34,30 +34,23 @@
 
     <template #content>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div class="relative mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          <div v-for="(service, i) in services" :key="i"
-            class="border border-gray-200 rounded-lg shadow-sm divide-y divide-gray-200 bg-white">
-            <div class="p-6 flex flex-1 flex-col justify-between">
-              <h2 class="text-lg leading-6 font-medium text-gray-900">{{ service.name }}</h2>
-              <p class="mt-4 text-sm text-gray-500">{{ service.description }}</p>
+        <div class="relative mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-4">
 
-              <div class="self-end">
-                <div>
-                  <p class="mt-8 mb-2">
-                    <span class="text-4xl font-extrabold text-gray-900">{{ service.price }} {{ service.currency }}</span>
-                  {{ ' ' }}
-                  <span class="text-base font-medium text-gray-500">/mo</span>
-                  </p>
-                </div>
-                <div class="">
-                   <Link href="/contact" class="btn-primary">
-                  Suscribe to{{ service.name }}
-                </Link>
-                </div>
-
-              </div>
+        <div v-for="(service, i) in services" :key="i" class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
+            <a href="#">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ service.name }}</h5>
+            </a>
+            <p class="mb-3 font-normal text-gray-700">{{ service.description }}</p>
+            <div class="flex justify-between">
+               <a target="" href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center btn-primary">
+                Read more
+                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </a>
+              <Link class="btn-primary"> Get started</Link>
             </div>
-          </div>
+
+        </div>
+
         </div>
       </div>
     </template>

@@ -100,7 +100,7 @@ const secondaryNavigation = [
   { name: 'Messages', href: route('messages.index'), icon: InboxIcon, current: isUrl('/messages'), show : auth.value.hasRole('Investor'), indicator : usePage().props.value.message_notifications },
 
   { name: 'Help', href: route('user.create.ticket'), icon: QuestionMarkCircleIcon, show : true },
-  // { name: 'Services', href: route('services.index'), icon: CollectionIcon},
+  // { name: 'Services', href: route('services.index'), icon: CollectionIcon, show : true},
 //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]
 

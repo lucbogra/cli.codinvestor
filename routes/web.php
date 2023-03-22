@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FundingController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MemberController;
@@ -92,6 +93,11 @@ Route::middleware([
 
     Route::prefix('services')->group( function() {
       Route::get('index', [ServiceController::class, 'index'])->name('services.index');
+    });
+
+    Route::prefix('integrations')->group( function() {
+      Route::get('index', [IntegrationController::class, 'index'])->name('integrations.index');
+      Route::get('/{integration}', [IntegrationController::class, 'show'])->name('integrations.show');
     });
 
     Route::get('/fundings', [FundingController::class, 'index'])->name('fundings.index')->middleware('role:Investor');
