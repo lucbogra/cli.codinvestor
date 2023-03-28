@@ -106,6 +106,10 @@ Route::middleware([
       Route::get('company', [UserController::class, 'company'])->name('users.company');
       Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
       Route::resource('/members', MemberController::class);
+      Route::get('/notifications', [HomeController::class, 'all_notifications'])->name('user.notifications');
+      Route::put('/notifications/{id}/close', [HomeController::class, 'close_notification'])->name('user.notifications.close');
+      Route::put('/notifications/close', [HomeController::class, 'close_all_notifications'])->name('user.all_notifications.close');
+
     });
 
     Route::prefix('messages')->middleware('role:Investor')->group(function() {

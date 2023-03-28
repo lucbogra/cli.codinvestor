@@ -7,16 +7,14 @@ import { ChevronDownIcon, SearchIcon, } from '@heroicons/vue/solid'
 import { Inertia } from '@inertiajs/inertia'
 import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 import { auth } from '../Pages/Permissions'
+import Notifications from './Notifications.vue'
 
-const showSearchBox = ref(false)
-
-const showSearch = () => {
-  showSearchBox = !this.showSearchBox
-}
 
 const logout = () => {
-    Inertia.post(route('logout'));
+  Inertia.post(route('logout'));
 }
+
+const showNotifications = ref(false)
 
 </script>
 <template>
@@ -49,44 +47,12 @@ const logout = () => {
          -{{$page.props.auth.user.funding}} USD
       </div>
 
-      <Menu as="div" class="ml-3 relative">
-        <div>
-          <MenuButton
-            class="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
-            <BellIcon class="h-6 w-6" aria-hidden="true" />
-            <span class="-mt-3 text-xs font-medium text-white bg-danger px-1  rounded-lg group-hover:text-gray-800">{{ Object.keys($page.props.notifications).length }}</span>
+      <button @click="showNotifications = true" class="ml-2 max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-700 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
+        <BellIcon class="h-6 w-6" aria-hidden="true" />
+        <span class="-mt-3 text-xs font-medium text-white bg-danger px-1  rounded-lg group-hover:text-gray-800">{{ Object.keys($page.props.notifications).length }}</span>
+      </button>
 
-          </MenuButton>
-        </div>
-        <transition enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95">
-          <MenuItems>
-          <nav class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto" aria-label="notifications">
-            <MenuItem v-for="notify in $page.props.notifications" :key="notify.id">
-            <a class="block vr vs xr" :href="notify.link">
-              <span :class="'block text-sm ru'">📣 <span class="gp text-slate-800">
-                  <span class="italic">{{notify.text}}</span>
-                </span></span>
-              <span class="block go gp gq">{{ notify.created_at }}</span>
-            </a>
-            </MenuItem>
-            <MenuItem v-if="$page.props.notifications.length == 0">
-            <div class="block vr vs xr text-center">
-              📣 You have no notifications at this time
-            </div>
-            </MenuItem>
-          </nav>
-
-
-            <!-- <MenuItem v-if="$page.props.notifications.length > 0">
-            <Link href="#" class="go gh gq gv mi ms vs">View all notifications</Link>
-            </MenuItem> -->
-          </MenuItems>
-
-        </transition>
-      </Menu>
+      <Notifications :open="showNotifications" @close="showNotifications = false"  />
 
       <!-- Profile dropdown -->
       <Menu as="div" class="ml-3 relative">

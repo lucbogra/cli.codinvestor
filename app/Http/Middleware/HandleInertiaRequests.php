@@ -46,6 +46,8 @@ class HandleInertiaRequests extends Middleware
           'text' => 'Your request for the product '.$notification->data['name'].' was '.$notification->data['message'],
           'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
           'link' => route('marketplace.products.read_notification', [$notification->id, Product::find($notification->data['id'])->slug]),
+          'icon' => $notification->data['message'] == 'accepted' ? 'fa-solid fa-shop fa-lg text-success' : 'fa-solid fa-shop-slash fa-lg text-danger',
+          'type' => 'Product Request'
         ];
       }) : null;
       $invoices_notifications = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\InvoiceNotification')->map(function ($notification){
@@ -54,6 +56,8 @@ class HandleInertiaRequests extends Middleware
           'text' => 'weekly invoice number #'.$notification->data['slug'].'. See the details.',
           'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
           'link' => route('invoice.notification.show', [$notification->id, $notification->data['slug']]),
+          'icon' => 'fa-solid fa-file-invoice-dollar text-primary-500',
+          'type' => 'Weekly Invoice'
         ];
       }) : null;
       $paid_notifications = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\InvoicePaid')->map(function ($notification){
@@ -62,6 +66,8 @@ class HandleInertiaRequests extends Middleware
           'text' => 'Your invoice #'.$notification->data['slug'].' was paid. See the details.',
           'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
           'link' => route('invoice.notification.show', [$notification->id, $notification->data['slug']]),
+          'icon' => 'fa-solid fa-file-invoice-dollar text-success',
+          'type' => 'Invoice Paid'
         ];
       }) : null;
       $new_fundings = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\FundingCreationNotification')->map(function ($notification){
@@ -70,6 +76,8 @@ class HandleInertiaRequests extends Middleware
           'text' => $notification->data['text'],
           'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
           'link' => route('fundings.index'),
+          'icon' => 'fa-sharp fa-solid fa-receipt text-secondary',
+          'type' => 'New Funding'
         ];
       }) : null;
 
