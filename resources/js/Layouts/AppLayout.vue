@@ -21,10 +21,11 @@
         <top />
       </div>
       <main class="flex-1 pb-8  bg-slate-100" scroll-region>
+        <Alerts />
         <!-- Page header -->
         <slot name="page-header" />
         <div class="md:flex-1 px-4 py-8 bg-slate-100 ">
-          <flash-messages />
+          <FlashMessages />
           <slot name="content" />
         </div>
       </main>
@@ -61,6 +62,7 @@ import FlashMessages from './FlashMessages.vue'
 import { usePage } from '@inertiajs/inertia-vue3';
 import route from '../../../vendor/tightenco/ziggy/src/js';
 import { auth } from '../Pages/Permissions'
+import Alerts from './Alerts.vue';
 
 
 const props = defineProps({

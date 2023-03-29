@@ -11,7 +11,7 @@ import JetActionMessage from '@/Jetstream/ActionMessage.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
 
 const props = defineProps({
-    user: Object,
+  user: Object,
 });
 
 const form = useForm({
