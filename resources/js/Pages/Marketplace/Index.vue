@@ -101,7 +101,7 @@ const open = ref(false)
       </Dialog>
     </TransitionRoot>
 
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-20 ">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-4 ">
 
         <!-- Filters -->
         <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8 hidden sm:block">
@@ -158,7 +158,7 @@ const open = ref(false)
               </Link>
             </div> -->
 
-            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+            <!-- <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
               <div v-for="product in products.data" :key="product.id" class="group relative">
                 <div class="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                   <img :src="product.photo" :alt="product.name" class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
@@ -174,6 +174,26 @@ const open = ref(false)
                     <p class="mt-1 text-sm text-orange-600">{{ 'Commission : $'+product.commission }}</p>
                   </div>
                   <p class="text-sm font-medium text-gray-900">{{ product.recommanded_price+' SAR' }}</p>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
+              <div v-for="product in products.data" :key="product.id" class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
+                <div class="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
+                  <img :src="product.photo" :alt="product.name" class="h-full w-full object-cover object-center sm:h-full sm:w-full" />
+                </div>
+                <div class="flex flex-1 flex-col space-y-2 p-4">
+                  <h3 class="text-sm font-medium text-gray-900">
+                    <a :href="route('marketplace.detail', product.slug)">
+                      <span aria-hidden="true" class="absolute inset-0" />
+                      {{ product.name }}
+                    </a>
+                  </h3>
+                  <div class="flex flex-1 flex-col justify-end">
+                    <p class="text-sm text-gray-900">{{ product.recommanded_price+' SAR' }}</p>
+                    <p class="text-base font-medium text-orange-600">{{ 'Commission : $'+product.commission }}</p>
+                  </div>
                 </div>
               </div>
             </div>
