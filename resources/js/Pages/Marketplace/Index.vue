@@ -136,7 +136,6 @@ const open = ref(false)
 
         <button type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden" @click="open = true">Filters</button>
 
-        <!-- Cards 1 (Video Courses) -->
         <div>
           <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <h2 class="sr-only">Products</h2>
@@ -145,9 +144,9 @@ const open = ref(false)
                 'Products' : 'Product' }}
             </div>
 
-           <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
+           <!-- <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-y-0">
               <Link v-for="product in products.data" :key="product.id" :href="route('marketplace.detail', product.slug)"
-                class="group relative">
+                class="group relative border px-2 pt-2 mb-6">
               <div
                 class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 hover:shadow-xl">
                 <img :src="product.photo" :alt="product.name"
@@ -157,6 +156,26 @@ const open = ref(false)
               <p class="mt-1 text-lg font-medium text-primary-800">{{ product.recommanded_price+' SAR' }}</p>
               <p class="mt-1 text-lg font-medium text-primary-700">Commission : {{ '$'+product.commission }}</p>
               </Link>
+            </div> -->
+
+            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+              <div v-for="product in products.data" :key="product.id" class="group relative">
+                <div class="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                  <img :src="product.photo" :alt="product.name" class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
+                </div>
+                <div class="mt-4 flex justify-between">
+                  <div>
+                    <h3 class="text-sm text-gray-700">
+                      <Link :href="route('marketplace.detail', product.slug)">
+                        <span aria-hidden="true" class="absolute inset-0 truncate" />
+                        {{ product.name }}
+                      </Link>
+                    </h3>
+                    <p class="mt-1 text-sm text-orange-600">{{ 'Commission : $'+product.commission }}</p>
+                  </div>
+                  <p class="text-sm font-medium text-gray-900">{{ product.recommanded_price+' SAR' }}</p>
+                </div>
+              </div>
             </div>
 
           </div>
