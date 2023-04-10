@@ -146,4 +146,10 @@ class MarketplaceController extends Controller
     request()->user()->unreadNotifications->where('id', $notification_id)->markAsRead();
     return redirect()->route('marketplace.detail', $slug);
   }
+
+  public function getuserProduct()
+  {
+    // return response()->json($this->investor->products());
+    return response()->json(Product::all());
+  }
 }

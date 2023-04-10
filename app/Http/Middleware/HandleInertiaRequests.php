@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -81,14 +82,26 @@ class HandleInertiaRequests extends Middleware
         ];
       }) : null;
 
-        return array_merge(parent::share($request), [
-          'flash' => function () use ($request) {
-              return [
-                  'success' => $request->session()->get('success'),
-                  'error' => $request->session()->get('error'),
-              ];
-          },
-          'auth' => function () use ($request) {
+      $answers = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\CreativeNotification')->map(function ($notification){
+        return[
+          'id' => $notification->id,
+          'text' => $notification->data['message'],
+          'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
+          'link' => route($notification->data['route'],$notification->data['id']),
+          'icon' => 'fa-sharp fa-solid fa-video text-danger',
+          'type' => 'New Funding'
+        ];
+      }) : null;
+
+    return array_merge(parent::share($request), [
+      'flash' => function () use ($request) {
+        return [
+          'success' => $request->session()->get('success'),
+          'error' => $request->session()->get('error'),
+        ];
+      },
+      'auth' => function () use ($request) {
+        // $token = $request->user() ? PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name') : null;
             return [
               'user' => $request->user() ? [
                 'ip' => $_SERVER['REMOTE_ADDR'],
@@ -101,8 +114,9 @@ class HandleInertiaRequests extends Middleware
           },
           'logo' => WebSetting::first()->logo_white,
           'logo_color' => WebSetting::first()->logo,
-          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings) : null,
-          'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null
+          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers) : null,
+          'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null,
+          'not_readed_responses'=>$request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\CreativeNotification')->count() : null
         ]);
     }
 }

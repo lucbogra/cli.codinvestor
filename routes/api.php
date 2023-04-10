@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
 });
+
+
+Route::get('getCreativesNotification/{id}/{message}/{route}', [RequestController::class, 'getCreativesNotification']);
+
+
+Route::get('token_update/{id}/{token}',[UserController::class, 'user_token']);
