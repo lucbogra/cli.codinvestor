@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { BellIcon, KeyIcon, OfficeBuildingIcon, UserCircleIcon, UserGroupIcon } from '@heroicons/vue/outline'
+import { BellIcon, KeyIcon, OfficeBuildingIcon, ShoppingBagIcon, UserCircleIcon, UserGroupIcon } from '@heroicons/vue/outline'
 import { usePage } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronLeftIcon } from '@heroicons/vue/solid'
@@ -25,6 +25,8 @@ const navigation = [
   { name: 'Company', href: route('users.company'), icon: OfficeBuildingIcon, current: isUrl('user/company'), show : auth.value.hasRole('Investor') },
   { name: 'Tickets', href: route('user.create.ticket'), icon: KeyIcon, current: isUrl('user/create-ticket'), show : true },
   { name: 'Notifications', href: route('user.notifications'), icon: BellIcon, current: isUrl('user/notifications'), show : true },
+  { name: 'Seller', href: route('seller.index'), icon: ShoppingBagIcon, current: isUrl('user/seller'), show : true },
+
 ]
 
 </script>

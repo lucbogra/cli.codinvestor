@@ -11,13 +11,17 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\RegisterStepsController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
 use App\Models\Integration;
+use App\Http\Middleware\RegisterSteps;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Symfony\Component\Routing\RequestContext;
@@ -31,12 +35,50 @@ Route::get('/', function () {
   ]);
 })->name('index');
 
+Route::get('email/change', function() {
+  return Inertia::render('Auth/EditEmail');
+} )->middleware('auth')->name('user.get_email');
+Route::put('email/change', [RegisterStepsController::class, 'change_email'])->middleware('auth')->name('user.change_email');
 
+// Route::get('/register/steps/second_step', function() {
+//   return Inertia::render('Auth/SecondStepRegister');
+// })->middleware('auth:sanctum', 'verified')->name('user.register.second_step');
+
+Route::put('/register/steps/second_step', [RegisterStepsController::class, 'second_step'])->middleware('auth')->name('user.register.store_second_step');
+
+// Route::get('/register/steps/third_step', function() {
+//   return Inertia::render('Auth/ThirdStepRegister');
+// })->middleware('auth:sanctum', 'verified')->name('user.register.third_step');
+
+Route::get('/register/steps', function(Request $request) {
+  $step = $request->user() ? $request->user()->step : null;
+  if($request->user()?->stepStatus == true){
+    return redirect(RouteServiceProvider::HOME);
+  }
+  if($step !== null && $step ==  2)
+    {
+      return Inertia::render('Auth/SecondStepRegister');
+    }elseif($step !== null && $step == 3)
+    {
+      return Inertia::render('Auth/ThirdStepRegister');
+    }elseif($step !== null && $step == 4)
+    {
+      return Inertia::render('Auth/FourthStepRegister');
+    }elseif($step !== null && $step ==  5)
+    {
+      return Inertia::render('Auth/FirfthStepRegister');
+    }
+  else return redirect(RouteServiceProvider::HOME);
+})->middleware('auth:sanctum', 'verified')->name('user.register.steps');
+
+Route::put('register/steps/third_step', [RegisterStepsController::class, 'third_step'])->middleware('auth')->name('user.register.store_third_step');
+Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'fourth_step'])->middleware('auth')->name('user.register.store_fourth_step');
 
 Route::middleware([
-  'auth:sanctum',
-  config('jetstream.auth_session'),
-  'verified',
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'register_steps',
 ])->group(function () {
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
@@ -45,9 +87,10 @@ Route::middleware([
 });
 
 Route::middleware([
-  'auth:sanctum',
-  config('jetstream.auth_session'),
-  'verified',
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'register_steps',
 ])->group(function () {
   Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
   Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
@@ -118,6 +161,8 @@ Route::middleware([
       Route::get('/notifications', [HomeController::class, 'all_notifications'])->name('user.notifications');
       Route::put('/notifications/{id}/close', [HomeController::class, 'close_notification'])->name('user.notifications.close');
       Route::put('/notifications/close', [HomeController::class, 'close_all_notifications'])->name('user.all_notifications.close');
+      Route::get('/seller/get_started', [HomeController::class, 'seller'])->name('seller.index');
+      Route::put('/seller/get_started', [HomeController::class, 'seller_get_started'])->name('seller.get_started');
 
     });
 
@@ -131,6 +176,8 @@ Route::middleware([
   Route::get('getuserRequests', [RequestController::class, 'userequests'])->name('userequests');
   Route::put('rate/{id}', [RequestController::class, 'rate'])->name('rate.creative');
 
+
+    Route::get('/help', [HomeController::class, 'help'])->name('help');
 
 });
 

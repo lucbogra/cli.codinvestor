@@ -14,32 +14,36 @@ class Investor extends Model
   use HasFactory;
   use SoftDeletes, Notifiable, HasApiTokens;
 
-  protected $fillable = [
-    'first_name',
-    'last_name',
-    'email',
-    'phone',
-    'address',
-    'city',
-    'state',
-    'zip',
-    'country',
-    'company',
-    'title',
-    'website',
-    'user_id',
-    'manager_id',
-  ];
+    protected $fillable = [
+      'first_name',
+      'last_name',
+      'email',
+      'phone',
+      'address',
+      'city',
+      'state',
+      'zip',
+      'country',
+      'company',
+      'title',
+      'website',
+      'user_id',
+      'manager_id',
+      'responses',
+      'cin',
+      'seller_status',
+      'seller_request_at'
+    ];
 
   public function user()
   {
     return $this->belongsTo(User::class);
   }
 
-  public function project()
-  {
-    return $this->hasOne(Project::class);
-  }
+    public function project()
+    {
+      return $this->morphOne(Project::class, 'projectable')->withTrashed();
+    }
 
   public function manager()
   {
@@ -77,25 +81,21 @@ class Investor extends Model
     return $this->email;
   }
 
-  public function products()
-  {
-    return $this->belongsToMany(Product::class, 'investor_product', 'investor_id', 'product_id')->withPivot('status', 'link')->where('active', true)->withTimestamps();
-  }
+    public function products(){
+      return $this->morphToMany(Product::class, 'productable')->withPivot('status', 'link')->where('active', true)->withTimestamps();
+    }
 
-  public function accessProducts()
-  {
-    return $this->belongsToMany(Product::class)->wherePivot('status', 'access')->withTimestamps()->wherePivot('status', 'access');
-  }
+    public function accessProducts(){
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', 'access')->withTimestamps()->wherePivot('status', 'access');
+    }
 
-  public function request_state($status)
-  {
-    return $this->belongsToMany(Product::class, 'investor_product', 'investor_id', 'product_id')->wherePivot('status', $status);
-  }
+    public function request_state($status){
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', $status);
+    }
 
-  public function has_requested($product_id)
-  {
-    return $this->belongsToMany(Product::class, 'investor_product', 'investor_id', 'product_id')->wherePivot('product_id', $product_id);
-  }
+    public function has_requested($product_id){
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('product_id', $product_id);
+    }
 
   public function balance_histories()
   {

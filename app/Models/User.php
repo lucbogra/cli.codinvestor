@@ -13,7 +13,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -92,4 +92,14 @@ class User extends Authenticatable
     //     return (is_null($value)) ? 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name)
     //             : Storage::disk('s3')->temporaryUrl($this->attributes['profile_photo_url'], now()->addMinutes(10));
     // }
+
+    public function getStepAttribute(){
+      // return $this->attributes['registration_steps'] !== null ? collect(json_decode($this->attributes['registration_steps'])->steps)->where('status', 'current')->first() : null;
+      return json_decode($this->attributes['registration_steps'])?->current;
+
+    }
+
+    public function getStepStatusAttribute(){
+      return json_decode($this->attributes['registration_steps'])?->finished;
+    }
 }

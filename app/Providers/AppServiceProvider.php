@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
       JsonResource::withoutWrapping();
+
+      User::observe(UserObserver::class);
 
       Inertia::share('auth.user', function() {
           return [

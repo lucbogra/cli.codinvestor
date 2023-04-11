@@ -3,6 +3,8 @@ import { onMounted } from '@vue/runtime-core';
 import Layout from './Layout.vue';
 import FileInput from '../../Components/FileInput.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
+import JetInput from '@/Jetstream/Input.vue';
+
 let isLoading = false;
 
 const ticket = useForm({
@@ -50,16 +52,12 @@ const submitTicket = () => {
       <form @submit.prevent="submitTicket">
         <div>
           <label class="block text-md gp rt" for="default">Subject</label>
-          <input v-model="ticket.subject" id="default" class="mt-1 block w-full border-gray-300 shadow-md rounded"
-            type="text" placeholder="The subject of your ticket">
+          <JetInput v-model="ticket.subject" id="default"
+            type="text" placeholder="The subject of your ticket"/>
         </div>
-        <!-- <div class="mt-4">
-                      <label class="block text-sm gp rt" for="default">Are you a file ?</label>
-                      <FileInput class="pr-6 pb-8 w-full" type="file" accept=".xlsx, .xls, .csv"/>
-                  </div> -->
         <div class="mt-4">
           <label class="block text-md gp rt" for="default">Content</label>
-          <textarea id="feedback" v-model="ticket.content" class="f ou xq border-gray-300 shadow-md rounded" rows="4"
+          <textarea id="feedback" v-model="ticket.content" class="f ou xq border-gray-300 rounded" rows="4"
             placeholder="I really enjoy…"></textarea>
         </div>
         <div class="w-full flex justify-center my-3 animate__animated animate__fadeInUp" v-show="isLoading">

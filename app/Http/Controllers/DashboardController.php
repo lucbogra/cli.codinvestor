@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ScheduledReport;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -11,6 +12,8 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
   public function index(){
+
+    // dd(array_rand( User::role('Account Manager')->where('active', 1)->get()->toArray()));
     if(request()->user()->hasRole('Member')){
       return Redirect::route('marketplace.index');
     }

@@ -10,24 +10,21 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import { CheckIcon } from '@heroicons/vue/solid';
 
 const form = useForm({
-  first_name: '',
-  last_name: '',
-  email: '',
-  phone: '',
-  password: '',
-  password_confirmation: '',
-  terms: false,
+  company: '',
+  address: '',
+  country: '',
+  city: '',
+  zip: '',
 });
 
 const submit = () => {
-  form.post(route('register'), {
-    onFinish: () => form.reset('password', 'password_confirmation'),
+  form.put(route('user.register.store_second_step'), {
   });
 };
 
 const steps = [
-  { name: 'Step 1', href: '#', status: 'current' },
-  { name: 'Step 2', href: '#', status: 'upcoming' },
+  { name: 'Step 1', href: '#', status: 'complete' },
+  { name: 'Step 2', href: '#', status: 'current' },
   { name: 'Step 3', href: '#', status: 'upcoming' },
   { name: 'Step 4', href: '#', status: 'upcoming' },
 ]
@@ -86,69 +83,46 @@ const steps = [
 
     <form @submit.prevent="submit">
       <div>
-        <JetLabel for="first_name" value="First Name" />
-        <JetInput id="first_name" v-model="form.first_name" type="text"
-          :class="['mt-1 block w-full', form.errors.first_name ? 'border-red-600' : '']" required autofocus
-          autocomplete="first_name" />
+        <JetLabel for="company" value="Company" />
+        <JetInput id="company" v-model="form.company" type="text"
+          :class="['mt-1 block w-full', form.errors.company ? 'border-red-600' : '']" required autofocus/>
       </div>
 
       <div>
-        <JetLabel for="last_name" value="Last Name" />
-        <JetInput id="last_name" v-model="form.last_name" type="text"
-          :class="['mt-1 block w-full', form.errors.last_name ? 'border-red-600' : '']" required
-          autocomplete="last_name" />
-      </div>
-
-      <div class="mt-4">
-        <JetLabel for="email" value="Email" />
-        <JetInput id="email" v-model="form.email" type="email"
-          :class="['mt-1 block w-full', form.errors.email ? 'border-red-600' : '']" required />
+        <JetLabel for="address" value="Address" />
+        <div class="mt-1">
+          <textarea id="how-can-we-help" v-model="form.address" name="how-can-we-help"
+            aria-describedby="how-can-we-help-description" rows="4"
+            class="block w-full shadow-sm sm:text-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-300 rounded-md"></textarea>
+        </div>
       </div>
 
 
       <div class="mt-4">
-        <JetLabel for="phone" value="Phone" />
-        <JetInput id="phone" v-model="form.phone" type="text"
-          :class="['mt-1 block w-full', form.errors.phone ? 'border-red-600' : '']" required />
+        <JetLabel for="country" value="Country" />
+        <JetInput id="country" v-model="form.country" type="text"
+          :class="['mt-1 block w-full', form.errors.country ? 'border-red-600' : '']" required />
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" :-value="Password" />
-        <JetInput id="password" v-model="form.password" type="password"
-          :class="['mt-1 block w-full', form.errors.password ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
+        <JetLabel for="city" value="City" />
+        <JetInput id="city" v-model="form.city" type="text"
+          :class="['mt-1 block w-full', form.errors.city ? 'border-red-600' : '']" required />
       </div>
-
 
       <div class="mt-4">
-        <JetLabel for="password_confirmation" value="Confirm Password" />
-        <JetInput id="password_confirmation" v-model="form.password_confirmation" type="password"
-          :class="['mt-1 block w-full', form.errors.password_confirmation ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
-      </div>
-
-      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-        <JetLabel for="terms">
-          <div class="flex items-center">
-            <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
-
-            <div class="ml-2">
-              I agree to the <a target="_blank" :href="route('terms.show')"
-                class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank"
-                :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy
-                Policy</a>
-            </div>
-          </div>
-        </JetLabel>
+        <JetLabel for="zip" value="zip" />
+        <JetInput id="zip" v-model="form.zip" type="text"
+          :class="['mt-1 block w-full', form.errors.zip ? 'border-red-600' : '']" required />
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-        Already registered?
+        <Link :href="route('logout')" method="POST" class="underline text-sm text-gray-600 hover:text-gray-900">
+          Logout?
         </Link>
 
         <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Register
+          Next
         </JetButton>
       </div>
     </form>

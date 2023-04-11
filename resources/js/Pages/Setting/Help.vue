@@ -1,76 +1,45 @@
 <script setup>
-import AppLayout from "@/Layouts/AppLayout.vue";
-import Welcome from "@/Jetstream/Welcome.vue";
-import { onMounted } from "@vue/runtime-core";
-import 'animate.css';
-import { CheckCircleIcon, MailIcon, UploadIcon, DocumentDuplicateIcon, ExclamationCircleIcon, XCircleIcon, ShareIcon, ChartPieIcon, TrendingUpIcon, CurrencyDollarIcon, PhoneIcon, BanIcon, ShoppingBagIcon } from '@heroicons/vue/solid';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import {  InformationCircleIcon, ChevronUpIcon } from '@heroicons/vue/outline';
+
+const props = defineProps({
+  tutos : Array
+})
 </script>
 
 <template>
-    <AppLayout title="Dashboard" >
-        <template #page-header>
-                <div class="grid grid-cols-4 gap-4 m-4">
-                    <div class="p-4 shadow-sm rounded bg-white text-center">
-                        <div class="flex">
-                            <div class="p-3 mr-4 bg-red-100 rounded-full">
-                                <MailIcon class="w-5 h-5 text-danger"/>
-                            </div>
-                            <h4 class="text-lg font-bold mt-2">E-mail Address</h4>
-                        </div>
-                        <p>cod@gmail.com</p>
-                    </div>
-                    <div class="p-4 shadow-sm rounded bg-white text-center">
-                        <div class="flex">
-                            <div class="p-3 mr-4 bg-primary-400 rounded-full">
-                                <PhoneIcon class="w-5 h-5 text-white"/>
-                            </div>
-                            <h4 class="text-lg font-bold mt-2">Phone Number</h4>
-                        </div>
-                        <p>+212 00000000</p>
-                    </div>
-                    <div class="p-4 shadow-sm rounded bg-white text-center">
-                        <div class="flex">
-                            <div class="p-3 mr-4 bg-red-100 rounded-full">
-                                <MailIcon class="w-5 h-5 text-danger"/>
-                            </div>
-                            <h4 class="text-lg font-bold mt-2">E-mail Address</h4>
-                        </div>
-                        <p>cod@gmail.com</p>
-                    </div>
-                    <div class="p-4 shadow-sm rounded bg-white text-center">
-                        <div class="flex">
-                            <div class="p-3 mr-4 bg-red-100 rounded-full">
-                                <MailIcon class="w-5 h-5 text-danger"/>
-                            </div>
-                            <h4 class="text-lg font-bold mt-2">E-mail Address</h4>
-                        </div>
-                        <p>cod@gmail.com</p>
-                    </div>
+  <AppLayout>
+    <template #page-header>
+      <div class="mt-2 p-5 mx-10">
+        <div class="">
+          <h1 class="gu teu text-primary-800 font-bold">Help</h1>
+        </div>
+      </div>
+    </template>
+    <template #content>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 hidden sm:block">
+        <div class="w-full rounded-2xl bg-white p-2">
+          <Disclosure v-slot="{ open }" v-for="tuto in tutos" :key="tuto.id">
+            <DisclosureButton
+              class="flex w-full justify-between mb-4 rounded-lg border border-primary-500 bg-primary-200  px-4 py-2 text-left text-lg font-medium text-white hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-primary-500 focus-visible:ring-opacity-75">
+              <div class="flex items-center text-primary-800">
+                <InformationCircleIcon class="w-5 h-5 mr-1.5" />
+                <span>{{tuto.title}}</span>
+              </div>
+              <ChevronUpIcon :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-primary-800" />
+            </DisclosureButton>
+            <DisclosurePanel class="px-4 pt-4 pb-2 text-sm text-gray-900">
+              <div>
+                <p v-html="tuto.description" class="mb-4"></p>
+                <div class="flex justify-center">
+                  <iframe class="w-full aspect-video" :src="tuto.url" frameborder="0"></iframe>
                 </div>
-        </template>
-
-
-    </AppLayout>
+              </div>
+            </DisclosurePanel>
+          </Disclosure>
+        </div>
+      </div>
+    </template>
+  </AppLayout>
 </template>
-
-<script>
-import {
-    CashIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
-    SearchIcon,
-    UsersIcon,
-    ShoppingCartIcon,
-    ViewListIcon,
-} from "@heroicons/vue/solid";
-export default {
-    data() {
-        return {
-
-        };
-    },
-    created() {
-
-    },
-};
-</script>

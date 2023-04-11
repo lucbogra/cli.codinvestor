@@ -8,28 +8,41 @@ import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import { CheckIcon } from '@heroicons/vue/solid';
+import { ref } from 'vue';
 
 const form = useForm({
-  first_name: '',
-  last_name: '',
-  email: '',
-  phone: '',
-  password: '',
-  password_confirmation: '',
-  terms: false,
+  photo : ''
 });
 
 const submit = () => {
-  form.post(route('register'), {
-    onFinish: () => form.reset('password', 'password_confirmation'),
+  if (photoInput.value) {
+        form.photo = photoInput.value.files[0];
+    }
+  form.post(route('user.register.store_fourth_step'), {
   });
+};
+const photoInput = ref(null);
+
+const photoPreview = ref(null);
+const updatePhotoPreview = () => {
+    const photo = photoInput.value.files[0];
+
+    if (! photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(photo);
 };
 
 const steps = [
-  { name: 'Step 1', href: '#', status: 'current' },
-  { name: 'Step 2', href: '#', status: 'upcoming' },
-  { name: 'Step 3', href: '#', status: 'upcoming' },
-  { name: 'Step 4', href: '#', status: 'upcoming' },
+  { name: 'Step 1', href: '#', status: 'complete' },
+  { name: 'Step 2', href: '#', status: 'complete' },
+  { name: 'Step 3', href: '#', status: 'complete' },
+  { name: 'Step 4', href: '#', status: 'current' },
 ]
 </script>
 
@@ -85,70 +98,32 @@ const steps = [
     <JetValidationErrors class="mb-4" />
 
     <form @submit.prevent="submit">
-      <div>
-        <JetLabel for="first_name" value="First Name" />
-        <JetInput id="first_name" v-model="form.first_name" type="text"
-          :class="['mt-1 block w-full', form.errors.first_name ? 'border-red-600' : '']" required autofocus
-          autocomplete="first_name" />
+
+      <div class="flex items-center justify-center w-full">
+          <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 ">
+              <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <div v-show="photoPreview" class="mt-2">
+                    <span
+                        class="block w-20 h-20 bg-cover bg-no-repeat bg-center"
+                        :style="'background-image: url(\'' + photoPreview + '\');'"
+                    />
+                </div>
+                  <svg  v-show="! photoPreview" aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                  <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload your CIN or Passeport</span> </p>
+                  <p class="text-xs text-gray-500 ">PNG, JPG smaller than 2MB</p>
+              </div>
+              <input ref="photoInput" id="dropzone-file" type="file" class="hidden" @change="updatePhotoPreview" accept=".PNG, .JPG"/>
+          </label>
       </div>
 
-      <div>
-        <JetLabel for="last_name" value="Last Name" />
-        <JetInput id="last_name" v-model="form.last_name" type="text"
-          :class="['mt-1 block w-full', form.errors.last_name ? 'border-red-600' : '']" required
-          autocomplete="last_name" />
-      </div>
-
-      <div class="mt-4">
-        <JetLabel for="email" value="Email" />
-        <JetInput id="email" v-model="form.email" type="email"
-          :class="['mt-1 block w-full', form.errors.email ? 'border-red-600' : '']" required />
-      </div>
-
-
-      <div class="mt-4">
-        <JetLabel for="phone" value="Phone" />
-        <JetInput id="phone" v-model="form.phone" type="text"
-          :class="['mt-1 block w-full', form.errors.phone ? 'border-red-600' : '']" required />
-      </div>
-
-      <div class="mt-4">
-        <JetLabel for="password" :-value="Password" />
-        <JetInput id="password" v-model="form.password" type="password"
-          :class="['mt-1 block w-full', form.errors.password ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
-      </div>
-
-
-      <div class="mt-4">
-        <JetLabel for="password_confirmation" value="Confirm Password" />
-        <JetInput id="password_confirmation" v-model="form.password_confirmation" type="password"
-          :class="['mt-1 block w-full', form.errors.password_confirmation ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
-      </div>
-
-      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-        <JetLabel for="terms">
-          <div class="flex items-center">
-            <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
-
-            <div class="ml-2">
-              I agree to the <a target="_blank" :href="route('terms.show')"
-                class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank"
-                :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy
-                Policy</a>
-            </div>
-          </div>
-        </JetLabel>
-      </div>
 
       <div class="flex items-center justify-end mt-4">
-        <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-        Already registered?
+        <Link :href="route('logout')" method="POST" class="underline text-sm text-gray-600 hover:text-gray-900">
+          Logout?
         </Link>
 
         <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Register
+          Finish
         </JetButton>
       </div>
     </form>

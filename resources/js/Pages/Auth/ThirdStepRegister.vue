@@ -10,25 +10,35 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import { CheckIcon } from '@heroicons/vue/solid';
 
 const form = useForm({
-  first_name: '',
-  last_name: '',
-  email: '',
-  phone: '',
-  password: '',
-  password_confirmation: '',
-  terms: false,
+  affiliate_experience: '',
+  working_country: '',
+  ads_platforms: [],
+  other_networks: '',
+  survey: '',
 });
+const affiliate_experience_options = [
+  { label : 'yes', value: 'yes' },
+  { label : 'no', value: 'no' }
+]
 
+const ads_platforms_options = [
+  { label : 'Google Ads', value: 'Google Ads' },
+  { label : 'Facebook Ads', value: 'Facebook Ads' },
+  { label : 'Native Ads', value: 'Native Ads' },
+  { label : 'Snapchat Ads', value: 'Snapchat Ads' },
+  { label : 'Tiktok Ads', value: 'Tiktok Ads' },
+  { label : 'Others' },
+
+]
 const submit = () => {
-  form.post(route('register'), {
-    onFinish: () => form.reset('password', 'password_confirmation'),
+  form.put(route('user.register.store_third_step'), {
   });
 };
 
 const steps = [
-  { name: 'Step 1', href: '#', status: 'current' },
-  { name: 'Step 2', href: '#', status: 'upcoming' },
-  { name: 'Step 3', href: '#', status: 'upcoming' },
+  { name: 'Step 1', href: '#', status: 'complete' },
+  { name: 'Step 2', href: '#', status: 'complete' },
+  { name: 'Step 3', href: '#', status: 'current' },
   { name: 'Step 4', href: '#', status: 'upcoming' },
 ]
 </script>
@@ -86,69 +96,57 @@ const steps = [
 
     <form @submit.prevent="submit">
       <div>
-        <JetLabel for="first_name" value="First Name" />
-        <JetInput id="first_name" v-model="form.first_name" type="text"
-          :class="['mt-1 block w-full', form.errors.first_name ? 'border-red-600' : '']" required autofocus
-          autocomplete="first_name" />
+        <JetLabel for="affiliate_experience" value="Do you have any experience with COD affiliate marketing ?" />
+        <div class="flex items-center mb-2" v-for="(option, index) in affiliate_experience_options" :key="index">
+          <input  id="budget-under-25k" v-model="form.affiliate_experience" name="budget" :value="option.value" type="radio"
+            class="focus:ring-primary h-4 w-4 text-primary border-gray-300" />
+          <label for="budget-under-25k" class="ml-3">
+            <span class="block text-sm text-gray-700">{{ option.label }}</span>
+          </label>
+        </div>
       </div>
 
-      <div>
-        <JetLabel for="last_name" value="Last Name" />
-        <JetInput id="last_name" v-model="form.last_name" type="text"
-          :class="['mt-1 block w-full', form.errors.last_name ? 'border-red-600' : '']" required
-          autocomplete="last_name" />
-      </div>
-
-      <div class="mt-4">
-        <JetLabel for="email" value="Email" />
-        <JetInput id="email" v-model="form.email" type="email"
-          :class="['mt-1 block w-full', form.errors.email ? 'border-red-600' : '']" required />
-      </div>
-
-
-      <div class="mt-4">
-        <JetLabel for="phone" value="Phone" />
-        <JetInput id="phone" v-model="form.phone" type="text"
-          :class="['mt-1 block w-full', form.errors.phone ? 'border-red-600' : '']" required />
+      <div class="mt-4" v-if="form.affiliate_experience == 'yes'">
+        <JetLabel for="other_networks" value="Can you talk about your experience and share their names with us?" />
+        <textarea id="how-can-we-help" v-model="form.other_networks" name="how-can-we-help"
+            aria-describedby="how-can-we-help-description" rows="4"
+            class="block w-full shadow-sm sm:text-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-300 rounded-md"></textarea>
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" :-value="Password" />
-        <JetInput id="password" v-model="form.password" type="password"
-          :class="['mt-1 block w-full', form.errors.password ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
+        <JetLabel for="working_country" value="In which country are you currently working ?" />
+        <JetInput id="working_country" v-model="form.working_country" type="text"
+          :class="['mt-1 block w-full', form.errors.working_country ? 'border-red-600' : '']" required />
       </div>
 
 
       <div class="mt-4">
-        <JetLabel for="password_confirmation" value="Confirm Password" />
-        <JetInput id="password_confirmation" v-model="form.password_confirmation" type="password"
-          :class="['mt-1 block w-full', form.errors.password_confirmation ? 'border-red-600' : '']" required
-          autocomplete="new-password" />
-      </div>
-
-      <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-        <JetLabel for="terms">
-          <div class="flex items-center">
-            <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
-
-            <div class="ml-2">
-              I agree to the <a target="_blank" :href="route('terms.show')"
-                class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank"
-                :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy
-                Policy</a>
-            </div>
+        <JetLabel for="ads_platforms" value="What are the advertising platforms you use ?" />
+        <div class="mt-4 grid grid-cols-1 gap-y-4">
+          <div class="flex items-center" v-for="(option, index) in ads_platforms_options" :key="index">
+            <input id="platform1" v-model="form.ads_platforms" name="platform1" :value="option.value"
+              type="checkbox" class="focus:ring-primary h-4 w-4 text-primary border-gray-300" />
+            <label for="ads_platforms" class="ml-3">
+              <span class="block text-sm text-gray-700">{{ option.label }}</span>
+            </label>
           </div>
-        </JetLabel>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <JetLabel for="survey" value="How did you hear about us ?" />
+        <textarea id="how-can-we-help" v-model="form.survey" name="how-can-we-help"
+            aria-describedby="how-can-we-help-description" rows="4"
+            :class="['block w-full shadow-sm sm:text-sm focus:ring-primary-500 focus:border-primary-500 border border-gray-300 rounded-md', form.errors.survey ? 'border-red-600' : '']"></textarea>
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-        Already registered?
+        <Link :href="route('logout')" method="POST" class="underline text-sm text-gray-600 hover:text-gray-900">
+          Logout?
         </Link>
 
         <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-          Register
+          Next
         </JetButton>
       </div>
     </form>

@@ -109,6 +109,7 @@ class HandleInertiaRequests extends Middleware
                 'permissions' => $request->user()->getAllPermissions()->pluck('name'),
                 'balance' => $request->user()->investor?->wallet,
                 'funding' => $request->user()->investor?->funding,
+                'seller_status' => $request->user()->investor?->seller_status,
               ] : null,
             ];
           },

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tuto;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -26,5 +27,35 @@ class HomeController extends Controller
     {
       request()->user()->unreadNotifications->markAsRead();
       return back();
+    }
+
+    public function help()
+    {
+      return Inertia::render('Setting/Help',[
+        'tutos' => Tuto::orderBy('position', 'ASC')->get()
+      ]);
+    }
+
+    public function tutos()
+    {
+      // no route
+      return response()->json(
+        Tuto::orderBy('position', 'ASC')->get()
+      );
+    }
+
+    public function seller()
+    {
+      return Inertia::render('Setting/Seller');
+    }
+
+    public function seller_get_started()
+    {
+      request()->user()->investor->update([
+        'seller_status' => 'request',
+        'seller_request_at' => now()
+      ]);
+
+      return back()->with('success', 'request sent successfully');
     }
 }

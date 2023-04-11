@@ -97,7 +97,7 @@ const navigation = [
 
   { name: 'Fundings', href: route('fundings.index'), icon: CashIcon, current: isUrl('/fundings'), show: auth.value.hasPermission('have funding') },
 
-  
+
 ]
 const secondaryNavigation = [
   { name: 'Settings', href: route('user.profile'), icon: CogIcon, current: isUrl('/user'), show: true },
