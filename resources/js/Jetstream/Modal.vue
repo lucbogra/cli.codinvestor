@@ -10,10 +10,6 @@ const props = defineProps({
         type: String,
         default: '2xl',
     },
-    opacity: {
-        type: String,
-        default: '90',
-    },
     closeable: {
         type: Boolean,
         default: true,
@@ -58,35 +54,34 @@ const maxWidthClass = computed(() => {
         '2xl': 'sm:max-w-2xl',
     }[props.maxWidth];
 });
-
-const opacitysettings = computed(() => {
-    return {
-        '0': 'bg-opacity-0 shadow-none',
-        '90': 'bg-opacity-90  shadow-none',
-    }[props.opacity];
-});
 </script>
 
 <template>
     <teleport to="body">
         <transition leave-active-class="duration-200">
             <div v-show="show" class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region>
-                <transition enter-active-class="ease-out duration-300" enter-from-class="opacity-0"
-                    enter-to-class="opacity-100" leave-active-class="ease-in duration-200" leave-from-class="opacity-100"
-                    leave-to-class="opacity-0">
+                <transition
+                    enter-active-class="ease-out duration-300"
+                    enter-from-class="opacity-0"
+                    enter-to-class="opacity-100"
+                    leave-active-class="ease-in duration-200"
+                    leave-from-class="opacity-100"
+                    leave-to-class="opacity-0"
+                >
                     <div v-show="show" class="fixed inset-0 transform transition-all" @click="close">
                         <div class="absolute inset-0 bg-gray-500 opacity-75" />
                     </div>
                 </transition>
 
-                <transition enter-active-class="ease-out duration-300"
+                <transition
+                    enter-active-class="ease-out duration-300"
                     enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enter-to-class="opacity-100 translate-y-0 sm:scale-100" leave-active-class="ease-in duration-200"
+                    enter-to-class="opacity-100 translate-y-0 sm:scale-100"
+                    leave-active-class="ease-in duration-200"
                     leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div v-show="show"
-                        class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass, opacitysettings">
+                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                >
+                    <div v-show="show" class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto" :class="maxWidthClass">
                         <slot v-if="show" />
                     </div>
                 </transition>
