@@ -86,7 +86,7 @@ class RegisterStepsController extends Controller
   {
 
     $request->validate([
-      'photo' => ['file', 'mimes:png,jpg', 'max:2048']
+      'photo' => ['file', 'mimes:png,jpg', 'max:2048', 'required']
     ]);
 
     $user = request()->user();

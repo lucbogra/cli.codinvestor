@@ -38,7 +38,6 @@ class HomeController extends Controller
 
     public function tutos()
     {
-      // no route
       return response()->json(
         Tuto::orderBy('position', 'ASC')->get()
       );

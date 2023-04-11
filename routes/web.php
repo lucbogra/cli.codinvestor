@@ -118,8 +118,6 @@ Route::middleware([
   });
   Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-  Route::get('help-us', [WebController::class, 'help'])->name('help');
-
   Route::get('analytics', [ReportController::class, 'analytics'])->name('analytics')->middleware('permission:affiliate show analytics');
   Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance')->middleware('permission:affiliate show analytics');
   Route::get('reports', [ReportController::class, 'reports'])->name('reports')->middleware('permission:affiliate show reports');
@@ -178,6 +176,8 @@ Route::middleware([
 
 
     Route::get('/help', [HomeController::class, 'help'])->name('help');
+    Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');
+
 
 });
 
