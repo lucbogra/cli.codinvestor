@@ -127,7 +127,7 @@
     </Modal>
 </template>
 <script>
-import Modal from "@/Jetstream/Modal.vue"
+import Modal from "../../../Jetstream/Modal.vue"
 export default {
     components: {
         Modal

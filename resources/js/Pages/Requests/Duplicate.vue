@@ -92,10 +92,10 @@
             </form>
         </div>
     </Modal>
-    
+
 </template>
 <script>
-import Modal from '@/jetstream/Modal.vue'
+import Modal from '../../Jetstream/Modal.vue'
 import JetInput from "@/Jetstream/Input.vue";
 import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";

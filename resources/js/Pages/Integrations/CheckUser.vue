@@ -1,5 +1,5 @@
 <template >
-    <!-- <Modal maxWidth="xl" :show="show" @close="$emit('closemodal')">
+    <Modal maxWidth="xl" :show="show" @close="$emit('closemodal')">
 
         <div class=" w-full p-8 max-w-2xl relative mx-auto my-auto rounded-xl shadow-lg  bg-white " v-if="link">
 
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             </div>
-    </Modal> -->
+    </Modal>
     <!-- <Modal maxWidth="2xl" :show="create" @close="$emit('closemodal')">
         <div class=" w-full p-8 max-w-2xl relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
 
@@ -187,11 +187,11 @@
     </Modal> -->
 </template>
 <script>
-// import Modal from '@/jetstream/Modal.vue'
+import Modal from '../../Jetstream/Modal.vue'
 import { MailIcon } from '@heroicons/vue/solid';
 export default {
     components: {
-        // Modal,
+        Modal,
         MailIcon
     },
     props: {

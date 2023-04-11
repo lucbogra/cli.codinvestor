@@ -128,7 +128,7 @@
 
                     <JetLabel for="rate_observation" value="Observation (Optional)" />
                     <div class="relative mb-5 mt-2">
-                        
+
                         <textarea v-model="form.observation" name="rate_observation" rows="3"
                             class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"></textarea>
                     </div>
@@ -166,7 +166,7 @@
     </Modal>
 </template>
 <script>
-import Modal from '@/Jetstream/Modal.vue'
+import Modal from '../../../Jetstream/Modal.vue'
 import JetLabel from '@/Jetstream/Label.vue'
 export default {
     components: {
@@ -245,7 +245,7 @@ export default {
                         icon: 'success',
                         title: $this.page.props.value.flash.success,
                     })
-                    
+
                 }
             })
         }
@@ -253,5 +253,5 @@ export default {
 }
 </script>
 <style lang="">
-    
+
 </style>
