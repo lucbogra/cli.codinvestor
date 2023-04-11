@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Laravel\Sanctum\HasApiTokens;
 
 class Investor extends Model
 {
-  use HasFactory;
-  use SoftDeletes, Notifiable, HasApiTokens;
+    use HasFactory;
+    use SoftDeletes, Notifiable;
 
     protected $fillable = [
       'first_name',
@@ -35,80 +34,69 @@ class Investor extends Model
       'seller_request_at'
     ];
 
-  public function user()
-  {
-    return $this->belongsTo(User::class);
-  }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function project()
     {
       return $this->morphOne(Project::class, 'projectable')->withTrashed();
     }
 
-  public function manager()
-  {
-    return $this->belongsTo(User::class, 'manager_id');
-  }
+    public function manager(){
+      return $this->belongsTo(User::class, 'manager_id');
+    }
 
-  public function members()
-  {
-    return $this->hasMany(Member::class, 'affiliate_id');
-  }
+    public function members()
+    {
+      return $this->hasMany(Member::class, 'affiliate_id');
+    }
 
-  public function getNameAttribute()
-  {
-    return $this->first_name . ' ' . $this->last_name;
-  }
+    public function getNameAttribute()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
 
-  public function scopeOrderByName($query)
-  {
-    $query->orderBy('last_name')->orderBy('first_name');
-  }
+    public function scopeOrderByName($query)
+    {
+        $query->orderBy('last_name')->orderBy('first_name');
+    }
 
-  public function getLocationAttribute()
-  {
-    return $this->city . ', ' . $this->state;
-  }
+    public function getLocationAttribute()
+    {
+        return $this->city.', '.$this->state;
+    }
 
-  /**
-   * Route notifications for the mail channel.
-   *
-   * @param  \Illuminate\Notifications\Notification  $notification
-   * @return array|string
-   */
-  public function routeNotificationForMail($notification)
-  {
-    return $this->email;
-  }
+     /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array|string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        return $this->email;
+    }
 
     public function products(){
-      return $this->morphToMany(Product::class, 'productable')->withPivot('status', 'link')->where('active', true)->withTimestamps();
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status', 'link')->where('active', true)->withTimestamps();
     }
 
     public function accessProducts(){
-      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', 'access')->withTimestamps()->wherePivot('status', 'access');
+      return $this->belongsToMany(Product::class)->wherePivot('status', 'access')->withTimestamps()->wherePivot('status', 'access');
     }
 
     public function request_state($status){
-      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', $status);
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('status', $status);
     }
 
     public function has_requested($product_id){
-      return $this->morphToMany(Product::class, 'productable')->wherePivot('product_id', $product_id);
+      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('product_id', $product_id);
     }
 
-  public function balance_histories()
-  {
-    return $this->hasMany(BalanceHistory::class)->where('withdrawn', 0);
-  }
+    public function balance_histories(){
+      return $this->hasMany(BalanceHistory::class)->where('withdrawn', 0);
+    }
 
-  public function integrations()
-  {
-    return $this->morphToMany(integration::class, 'integrable');
-  }
-
-  // public function not_integrations()
-  // {
-  //   return $this->integrations->whereDoesntHaveMorph('integrable')->get();
-  // }
 }
