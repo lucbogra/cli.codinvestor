@@ -102,7 +102,7 @@ class Investor extends Model
 
     public function integrations()
     {
-      return $this->morphToMany(integration::class, 'integrable');
+      return $this->morphToMany(Integration::class, 'integrable');
     }
 
 }
