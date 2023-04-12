@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\HasApiTokens;
 
 class Investor extends Model
 {
     use HasFactory;
-    use SoftDeletes, Notifiable;
+    use SoftDeletes, Notifiable , HasApiTokens;
 
     protected $fillable = [
       'first_name',
@@ -97,6 +98,11 @@ class Investor extends Model
 
     public function balance_histories(){
       return $this->hasMany(BalanceHistory::class)->where('withdrawn', 0);
+    }
+
+    public function integrations()
+    {
+      return $this->morphToMany(integration::class, 'integrable');
     }
 
 }

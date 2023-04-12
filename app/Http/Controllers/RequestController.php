@@ -79,7 +79,7 @@ class RequestController extends Controller
     {
         $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
         
-        $requests=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequests');
+        $requests=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequests');
 
         return response()->json($requests->json());
     }
@@ -88,7 +88,7 @@ class RequestController extends Controller
     {
         $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
         
-        $requests=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequest'.$id);
+        $requests=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequest'.$id);
 
         return response()->json($requests->json());
     }

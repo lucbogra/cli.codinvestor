@@ -32,7 +32,8 @@ class RequestRepository
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'create Request');
 
         // dd('http://127.0.0.1:8002/api/create/request/' . $current_token . '/' . $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
-        Http::withToken($token_user)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        Http::withToken($token_user)->post('https://adminapp.oneclickvid.com/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        //Http::withToken($token_user)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
     }
 
     public function Rate(Request $request,$id)
@@ -46,7 +47,7 @@ class RequestRepository
                 'cpl'=>$request->cpl,
                 'cpc'=>$request->cpc
                 ])
-            ->put('http://127.0.0.1:8002/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
+            ->put('https://adminapp.oneclickvid.com/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
     }
 
     public function update($request,$id)
@@ -71,7 +72,7 @@ class RequestRepository
             'music'=>$music,
             'voice'=>$voice,
             'observation'=>$observation
-        ])->put('http://127.0.0.1:8002/api/requests/'.$id);
+        ])->put('https://adminapp.oneclickvid.com/api/requests/'.$id);
 
     }
 
@@ -82,7 +83,7 @@ class RequestRepository
             ->orderBy('created_at', 'desc')->first();
         $token_user = $token->name;
 
-         Http::withToken($token_user)->delete('http://127.0.0.1:8002/api/requests/'.$id);
+         Http::withToken($token_user)->delete('https://adminapp.oneclickvid.com/api/requests/'.$id);
 
         return back();
     }

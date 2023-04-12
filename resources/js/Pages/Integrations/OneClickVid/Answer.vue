@@ -5,13 +5,13 @@
         </div>
         <div class="flex flex-col justify-center items-center">
             <div
-                class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 dark:!bg-navy-800 dark:text-white dark:!shadow-none p-3">
+                class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500  p-3">
                 <div class="grid grid-cols-1 gap-4 px-2 w-full">
                     <div
-                        class=" flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class=" flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">Link</p>
                         <a :href="answer.link" target="_blank"
-                            class="text-base font-medium text-primary-500 hover:text-blue-400 dark:text-white">
+                            class="text-base font-medium text-primary-500 hover:text-blue-400 ">
                             {{ answer.link }}
                         </a>
                     </div>
@@ -19,67 +19,67 @@
                 <div class="grid grid-cols-2 gap-4 px-2 w-full">
 
                     <div
-                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Product</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.requests_info.product }}
                         </p>
                     </div>
 
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">Platform</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.requests_info.platform }}
                         </p>
                     </div>
 
                     <div
-                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Type Of Creative</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700 ">
                             {{ answer.requests_info.type }}
                         </p>
                     </div>
 
 
                     <div
-                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">Duration</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.requests_info.duration }} Seconds
                         </p>
                     </div>
 
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Voice Over</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.requests_info.voice_over }}
                         </p>
                     </div>
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Music</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700 ">
                             {{ answer.requests_info.music }}
                         </p>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-4 px-2 w-full">
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Request Observation</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.requests_info.observation }}
                         </p>
                     </div>
                 </div>
                 <div v-if="answer.rates != null" class="grid grid-cols-1 gap-4 px-2 w-full">
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Your Rate Of This Creative</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700 ">
                             <svg v-for="request in Number(answer.rates)"
                                 class="inline-flex text-primary-600 w-8 h-auto fill-current"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -98,26 +98,26 @@
                 <div v-if="answer.compaign_data != null" class="grid grid-cols-2 gap-4  px-2 w-full ">
 
                     <div
-                        class="mt-2 flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="mt-2 flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">CPL (Cost Per Lead)</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700 ">
                             {{ JSON.parse(answer.compaign_data).cpl }}
                         </p>
                     </div>
 
                     <div
-                        class="mt-2 flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="mt-2 flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">CPC (Cost Per Click)</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700 ">
                             {{ JSON.parse(answer.compaign_data).cpc }}
                         </p>
                     </div>
                 </div>
                 <div v-if="answer.rates_Observations" class="grid grid-cols-1 gap-4 px-2 w-full">
                     <div
-                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Your Rate Observation</p>
-                        <p class="text-base font-medium text-navy-700 dark:text-white">
+                        <p class="text-base font-medium text-navy-700">
                             {{ answer.rates_Observations.rate_observation }}
                         </p>
                     </div>
