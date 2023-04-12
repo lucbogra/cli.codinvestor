@@ -25,7 +25,7 @@ class UserRepository
       $password = $this->encrypt_decrypt('encrypt', $request->password, 'Create an Account on One Click Vid');
 
        //dd('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
-      $response=Http::timeout(60)->post('https://adminapp.oneclickvid.com//api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
+      $response=Http::timeout(60)->post('https://adminapp.oneclickvid.com/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
       //$response=Http::timeout(60)->post('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
 
       // dd($response->json());

@@ -153,7 +153,7 @@ export default {
                         showConfirmButton: false,
                         timerProgressBar: true,
                         icon: 'success',
-                        title: $this.page.props.value.flash.success,
+                        title: this.$page.props.value.flash.success,
                     })
 
                 },
