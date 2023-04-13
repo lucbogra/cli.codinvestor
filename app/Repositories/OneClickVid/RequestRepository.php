@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\OneClickVid;
 
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Traits\Crypt;
@@ -33,7 +33,7 @@ class RequestRepository
 
         // dd('http://127.0.0.1:8002/api/create/request/' . $current_token . '/' . $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
         Http::withToken($token_user)->post('https://adminapp.oneclickvid.com/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
-        //Http::withToken($token_user)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        // Http::withToken($token_user)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
     }
 
     public function Rate(Request $request,$id)
@@ -48,6 +48,7 @@ class RequestRepository
                 'cpc'=>$request->cpc
                 ])
             ->put('https://adminapp.oneclickvid.com/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
+            // ->put('http://127.0.0.1:8002/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
     }
 
     public function update($request,$id)

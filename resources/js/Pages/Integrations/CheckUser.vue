@@ -10,14 +10,14 @@
                         <div class="relative">
                             <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
                                 Email</p>
-                            <input v-model="form.email" placeholder="123@ex.com" type="text"
+                            <input v-model="form.email" required placeholder="123@ex.com" type="text"
                                 class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md" />
                         </div>
                         <div class="relative">
                             <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
                                 Password
                             </p>
-                            <input v-model="form.password" placeholder="Password" type="password"
+                            <input v-model="form.password" required placeholder="Password" type="password"
                                 class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md" />
                         </div>
                         <div class="mt-7">
@@ -209,7 +209,7 @@ export default {
                 id_integration: this.id_integration,
                 name: this.$page.props.user.name,
                 email: this.$page.props.user.email,
-                password: this.$page.props.user.password,
+                password: '',
                 type: ''
             }),
             have_account: null,

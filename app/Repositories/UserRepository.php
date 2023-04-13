@@ -26,10 +26,10 @@ class UserRepository
 
        //dd('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
       $response=Http::timeout(60)->post('https://adminapp.oneclickvid.com/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
-      //$response=Http::timeout(60)->post('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
-
-      // dd($response->json());
-      if($response->getStatusCode()==500)
+      // $response=Http::timeout(60)->post('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
+      $body=json_decode($response->getBody()->getContents());
+       
+      if($body->message==='Success')
       {
           $investor->integrations()->save($integration);
 
@@ -37,7 +37,7 @@ class UserRepository
       }
       else
       {
-          return back()->with('error','Error In Integration Successfully'); 
+          return back()->with('error','Error In Integration'); 
       }
     
   }

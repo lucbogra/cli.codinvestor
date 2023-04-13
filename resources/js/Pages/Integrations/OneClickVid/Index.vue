@@ -160,13 +160,13 @@
                                                 <EyeIcon class="text-primary-500 cursor-pointer" />
 
                                                 </Link>
-                                                <button v-if="request.answer === null"
+                                                <button v-if="request.read===false"
                                                     @click="toggleduplicatemodal(request, 'update')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <PencilIcon class="text-primary-500" />
 
                                                 </button>
-                                                <button @click="destroy(request.id)" v-if="request.answer === null"
+                                                <button @click="destroy(request.id)" v-if="request.read===false"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <TrashIcon class="text-primary-500" />
                                                 </button>
@@ -187,7 +187,6 @@
             <Duplicate_request v-if="selected_request != null" :action="action_request" :key="selected_request"
                 :request="selected_request" :products="products" :show="show_duplicate"
                 @close_modal="toggleduplicatemodal(selected_request, 'Duplicate')"></Duplicate_request>
-
         </template>
 
     </AppLayout>

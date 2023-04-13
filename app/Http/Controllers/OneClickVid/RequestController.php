@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\OneClickVid;
 
-use App\Http\Requests\RequestCreativeRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\RequestCreativeRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Traits\Crypt;
-use App\Repositories\RequestRepository;
+use App\Repositories\OneClickVid\RequestRepository;
 use Illuminate\Support\Facades\Redirect;
-
 class RequestController extends Controller
 {
     use Crypt;
@@ -80,6 +80,7 @@ class RequestController extends Controller
         $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
         
         $requests=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequests');
+        // $requests=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequests');
 
         return response()->json($requests->json());
     }
@@ -89,6 +90,7 @@ class RequestController extends Controller
         $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
         
         $requests=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequest'.$id);
+        // $requests=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequest'.$id);
 
         return response()->json($requests->json());
     }

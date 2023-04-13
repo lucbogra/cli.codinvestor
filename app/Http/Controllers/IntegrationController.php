@@ -68,6 +68,7 @@ class IntegrationController extends Controller
         Notification::wherejsoncontains('data->id', $id)->update(['read_at'=> now()]);
         $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
         $request=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequest/'.$id);
+        // $request=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequest/'.$id);
         return Inertia::render('Integrations/OneClickVid/Show',[
             'id'=>$id,
             'request'=>$request->json()

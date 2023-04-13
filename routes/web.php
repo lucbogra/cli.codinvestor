@@ -13,7 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\RegisterStepsController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RequestController;
+use App\Http\Controllers\OneClickVid\RequestController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
