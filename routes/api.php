@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\RequestController;
+use App\Http\Controllers\OneClickVid\RequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
