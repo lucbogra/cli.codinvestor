@@ -149,7 +149,7 @@ class MarketplaceController extends Controller
 
   public function getuserProduct()
   {
-    return response()->json($this->investor->products());
+    return response()->json($this->investor->products);
     //return response()->json(Product::all());
   }
 }
