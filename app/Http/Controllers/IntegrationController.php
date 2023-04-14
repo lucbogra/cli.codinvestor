@@ -48,8 +48,10 @@ class IntegrationController extends Controller
 
     public function oneclickVid()
     {
+        
         $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
         ->where('integrable_type','App\Models\Investor')->first();
+        // dd($integrable->token);
         if($integrable)
         {
             return Inertia::render('Integrations/OneClickVid/Index',[
@@ -66,9 +68,10 @@ class IntegrationController extends Controller
     public function request_show($id)
     {
         Notification::wherejsoncontains('data->id', $id)->update(['read_at'=> now()]);
-        $token=PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name');
-        $request=Http::withToken($token->name)->get('https://adminapp.oneclickvid.com/api/getUserRequest/'.$id);
-        // $request=Http::withToken($token->name)->get('http://127.0.0.1:8002/api/getUserRequest/'.$id);
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
+        // $request=Http::withToken($integrable->token)->get('https://adminapp.oneclickvid.com/api/getUserRequest/'.$id);
+        $request=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequest/'.$id);
         return Inertia::render('Integrations/OneClickVid/Show',[
             'id'=>$id,
             'request'=>$request->json()

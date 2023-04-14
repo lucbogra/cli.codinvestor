@@ -256,6 +256,7 @@ export default {
             this.load = true;
             axios.get(route('userequests'))
                 .then((response) => {
+                    console.log(response.data)
                     this.answers_count = 0
                     this.requests = response.data
                     this.requests.map(item => {
@@ -263,7 +264,6 @@ export default {
                             this.answers_count += 1
                         }
                     })
-
                     this.load=false
                 })
                 .catch(resonse => {

@@ -4,6 +4,7 @@ namespace App\Repositories\OneClickVid;
 
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Traits\Crypt;
+use App\Models\Integrable;
 use App\Models\Investor;
 use App\Models\User;
 use App\Notifications\CreativeNotification;
@@ -17,12 +18,9 @@ class RequestRepository
     public function store($request)
     {
 
-        // dd($request->all());
-        $token = PersonalAccessToken::where('tokenable_type', Auth()->user()->investor->getMorphClass())
-            ->where('tokenable_id', Auth()->user()->investor->id)
-            ->orderBy('created_at', 'desc')->first();
-        // dd(Auth()->user()->investor->id);
-        $token_user = $token->name;
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
+
         $product = $this->encrypt_decrypt('encrypt', $request->product, 'create Request');
         $platform = $this->encrypt_decrypt('encrypt', $request->platform, 'create Request');
         $type = $this->encrypt_decrypt('encrypt', $request->type, 'create Request');
@@ -32,17 +30,16 @@ class RequestRepository
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'create Request');
 
         // dd('http://127.0.0.1:8002/api/create/request/' . $current_token . '/' . $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
-        Http::withToken($token_user)->post('https://adminapp.oneclickvid.com/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
-        // Http::withToken($token_user)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        Http::withToken($integrable->token)->post('https://adminapp.oneclickvid.com/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        // Http::withToken($integrable->token)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
     }
 
     public function Rate(Request $request,$id)
     {
-        $token = PersonalAccessToken::where('tokenable_type', Auth()->user()->investor->getMorphClass())
-            ->where('tokenable_id', Auth()->user()->investor->id)
-            ->orderBy('created_at', 'desc')->first();
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
 
-        Http::withToken($token->name)
+        Http::withToken($integrable->token)
             ->withHeaders([
                 'cpl'=>$request->cpl,
                 'cpc'=>$request->cpc
@@ -53,10 +50,10 @@ class RequestRepository
 
     public function update($request,$id)
     {
-        $token = PersonalAccessToken::where('tokenable_type', Auth()->user()->investor->getMorphClass())
-            ->where('tokenable_id', Auth()->user()->investor->id)
-            ->orderBy('created_at', 'desc')->first();
-        $token_user = $token->name;
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
+        //dd($integrable);
+        $token_user = $integrable->token;
         $product = $this->encrypt_decrypt('encrypt', $request->product, 'update Request');
         $platform = $this->encrypt_decrypt('encrypt', $request->platform, 'update Request');
         $type = $this->encrypt_decrypt('encrypt', $request->type, 'update Request');
@@ -65,6 +62,7 @@ class RequestRepository
         $voice = $this->encrypt_decrypt('encrypt', $request->voice === false ? 0 : 1, 'update Request');
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'update Request');
 
+        // dd([$token_user,$product,$platform,$type,$duration,$music,$voice,$observation]);
          Http::withToken($token_user)->withHeaders([
             'product'=>$product,
             'platform'=>$platform,
@@ -73,18 +71,20 @@ class RequestRepository
             'music'=>$music,
             'voice'=>$voice,
             'observation'=>$observation
-        ])->put('https://adminapp.oneclickvid.com/api/requests/'.$id);
+        ])
+        // ->put('http://127.0.0.1:8002/api/requests/'.$id);
+        ->put('https://adminapp.oneclickvid.com/api/requests/'.$id);
+        
 
     }
 
     public function destroy( $id)
     {
-        $token = PersonalAccessToken::where('tokenable_type', Auth()->user()->investor->getMorphClass())
-            ->where('tokenable_id', Auth()->user()->investor->id)
-            ->orderBy('created_at', 'desc')->first();
-        $token_user = $token->name;
-
-         Http::withToken($token_user)->delete('https://adminapp.oneclickvid.com/api/requests/'.$id);
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
+        //dd($integrable);
+         Http::withToken($integrable->token)->delete('https://adminapp.oneclickvid.com/api/requests/'.$id);
+        // Http::withToken($integrable->token)->delete('http://127.0.0.1:8002/api/requests/'.$id);
 
         return back();
     }

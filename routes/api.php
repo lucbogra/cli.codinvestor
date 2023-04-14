@@ -25,4 +25,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('getCreativesNotification/{id}/{message}/{route}', [RequestController::class, 'getCreativesNotification']);
 
 
-Route::get('token_update/{id}/{token}',[UserController::class, 'user_token']);
+Route::get('token_update/{id}/{id_integration}/{token}',[UserController::class, 'user_token']);

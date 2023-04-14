@@ -102,89 +102,6 @@
                 </div>
             </div>
     </Modal>
-    <!-- <Modal maxWidth="2xl" :show="create" @close="$emit('closemodal')">
-        <div class=" w-full p-8 max-w-2xl relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
-
-            <p class="w-full text-4xl text-center leading-snug">Sign up for an account</p>
-            <div class="mt-6 mb-4"><input type="checkbox" @change="useInformation" /> Use Your Account Information</div>
-            <div class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                <div class="relative">
-                    <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                                                                                                  absolute">Name</p>
-                    <input v-model="form.name" type="text"
-                        class="border placeholder-gray-400 focus:outline-none
-                                                                                                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                                                                                                  border-gray-300 rounded-md" />
-                </div>
-                <div class="relative">
-                    <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
-                        Email</p>
-                    <input v-model="form.email" placeholder="123@ex.com" type="text"
-                        class="border placeholder-gray-400 focus:outline-none
-                                                                                                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                                                                                                  border-gray-300 rounded-md" />
-                </div>
-                <div class="relative">
-                    <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                                                                                                  absolute">Password</p>
-                    <input v-model="form.password" placeholder="Password" type="password"
-                        class="border placeholder-gray-400 focus:outline-none
-                                                                                                  focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
-                                                                                                  border-gray-300 rounded-md" />
-                </div>
-                <div class="mt-7">
-                    <div class="flex justify-center items-center">
-                        <label class="mr-2">Do you already have an account?</label>
-                        <button @click="() => { this.create = false; this.link = true }" type="button"
-                            class=" text-blue-500 transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
-                            Log in
-                        </button>
-                    </div>
-                </div>
-                <div class="relative">
-                    <button type="button" @click="store"
-                        class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-primary-800
-                                                                                                  rounded-lg transition duration-200 hover:bg-primary-600 ease">Submit</button>
-                </div>
-            </div>
-        </div>
-    </Modal> -->
-    <!-- <Modal maxWidth="2xl" :show="link" @close="$emit('closemodal')">
-        <form @submit.prevent="store">
-            <div class="w-full p-8 max-w-2xl relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
-                <p class="w-full text-4xl text-center leading-snug">Link Your {{ name }} account</p>
-                <div class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                    <div class="relative">
-                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">
-                            Email</p>
-                        <input v-model="form.email" placeholder="123@ex.com" type="text"
-                            class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md" />
-                    </div>
-                    <div class="relative">
-                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Password
-                        </p>
-                        <input v-model="form.password" placeholder="Password" type="password"
-                            class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md" />
-                    </div>
-                    <div class="mt-7">
-                        <div class="flex justify-center items-center">
-                            <label class="mr-2">You Don't have An Account?</label>
-                            <button @click="toggle()" type="button"
-                                class=" text-blue-500 transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
-                                Sign up
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="relative">
-                        <button type="submit"
-                            class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-primary-800
-                                                                                                      rounded-lg transition duration-200 hover:bg-primary-600 ease">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </Modal> -->
 </template>
 <script>
 import Modal from '../../Jetstream/Modal.vue'
@@ -209,7 +126,7 @@ export default {
                 id_integration: this.id_integration,
                 name: this.$page.props.user.name,
                 email: this.$page.props.user.email,
-                password: '',
+                password: this.$page.props.user.password,
                 type: ''
             }),
             have_account: null,
@@ -221,6 +138,7 @@ export default {
             this.have_account = true
             this.link = false
             this.loading = false
+            
         },
         togglecreate() {
             this.form.type = 'Create'
@@ -230,6 +148,7 @@ export default {
             this.form.type = 'Link'
             this.link = !this.link
             this.loading=false
+            this.form.password=''
         },
         store() {
             this.loading = true

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Integrable extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'integration_id',
+        'integrable_type',
+        'integrable_id',
+        'token'
+    ];
 }

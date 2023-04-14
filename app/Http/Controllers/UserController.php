@@ -51,10 +51,10 @@ class UserController extends Controller
       
   }
 
-  public function user_token($id,$token)
+  public function user_token(Request $request)
   {
     
-    $this->userepository->user_token($id, $token);
+    $this->userepository->user_token($request);
 
     return back();
   }
