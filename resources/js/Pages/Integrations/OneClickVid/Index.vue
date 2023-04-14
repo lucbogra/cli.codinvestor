@@ -93,7 +93,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm font-light">
-                                    <tr v-if="requests" v-for="request in requests"
+                                    <tr v-if="requests.length===0" v-for="request in requests"
                                         class="border-b border-gray-200 hover:bg-gray-100">
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
                                             <div class="flex items-center">
@@ -180,6 +180,7 @@
                     </div>
                 </div>
             </div>
+            
             <Answer_Modal :answer="current_answer" :show="show_answer" @closemodal="answerToggle"></Answer_Modal>
             <Add_request :show="show_add" @close_modal="addRequestToggle"></Add_request>
             <Rate v-if="current_answer" :id="current_answer.id" :show="show_rate"
@@ -187,6 +188,7 @@
             <Duplicate_request v-if="selected_request != null" :action="action_request" :key="selected_request"
                 :request="selected_request" :products="products" :show="show_duplicate"
                 @close_modal="toggleduplicatemodal(selected_request, 'Duplicate')"></Duplicate_request>
+                
         </template>
 
     </AppLayout>
