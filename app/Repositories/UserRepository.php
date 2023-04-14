@@ -32,9 +32,11 @@ class UserRepository
       ])->timeout(60)->post('https://adminapp.oneclickvid.com/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
       // $response=Http::withHeaders([
       //   'Accept' => 'application/json'
-      // ])->timeout(60)->post('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'.$id_integration.'/'. $name .'/'.$email.'/'.$password);
+      // ])->timeout(60)->post('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
       
       $message=json_decode($response->getBody()->getContents());
+      
+      
       if($message->message=='success')
       {
 
