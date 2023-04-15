@@ -149,15 +149,6 @@ export default {
                     onSuccess: () => {
                         this.loading = false
                         this.$emit('close_modal');
-                         Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            timer: 3000,
-                            showConfirmButton: false,
-                            timerProgressBar: true,
-                            icon: 'success',
-                            title: $this.page.props.value.flash.success,
-                        })
                     },
                 })
             }

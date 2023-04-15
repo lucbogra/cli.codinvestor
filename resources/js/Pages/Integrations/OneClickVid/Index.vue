@@ -93,7 +93,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm font-light">
-                                    <tr v-if="requests.length===0" v-for="request in requests"
+                                    <tr v-if="requests.length!==0" v-for="request in requests"
                                         class="border-b border-gray-200 hover:bg-gray-100">
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
                                             <div class="flex items-center">
@@ -132,7 +132,7 @@
                                         <td v-if="request.answer && request.answer.rates === null"
                                             class="py-3 px-6 text-center font-bold">
                                             <button @click="rateToggle(request.answer)"
-                                                class="bg-primary-400 p-2 w-7/12 rounded text-white hover:bg-primary-500">Rate</button>
+                                                class="bg-primary-400 p-2 w-full rounded text-white hover:bg-primary-500">Rate</button>
                                         </td>
                                         <td v-else-if="request.answer && request.answer.rates !== null"
                                             class="py-3 px-6 text-center font-bold">
