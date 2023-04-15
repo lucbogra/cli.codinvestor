@@ -13,18 +13,8 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'slug',
-        'photo',
-        'description',
-        'gallery',
-        'active',
-        'link',
-        'user_id'
-    ];
     protected $casts = [
-        'gallery' => 'array',
+      'gallery' => 'array',
     ];
 
     protected $dates = [

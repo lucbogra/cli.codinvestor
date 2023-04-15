@@ -58,10 +58,10 @@ class ProductRequestNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            'message' => 'request sent',
-            'product' => Product::find($this->product_id)->name,
-            'investor' => $this->investor->name
-        ];
+      return [
+        'message' => 'request sent',
+        'product' => Product::find($this->product_id)->name,
+        'investor' => $this->investor->name
+      ];
     }
 }
