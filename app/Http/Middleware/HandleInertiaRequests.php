@@ -117,6 +117,7 @@ class HandleInertiaRequests extends Middleware
           'logo_color' => WebSetting::first()->logo,
           'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers) : null,
           'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null,
+          'alerts_messages' => $request->user() ?  $request->user()->messages()->wherePivot('read_at', null)->wherePivot('alert', true)->get() : null,
           'not_readed_responses'=>$request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\CreativeNotification')->count() : null
         ]);
     }

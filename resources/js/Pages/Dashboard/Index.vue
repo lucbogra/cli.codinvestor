@@ -7,7 +7,6 @@ import Top from './Top.vue';
 import ConfirmationChart from './ConfirmationChart.vue';
 import Performance from './Performance.vue';
 import MonthReport from './MonthReport.vue';
-import Tutos from '../Setting/Totos.vue'
 const time = ref('today')
 const topDatas = ref(null)
 const performance = ref(null)
@@ -57,8 +56,6 @@ const LoadingOverlay = defineAsyncComponent(() =>
 
     <template #content>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-
-        <Tutos class="mb-4" />
 
         <div class="flex mb-8">
           <button :class="['mr-4', time=='today' ? 'btn-primary' : 'btn-white' ]" @click="time='today'">today</button>
