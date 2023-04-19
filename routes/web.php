@@ -80,7 +80,7 @@ Route::middleware([
     'verified',
     'register_steps',
 ])->group(function () {
-  Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
   Route::get('/dashboard/performance', [DashboardController::class, 'performance'])->name('dashboard.performance')->middleware('auth');
   Route::get('/dashboard/month_reports', [DashboardController::class, 'month_reports'])->name('dashboard.month_reports');
@@ -175,7 +175,7 @@ Route::middleware([
   Route::put('rate/{id}', [RequestController::class, 'rate'])->name('rate.creative');
 
 
-    Route::get('/help', [HomeController::class, 'help'])->name('help');
+    Route::get('/', [HomeController::class, 'help'])->name('help');
     Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');
 
 

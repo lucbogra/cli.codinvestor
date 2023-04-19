@@ -13,9 +13,9 @@ onMounted( async () => {
   <div class="w-full rounded-2xl bg-white p-2" v-if="tutos != null">
     <Disclosure v-slot="{ open }" v-for="tuto in tutos" :key="tuto.id">
       <DisclosureButton
-        class="flex w-full justify-between mb-4 rounded-lg border border-primary-500 bg-primary-200  px-4 py-2 text-left text-lg font-medium text-white hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-primary-500 focus-visible:ring-opacity-75">
+        class="flex w-full justify-between mb-4 rounded-lg border shadow-lg border-primary-400 px-4 py-2 text-left text-lg font-medium text-white hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-primary-500 focus-visible:ring-opacity-75">
         <div class="flex items-center text-primary-800">
-          <InformationCircleIcon class="w-5 h-5 mr-1.5" />
+          <i class="fa-brands fa-youtube fa-lg mr-1.5" style="color: #FF0000;"></i>
           <span>{{tuto.title}}</span>
         </div>
         <ChevronUpIcon :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-primary-800" />

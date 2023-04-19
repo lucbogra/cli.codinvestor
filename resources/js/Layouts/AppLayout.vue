@@ -51,6 +51,7 @@ import {
   ClipboardListIcon,
   CashIcon,
   InboxIcon,
+ViewGridIcon,
 } from '@heroicons/vue/outline'
 import {
   ShoppingCartIcon,
@@ -79,7 +80,9 @@ const isUrl = (...urls) => {
 }
 
 const navigation = [
-  { name: 'Home', href: route('dashboard'), icon: HomeIcon, current: isUrl(''), show: auth.value.hasRole('Investor') },
+  { name: 'Home', href: route('help'), icon: HomeIcon, current: isUrl(''), show: auth.value.hasRole('Investor') },
+
+  { name: 'Dashboard', href: route('dashboard'), icon: ViewGridIcon, current: isUrl('/dashboard'), show: auth.value.hasRole('Investor') },
 
   { name: 'Marketplace', href: route('marketplace.index'), icon: ShoppingCartIcon, current: isUrl('/marketplace'), show: true },
 
