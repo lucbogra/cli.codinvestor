@@ -5,6 +5,7 @@ import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
 import useClipboard from 'vue-clipboard3'
 import Pagination from '@/Components/Pagination.vue';
+import { auth } from '../Permissions';
 
 const props = defineProps({
   products: Object,
@@ -78,7 +79,7 @@ const copyToClipboard = async (value) =>{
                 <tr>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Price</th>
-                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Commission</th>
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Categories</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Link</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Actions</th>
@@ -101,7 +102,7 @@ const copyToClipboard = async (value) =>{
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.recommanded_price+' SAR' }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ '$'+product.commission}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.commission}}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
                     <div class="flex flex-wrap items-left">
                       <span v-for="category in product.categories"

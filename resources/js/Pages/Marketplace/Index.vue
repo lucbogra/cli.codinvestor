@@ -12,6 +12,7 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
+import { auth } from '../Permissions';
 const props = defineProps({
   filters: Object,
   products: Array,
@@ -190,7 +191,7 @@ const open = ref(false)
                       {{ product.name }}
                     </a>
                   </h3>
-                  <div class="flex flex-1 flex-col justify-end">
+                  <div class="flex flex-1 flex-col justify-end" v-if="auth.hasRole('Investor')">
                     <p class="text-sm text-gray-900">{{ product.recommanded_price+' SAR' }}</p>
                     <p class="text-base font-medium text-orange-600">{{ 'Commission : $'+product.commission }}</p>
                   </div>

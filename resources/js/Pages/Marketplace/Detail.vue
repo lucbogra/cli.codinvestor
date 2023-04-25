@@ -6,6 +6,7 @@ import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import DialogModal from '@/Jetstream/DialogModal.vue'
+import { auth } from '../Permissions'
 const props = defineProps({
   product: Object,
 });
@@ -116,7 +117,7 @@ const filterDuplicateData = (arr) => {
                 <div class="text-xl border-b border-gray-200 mt-4">Price :
                   <span class=" text-primary-700 font-bold"> {{ product.recommanded_price + ' SAR'}}</span>
                 </div>
-                <div class="text-xl border-b border-gray-200 mt-4"> Commission :
+                <div class="text-xl border-b border-gray-200 mt-4" v-if="auth.hasRole('Investor')" > Commission :
                   <span class=" text-primary-700 font-bold"> {{'$'+product.commission }}</span>
                 </div>
               </div>
