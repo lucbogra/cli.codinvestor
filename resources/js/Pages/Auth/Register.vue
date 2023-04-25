@@ -113,7 +113,7 @@ const steps = [
       </div>
 
       <div class="mt-4">
-        <JetLabel for="password" :-value="Password" />
+        <JetLabel for="password" value="Password" />
         <JetInput id="password" v-model="form.password" type="password"
           :class="['mt-1 block w-full', form.errors.password ? 'border-red-600' : '']" required
           autocomplete="new-password" />

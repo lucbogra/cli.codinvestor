@@ -26,7 +26,7 @@ class UserRepository
       $email = $this->encrypt_decrypt('encrypt', $request->email, 'Create an Account on One Click Vid');
       $password = $this->encrypt_decrypt('encrypt', $request->password, 'Create an Account on One Click Vid');
 
-      // dd('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'.$id_integration.'/'. $name .'/'.$email.'/'.$password);
+      // dd('http://127.0.0.1:8002/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
       $response=Http::withHeaders([
         'Accept' => 'application/json'
       ])->timeout(60)->post('https://adminapp.oneclickvid.com/api/create/user/'.$id.'/'.$type.'/'. $name .'/'.$email.'/'.$password);
@@ -59,6 +59,10 @@ class UserRepository
           }
 
         return back()->with('success','Integrated Successfully');
+      }
+      else if($message->message=='exists')
+      {
+        return back()->with('error','Email Already Exists In This Integration');
       }
       else{
 

@@ -85,7 +85,15 @@ class RequestController extends Controller
         //  $requests=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequests');
         // return $requests->json();
         
-        return response()->json($requests->json());
+        if($requests->json()['message']==='error')
+        {
+            return response()->json([]);   
+        }
+        else
+        {
+            return response()->json($requests->json()['data']);
+        }
+        
     }
 
     public function userequest($id)
