@@ -7,7 +7,7 @@ import {
   ArrowRightIcon,
 } from "@heroicons/vue/solid";
 import CheckUser from "./CheckUser.vue";
-
+// import survey from './OneClickVid/Survey.vue'
 export default {
   components: {
     AppLayout,
@@ -16,6 +16,7 @@ export default {
     ChevronLeftIcon,
     CheckUser,
     ArrowRightIcon,
+    // survey
   },
   props: {
     Integrations: Object,
@@ -26,11 +27,11 @@ export default {
       show: false,
       name: "",
       id_integrat: "",
+      survey_check:true
     };
   },
   methods: {
     showCheckModal(name, id) {
-      console.log(name);
       this.id_integrat = id;
       this.show = !this.show;
       this.name = name;
@@ -71,6 +72,7 @@ export default {
     </template>
 
     <template #content>
+      <!-- <survey :show="survey_check"></survey> -->
       <CheckUser
         :id_integration="id_integrat"
         :key="name"
