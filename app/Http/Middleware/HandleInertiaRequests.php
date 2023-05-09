@@ -6,7 +6,9 @@ use App\Models\Product;
 use App\Models\WebSetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -91,17 +93,6 @@ class HandleInertiaRequests extends Middleware
         ];
       }) : null;
 
-      $messages = $request->user() ? $request->user()->investor->unreadNotifications->where('type', 'App\Notifications\ContactNotification')->map(function ($notification){
-        return[
-          'id' => $notification->id,
-          'text' => $notification->data['message'],
-          'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
-          'link' => route($notification->data['route']),
-          'icon' => 'fa-sharp fa-solid fa-comment text-primary-500',
-          'type' => 'New Funding'
-        ];
-      }) : null;
-
     return array_merge(parent::share($request), [
       'flash' => function () use ($request) {
         return [
@@ -124,7 +115,7 @@ class HandleInertiaRequests extends Middleware
           },
           'logo' => WebSetting::first()->logo_white,
           'logo_color' => WebSetting::first()->logo,
-          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers)->union($messages) : null,
+          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers) : null,
           'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null,
           'alerts_messages' => $request->user() ?  $request->user()->messages()->wherePivot('read_at', null)->wherePivot('alert', true)->get() : null,
           'not_readed_responses'=>$request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\CreativeNotification')->count() : null
