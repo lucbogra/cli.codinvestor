@@ -63,7 +63,6 @@
 </template>
 
 <script setup>
-import Modal from '@/Jetstream/modal.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 import { nextTick, onMounted, ref, watch } from 'vue';
