@@ -15,10 +15,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
+use App\Http\Traits\Url;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class IntegrationController extends Controller
 {
+    use Url;
     public $integrationRepository;
 
     public function __construct(IntegrationRepository $integrationRepository)
@@ -70,7 +72,7 @@ class IntegrationController extends Controller
         Notification::wherejsoncontains('data->id', $id)->update(['read_at'=> now()]);
         $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
         ->where('integrable_type','App\Models\Investor')->first('token');
-        $request=Http::withToken($integrable->token)->get('https://adminapp.oneclickvid.com/api/getUserRequest/'.$id);
+        $request=Http::withToken($integrable->token)->get($this->link().'/api/getUserRequest/'.$id);
         // $request=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequest/'.$id);
         return Inertia::render('Integrations/OneClickVid/Show',[
             'id'=>$id,
