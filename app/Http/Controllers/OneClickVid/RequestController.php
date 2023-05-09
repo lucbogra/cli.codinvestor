@@ -10,14 +10,12 @@ use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Traits\Crypt;
-use App\Http\Traits\Url;
 use App\Models\Integrable;
 use App\Repositories\OneClickVid\RequestRepository;
 use Illuminate\Support\Facades\Redirect;
 class RequestController extends Controller
 {
     use Crypt;
-    use Url;
     protected  $investor;
     protected $requestrepository;
 
@@ -80,8 +78,10 @@ class RequestController extends Controller
 
     public function userequests()
     {
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
         
-        $requests=Http::withToken($this->token())->get($this->link().'/api/getUserRequests');
+        $requests=Http::withToken($integrable->token)->get('https://adminapp.oneclickvid.com/api/getUserRequests');
         //  $requests=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequests');
         // return $requests->json();
         
@@ -98,7 +98,10 @@ class RequestController extends Controller
 
     public function userequest($id)
     {
-        $requests=Http::withToken($this->token())->get($this->link().'/api/getUserRequest'.$id);
+        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
+        ->where('integrable_type','App\Models\Investor')->first('token');
+
+        $requests=Http::withToken($integrable->token)->get('https://adminapp.oneclickvid.com/api/getUserRequest'.$id);
         // $requests=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequest'.$id);
 
         return response()->json($requests->json());

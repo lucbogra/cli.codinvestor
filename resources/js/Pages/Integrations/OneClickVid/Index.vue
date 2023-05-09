@@ -63,7 +63,7 @@
                             <p class="font-bold text-gray-600">Not Readed Responses</p>
                         </div>
                         <p class="text-lg font-bold text-gray-600">
-                            {{ this.$page.props.not_readed_responses }}
+                           {{ this.$page.props.not_readed_responses }}
                         </p>
                     </div>
                 </div>
@@ -73,11 +73,9 @@
                     <h1 class="text-primary-800 font-bold">Request Creatives</h1>
                     <div class="inline-flex">
                         <button type="button" @click="getrequets()" class="btn-primary mr-2">
-                            <RefreshIcon v-bind:class="{ 'animate-spin': load === true, 'animate-none': load === false }"
-                                class="w-4"></RefreshIcon>
+                            <RefreshIcon v-bind:class="{'animate-spin':load===true,'animate-none':load===false}" class="w-4"></RefreshIcon>
                         </button>
-                        <button @click="addRequestToggle" type="button" class="btn-primary cursor-pointer">Request
-                            Creative</button>
+                        <button @click="addRequestToggle" type="button" class="btn-primary cursor-pointer" >Request Creative</button>
                     </div>
                 </div>
                 <div class="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
@@ -86,8 +84,7 @@
                             <table class="min-w-max w-full table-auto">
                                 <thead>
                                     <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                        <th class="py-3 px-6 text-left">Reference</th>
-                                        <th class="py-3 px-6 text-left">Product</th>
+                                        <th class="py-3 px-6 text-left">Requests</th>
                                         <th class="py-3 px-6 text-left">Platform</th>
                                         <th class="py-3 px-6 text-left">Type</th>
                                         <th class="py-3 px-6 text-center ">Status</th>
@@ -96,7 +93,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm font-light">
-                                    <tr v-if="requests.length !== 0" v-for="request in requests"
+                                    <tr v-if="requests.length!==0" v-for="request in requests"
                                         class="border-b border-gray-200 hover:bg-gray-100">
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
                                             <div class="flex items-center">
@@ -108,12 +105,7 @@
                                                     </svg>
 
                                                 </div>
-                                                <span class="font-medium text-lg text-primary-500">{{ request.ref }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3 px-6 text-left">
-                                            <div class="flex items-center font-bold">
-                                                <span>{{ request.product }}</span>
+                                                <span class="font-medium text-lg">{{ request.product }}</span>
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
@@ -128,12 +120,12 @@
                                         </td>
                                         <td v-if="request.answer" class="py-4 px-6 text-center">
                                             <button type="button" @click="answerToggle(request.answer)"
-                                                class="bg-green-400 hover:bg-green-300 py-1 px-2 rounded-full text-sm font-bold text-white">Answered</button>
+                                                class="bg-green-400 hover:bg-green-300 py-2 px-3 rounded-full text-sm font-bold text-white">Answered</button>
 
                                         </td>
                                         <td v-else class="py-4 px-6 text-center">
                                             <button
-                                                class="cursor-text bg-orange-400 hover:bg-orange-300 py-1 px-2 rounded-full text-sm font-bold text-white">
+                                                class="cursor-text bg-orange-400 hover:bg-orange-300 py-2 px-3 rounded-full text-sm font-bold text-white">
                                                 Pending</button>
 
                                         </td>
@@ -159,10 +151,6 @@
                                         </td>
                                         <td class="py-3 px-6 text-center">
                                             <div class="flex item-center justify-center">
-                                                <!-- <div v-if="request.message===false" @click="contactToggle(request,'create')"
-                                                    class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
-                                                    <PhoneIcon class="text-primary-500" />
-                                                </div> -->
                                                 <div @click="toggleduplicatemodal(request, 'Duplicate')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <DuplicateIcon class="text-primary-500" />
@@ -172,13 +160,13 @@
                                                 <EyeIcon class="text-primary-500 cursor-pointer" />
 
                                                 </Link>
-                                                <button v-if="request.read === false"
+                                                <button v-if="request.read===false"
                                                     @click="toggleduplicatemodal(request, 'update')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <PencilIcon class="text-primary-500" />
 
                                                 </button>
-                                                <button @click="destroy(request.id)" v-if="request.read === false"
+                                                <button @click="destroy(request.id)" v-if="request.read===false"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <TrashIcon class="text-primary-500" />
                                                 </button>
@@ -192,16 +180,7 @@
                     </div>
                 </div>
             </div>
-
-            <button @click="contactToggle(null)" title="Contact Sale"
-                class="fixed z-40 right-5 bottom-5 shadow-lg flex justify-center items-center w-14 h-14 bg-primary-500 rounded-full focus:outline-none hover:bg-primary-600 focus:bg-primary-600 transition duration-300 ease">
-                <PhoneIcon v-if="!contact" class="text-white w-6 h-6" />
-                <XIcon v-else class="text-white w-6 h-6" />
-                <div v-if="not_readed_messages"
-                    class="animate-ping rounded-full bg-red-600 w-3 h-3 absolute top-0 right-0"></div>
-                <div v-if="not_readed_messages "
-                    class="rounded-full bg-red-600 w-3 h-3 absolute top-0 right-0"></div>
-            </button>
+            
             <Answer_Modal :answer="current_answer" :show="show_answer" @closemodal="answerToggle"></Answer_Modal>
             <Add_request :show="show_add" @close_modal="addRequestToggle"></Add_request>
             <Rate v-if="current_answer" :id="current_answer.id" :show="show_rate"
@@ -209,9 +188,7 @@
             <Duplicate_request v-if="selected_request != null" :action="action_request" :key="selected_request"
                 :request="selected_request" :products="products" :show="show_duplicate"
                 @close_modal="toggleduplicatemodal(selected_request, 'Duplicate')"></Duplicate_request>
-            <Contact :key="request" :status='status' :request="request" :show="contact" @closemodal="contactToggle(null)"
-                @reload_request="getrequets()"></Contact>
-            <!-- {{ requests }} -->
+                
         </template>
 
     </AppLayout>
@@ -219,15 +196,13 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { Link } from '@inertiajs/inertia-vue3'
-import { ChevronRightIcon, PaperAirplaneIcon, BellIcon, UploadIcon, RefreshIcon, StarIcon, XIcon } from '@heroicons/vue/solid'
-import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon, PhoneIcon } from '@heroicons/vue/outline'
+import { ChevronRightIcon, PaperAirplaneIcon, BellIcon, UploadIcon, RefreshIcon, StarIcon } from '@heroicons/vue/solid'
+import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon } from '@heroicons/vue/outline'
 import Add_request from '../../Requests/Add.vue'
 import Answer_Modal from './Answer.vue'
 import Rate from './Rate.vue'
 import Duplicate_request from '../../Requests/Duplicate.vue'
-import Contact from '../OneClickVid/Contact.vue'
 export default {
-    name: "One Click Vid",
     components: {
         AppLayout,
         ChevronRightIcon,
@@ -235,10 +210,10 @@ export default {
         Link,
         UploadIcon, BellIcon,
         Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
-        Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon
+        Rate, Duplicate_request, RefreshIcon, StarIcon
     },
     props: {
-        products: Object
+        products:Object
     },
     data() {
         return {
@@ -252,21 +227,11 @@ export default {
             show_duplicate: false,
             action_request: 'Duplicate',
             form: this.$inertia.form({}),
-            load: false,
-            contact: false,
-            request: null,
-            status: '',
-            not_readed_messages:false
+            load:false
 
         }
     },
     methods: {
-        contactToggle(request, status) {
-            this.contact = !this.contact
-            this.request = request
-            this.status = status
-            this.countNotReadedMessages()
-        },
         answerToggle(answer) {
             if (answer !== null) {
                 this.current_answer = answer
@@ -301,7 +266,7 @@ export default {
                             this.answers_count += 1
                         }
                     })
-                    this.load = false
+                    this.load=false
                 })
                 .catch(resonse => {
                     console.log('error');
@@ -332,27 +297,10 @@ export default {
                 }
             })
 
-        },
-        countNotReadedMessages()
-        {
-            axios.get(route('messages.get'))
-            .then((response) => {
-                this.not_readed_messages =false
-                Object.values(response.data[0].messages).map((message) => {
-
-                    if (message['read'] == null && message['response']) {
-                        this.not_readed_messages = true
-                    }
-                })
-            })
-            .catch((error) => {
-                console.error(error)
-            })
         }
     },
     mounted() {
         this.getrequets();
-        this.countNotReadedMessages()
     }
 
 }
