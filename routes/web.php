@@ -177,7 +177,7 @@ Route::middleware([
   Route::put('rate/{id}', [RequestController::class, 'rate'])->name('rate.creative');
 
 
-    Route::get('/help', [HomeController::class, 'help'])->name('help');
+    Route::get('/', [HomeController::class, 'help'])->name('help');
     Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');
     Route::post('messages',[ContactController::class,'messages'])->name('messages.add');
     Route::get('getMessages',[ContactController::class,'getmessages'])->name('messages.get');
