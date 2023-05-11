@@ -16,7 +16,7 @@
                     class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                     <div v-if="messages && messages.length > 0" v-for="reply in messages[0].messages" :key="reply.id">
                         <div v-if="reply.sent" class="flex justify-end mb-4">
-                            <div class="text-center mt-3 mr-2 text-gray-400">{{ reply.date }}</div>
+                            <div class="text-sm text-center mt-3 mr-2 text-gray-400">{{ reply.date }}</div>
                             <div
                                 class="mr-2 py-3 px-4 bg-primary-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
                                 {{ reply.sent }}
@@ -27,7 +27,7 @@
                             <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
                                 {{ reply['response'] }}
                             </div>
-                            <div class="text-center mt-3 ml-2 text-gray-400">{{ reply['date'] }}</div>
+                            <div class="text-center mt-3 ml-2 text-gray-400 text-sm">{{ reply['date'] }}</div>
 
                         </div>
 

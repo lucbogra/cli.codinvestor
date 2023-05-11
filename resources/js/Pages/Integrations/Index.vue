@@ -97,9 +97,9 @@ export default {
             <!--p class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">FREE
                               </p-->
           </div>
-          <h1 class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
+          <p class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
             {{ Integration.description }}
-          </h1>
+          </p>
           <div class="flex mt-4 content-center space-x-2 lg:mt-6">
             <a
               :href="Integration.external_link"
