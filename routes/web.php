@@ -40,17 +40,17 @@ Route::get('/', function () {
     return Inertia::render('Auth/EditEmail');
   } )->middleware('auth')->name('user.get_email');
   Route::put('email/change', [RegisterStepsController::class, 'change_email'])->middleware('auth')->name('user.change_email');
-  
+
   // Route::get('/register/steps/second_step', function() {
   //   return Inertia::render('Auth/SecondStepRegister');
   // })->middleware('auth:sanctum', 'verified')->name('user.register.second_step');
-  
+
   Route::put('/register/steps/second_step', [RegisterStepsController::class, 'second_step'])->middleware('auth')->name('user.register.store_second_step');
-  
+
   // Route::get('/register/steps/third_step', function() {
   //   return Inertia::render('Auth/ThirdStepRegister');
   // })->middleware('auth:sanctum', 'verified')->name('user.register.third_step');
-  
+
   Route::get('/register/steps', function(Request $request) {
     $step = $request->user() ? $request->user()->step : null;
     if($request->user()?->stepStatus == true){
@@ -71,10 +71,10 @@ Route::get('/', function () {
       }
     else return redirect(RouteServiceProvider::HOME);
   })->middleware('auth:sanctum', 'verified')->name('user.register.steps');
-  
+
   Route::put('register/steps/third_step', [RegisterStepsController::class, 'third_step'])->middleware('auth')->name('user.register.store_third_step');
   Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'fourth_step'])->middleware('auth')->name('user.register.store_fourth_step');
-  
+
   Route::middleware([
       'auth:sanctum',
       config('jetstream.auth_session'),
@@ -100,7 +100,7 @@ Route::middleware([
   Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request')->middleware('permission:affiliate send product request');
   Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
   Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');
-  Route::put('products/update_link', [MarketplaceController::class, 'update_link'])->name('products.update_link')->middleware('permission:affiliate set product link');
+  Route::put('products/update', [MarketplaceController::class, 'update'])->name('products.update')->middleware('permission:affiliate set product link');
   Route::get('user/products',[MarketplaceController::class,'getuserProduct'])->name('products.user');
 
   Route::prefix('orders')->middleware('permission:affiliate import order')->group(function () {
@@ -185,5 +185,5 @@ Route::middleware([
 
 });
 
-  
+
   Route::get('getCreativesNotification/{id}/{investor_id}/{message}/{route}', [RequestController::class, 'getCreativesNotification']);

@@ -74,6 +74,7 @@ class MarketplaceController extends Controller
         'gallery' => $product->gallery,
         'recommanded_price' => $product->recommanded_price,
         'commission' => $product->commission,
+        'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
         'description' => $product->description,
         'link' => $product->link,
         'sizes' => $product->variants()->select('size')->distinct()->get(),
@@ -85,6 +86,7 @@ class MarketplaceController extends Controller
           ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
           ->groupBy('country')->get(),
         'exist_request' => $this->investor->has_requested($product->id)->select('status')->first(),
+        'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
       ],
 
     ]);
@@ -92,9 +94,17 @@ class MarketplaceController extends Controller
 
   public function request(Request $request)
   {
-    $request->validate(['product_id' => ['required', 'exists:products,id']] );
+    $request->validate([
+      'product_id' => ['required', 'exists:products,id'],
+      'commission.price' => ['required', 'numeric'],
+      'commission.commission' => ['required', 'numeric'],
+      'commission' => ['required']
+    ]);
     if ($this->investor) {
-      $this->investor->products()->attach($request->product_id);
+      $this->investor->products()->attach($request->product_id, [
+        'affiliate_commission' => $request->commission['commission'],
+        'affiliate_price' => $request->commission['price']
+      ]);
       Notification::send($this->investor->manager, new ProductRequestNotification($request->product_id, $this->investor));
       return back();
     } else {
@@ -104,6 +114,7 @@ class MarketplaceController extends Controller
 
   public function products(Request $request)
   {
+    // dd($this->investor->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2));
     $products = [];
     $products = $this->investor->products()->wherePivot('status', 'access')
       ->paginate(10)
@@ -116,9 +127,10 @@ class MarketplaceController extends Controller
           'photo' => $product->photo,
           'slug' => $product->slug,
           'categories' => $product->categories->pluck('name'),
-          'recommanded_price' => $product->recommanded_price,
-          'commission' => $product->commission,
+          'price' => $product->pivot->affiliate_price,
+          'commission' => $product->pivot->affiliate_commission,
           'link' => $product->pivot->link,
+          'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : []
         ];
       });
 
@@ -131,15 +143,25 @@ class MarketplaceController extends Controller
     }
   }
 
-  public function update_link(Request $request){
+  public function update(Request $request){
+
     $request->validate([
       'link' => ['required', 'url'],
-      'product_id' => ['required', 'exists:products,id']
+      'product_id' => ['required', 'exists:products,id'],
+      'commission.price' => ['required', 'numeric'],
+      'commission.commission' => ['required', 'numeric'],
+      'commission' => ['required']
     ]);
 
-    $this->investor->products()->updateExistingPivot($request->product_id, ['link' => $request->link]);
+    // dd($request->all());
 
-    return back()->with('success', 'Link updated.');
+    $this->investor->products()->updateExistingPivot($request->product_id, [
+      'link' => $request->link,
+      'affiliate_commission' => $request->commission['commission'],
+      'affiliate_price' => $request->commission['price']
+    ]);
+
+    return back()->with('success', 'Product updated.');
   }
 
   public function product_read_notification($notification_id, $slug){

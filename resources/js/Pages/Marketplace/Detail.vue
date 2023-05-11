@@ -6,16 +6,19 @@ import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import DialogModal from '@/Jetstream/DialogModal.vue'
+import JetLabel from '@/Jetstream/Label.vue';
+
 import { auth } from '../Permissions'
 const props = defineProps({
   product: Object,
 });
+const form = useForm({
+  product_id : props.product.id,
+  commission : ''
+})
 
 const requestModal = ref(false)
-const submitRequest = (id) => {
-  const form = useForm({
-    product_id : id
-  })
+const submitRequest = () => {
   form.post(route('marketplace.request'), {
     preserveScroll : true,
     onSuccess : () => {
@@ -112,7 +115,7 @@ const filterDuplicateData = (arr) => {
             <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
               <h1 class="text-3xl font-extrabold tracking-tight text-primary-800">{{ product.name }}
               </h1>
-              <div class="mt-3 border-t border-gray-200">
+              <!-- <div class="mt-3 border-t border-gray-200">
                 <h2 class="sr-only">Product information</h2>
                 <div class="text-xl border-b border-gray-200 mt-4">Price :
                   <span class=" text-primary-700 font-bold"> {{ product.recommanded_price + ' SAR'}}</span>
@@ -120,6 +123,24 @@ const filterDuplicateData = (arr) => {
                 <div class="text-xl border-b border-gray-200 mt-4" v-if="auth.hasRole('Investor')" > Commission :
                   <span class=" text-primary-700 font-bold"> {{'$'+product.commission }}</span>
                 </div>
+              </div> -->
+
+              <div>
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Price</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                    <tr v-for="price in product.pricings">
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ price.price+' SAR' }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ '$'+price.commission }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
               </div>
 
               <div class="mt-4">
@@ -128,55 +149,6 @@ const filterDuplicateData = (arr) => {
               </div>
 
               <div class="mt-6">
-                <!-- Colors -->
-                <!-- <div>
-                  <h3 class="text-md text-gray-600">Colors</h3>
-
-                  <RadioGroup v-model="selectedColor" class="mt-2">
-                    <RadioGroupLabel class="sr-only"> Choose a color </RadioGroupLabel>
-                    <span class="flex items-center space-x-3">
-                      <RadioGroupOption as="template" v-for="(color, index) in product.colors" :key="index" :value="color.color"
-                        v-slot="{ active, checked }">
-                        <div
-                          :class="[color.selectedColor, active && checked ? 'ring ring-offset-1' : '', !active && checked ? 'ring-2' : '', '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none']">
-                          <RadioGroupLabel as="span" class="sr-only">
-                            {{ color.color }}
-                          </RadioGroupLabel>
-                          <span aria-hidden="true" :style="'background-color:' + color.color"
-                            :class="['h-8 w-8 border border-black border-opacity-10 rounded-full']" />
-                        </div>
-                      </RadioGroupOption>
-                    </span>
-                  </RadioGroup>
-
-                  <div class="mt-10">
-                    <RadioGroup class="mt-4">
-                      <RadioGroupLabel class="sr-only"> size </RadioGroupLabel>
-                      <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                        <RadioGroupOption as="template" v-for="(size, index) in product.sizes" :key="index" :value="size.size"
-                          :disabled="!size.inStock" v-slot="{ active, checked }">
-                          <div
-                            :class="[size ? 'bg-white shadow-sm text-gray-900 cursor-pointer' : 'bg-gray-50 text-gray-200 cursor-not-allowed', active ? 'ring-2 ring-primary-500' : '', 'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6']">
-                            <RadioGroupLabel as="span">
-                              {{ size.size }}
-                            </RadioGroupLabel>
-                            <span v-if="size"
-                              :class="[active ? 'border' : 'border-2', checked ? 'border-primary-500' : 'border-transparent', 'absolute -inset-px rounded-md pointer-events-none']"
-                              aria-hidden="true" />
-                            <span v-else aria-hidden="true"
-                              class="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none">
-                              <svg class="absolute inset-0 w-full h-full text-gray-200 stroke-2" viewBox="0 0 100 100"
-                                preserveAspectRatio="none" stroke="currentColor">
-                                <line x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
-                              </svg>
-                            </span>
-                          </div>
-                        </RadioGroupOption>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                </div> -->
-
                 <div class="mt-10 flex sm:flex-col1 justify-between">
                   <button type="button" v-on:click="requestModal = true" v-if="product.exist_request == null"
                     class="max-w-xs flex-1 bg-primary-700 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-primary-500 sm:w-full">
@@ -230,20 +202,25 @@ const filterDuplicateData = (arr) => {
                         <!-- Modal content -->
                         <div class="text-sm nx">
                           <div class="fb">
-                            <p>You are about to launch for this product. Your request will be processed before being
-                              validated or declined.
-                               <!-- You will receive an email after the response from our technicalteam. -->
-                              </p>
+                            <p>You are about to launch for this product. Your request will be processed before being validated or declined.</p>
                           </div>
                         </div>
-                        <!-- Modal footer -->
-                        <div class="flex flex-wrap justify-end fc">
-                          <button class="r border-slate-200 hover--border-slate-300 g_"
-                            v-on:click="requestModal = false">Cancel</button>
-                          <button class="r ho xi ye bg-primary-700 hover:bg-primary-600"
-                            v-on:click="submitRequest(product.id), requestModal = false">Yes, Create it</button>
+                        <div class="mt-4">
+                          <JetLabel for="commission" value="select the price at which you want to sell the product" />
+                          <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
+                            <option v-for="(item, index) in product.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
+                          </select>
+                          <JetInputError :message="form.errors.commission" class="mt-2" />
                         </div>
                       </div>
+                    </div>
+                  </template>
+                  <template #footer>
+                    <div class="flex flex-wrap justify-end fc">
+                      <button class="r border-slate-200 hover--border-slate-300 g_"
+                        v-on:click="requestModal = false">Cancel</button>
+                      <button class="r ho xi ye bg-primary-700 hover:bg-primary-600"
+                        v-on:click="submitRequest(), requestModal = false">Send Request</button>
                     </div>
                   </template>
                 </DialogModal>
