@@ -22,7 +22,7 @@
         <template #content>
 
             <h1
-                class="text-2xl font-medium text-primary-800 flex hover:text-primary-600flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
+                class="text-2xl font-medium text-primary-800 flex hover:text-primary-600 items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                 One CLick Vid</h1>
             <div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3 mt-7 mx-7">
                 <!-- Begin Card Uploaded-->
@@ -96,7 +96,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm font-light">
-                                    <tr v-if="requests.length !== 0" v-for="request in requests"
+                                    <tr v-if="requests.length !== 0" v-for="(request,index) in requests"
                                         class="border-b border-gray-200 hover:bg-gray-100">
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
                                             <div class="flex items-center">
@@ -108,7 +108,12 @@
                                                     </svg>
 
                                                 </div>
-                                                <span class="font-medium text-lg text-primary-500">{{ request.ref }}</span>
+                                                <button @click="copyRef(request.ref,index)" class="text-primary-700 text-lg font-medium	 tracking-wide">
+                                                    {{ request.ref }}
+                                                    <span v-if="copy && selected_index==index" class="block mt-2 text-center text-gray-800 text-sm">Ref Copied ! </span>
+                                                </button>
+                                                 
+                                                <!-- <span class="font-medium text-lg text-primary-500">{{ request.ref }}</span> -->
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
@@ -256,7 +261,9 @@ export default {
             contact: false,
             request: null,
             status: '',
-            not_readed_messages:false
+            not_readed_messages:false,
+            copy:false,
+            selected_index:''
 
         }
     },
@@ -348,6 +355,17 @@ export default {
             .catch((error) => {
                 console.error(error)
             })
+        },
+        timout()
+        {
+            this.copy=false
+        },
+        copyRef(ref,index)
+        {
+            this.selected_index=index
+            navigator.clipboard.writeText(ref)
+            this.copy=true
+            setTimeout(this.timout,1000)
         }
     },
     mounted() {
