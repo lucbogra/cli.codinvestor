@@ -192,8 +192,8 @@ const open = ref(false)
                     </a>
                   </h3>
                   <div class="flex flex-1 flex-col justify-end" v-if="auth.hasRole('Investor')">
-                    <p class="text-sm text-gray-900">{{ product.recommanded_price+' SAR' }}</p>
-                    <p class="text-base font-medium text-orange-600">{{ 'Commission : $'+product.commission }}</p>
+                    <p class="text-sm text-gray-900">{{ 'starts from '+ product.recommanded_price+' SAR' }}</p>
+                    <p class="text-base font-medium text-orange-600">{{ 'Commission : up to $'+product.commission }}</p>
                   </div>
                 </div>
               </div>

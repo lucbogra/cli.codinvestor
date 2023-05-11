@@ -10,6 +10,7 @@ use App\Models\Utils\Helper;
 use App\Models\WebsiteProduct;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -50,35 +51,35 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'website'                    => $row['website'],
           'price'                      => $row['price'],
           'investor_id'                => $this->investor_id,
-          'status'                     => Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com' ? 'pending' : (isset($product) ? 'pending' : 'rejected'),
+          'status'                     => $this->setStatus($product, $row['price']),
           'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
           'product_id'                 => isset($product) ? $product->id : null,
-          'commission'                 => isset($product) ? $product->commission : 0,
+          'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
           'source'                     => 'importation'
       ]);
   }
 
     public function rules(): array
     {
-        return [
-            'customer name'      =>  ['required', 'max:255'],
-            'customer city'      =>  ['required', 'max:255'],
-            'customer phone'     =>  ['required', 'max:255'],
-            'product sku'   =>  ['required', 'max:255'],
-            'website'   =>  ['required', 'max:255'],
-            'country'   =>  ['nullable', 'max:255'],
-            'price'     =>  ['nullable', 'max:255'],
-        ];
+      return [
+        'customer name'      =>  ['required', 'max:255'],
+        'customer city'      =>  ['required', 'max:255'],
+        'customer phone'     =>  ['required', 'max:255'],
+        'product sku'   =>  ['required', 'max:255', Rule::in( Investor::find($this->investor_id)->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2) )],
+        'website'   =>  ['required', 'max:255'],
+        'country'   =>  ['nullable', 'max:255'],
+        'price'     =>  ['nullable', 'max:255'],
+      ];
     }
 
     public function batchSize(): int
     {
-        return 300;
+      return 300;
     }
 
     public function chunkSize(): int
     {
-        return 300;
+      return 300;
     }
 
     public function products($sku){
@@ -86,5 +87,19 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
         return Product::whereJsonContains('alias', $sku)->first();
       }
       return Investor::find($this->investor_id)->accessProducts()->whereJsonContains('alias', $sku)->first();
+    }
+
+    public function setStatus($product, $price)
+    {
+      if(Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com')
+      {
+        return 'pending';
+      }
+      elseif(isset($product)){
+        if($product->pivot->affiliate_price != (double)$price) {
+          return 'rejected';
+        }
+        else return 'pending';
+      }else return 'rejected';
     }
 }

@@ -57,7 +57,7 @@
 
             </div>
         </div>
-        
+
     </div>
     <!-- <input ref="input"> -->
 </template>
@@ -66,7 +66,6 @@
 import { useForm } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 import { nextTick, onMounted, ref, watch } from 'vue';
-import route from '../../../../../vendor/tightenco/ziggy/src/js';
 import { PaperAirplaneIcon, XIcon, ChevronDoubleDownIcon } from '@heroicons/vue/outline'
 import moment from 'moment'
 onMounted(() => {
@@ -154,10 +153,10 @@ watch(() => {
 })
 const select_message = (index) => {
     // console.log('before ' )
-    // selected_message.value = 
+    // selected_message.value =
 
     Object.values(messages.value[0].messages).map((message) => {
-        
+
         if (message['read'] == null && message['response']) {
             not_readed_messages.value=true
             message['read'] = moment().format('YYYY-MM-DD hh:mm')
@@ -195,7 +194,7 @@ const getmessages = () => {
 
                 nextTick(() => {
                     select_message(1)
-                    
+
                 })
             })
             .catch((error) => {

@@ -2,10 +2,13 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, } from 'vue';
 import { Link, useForm } from '@inertiajs/inertia-vue3'
-import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon } from '@heroicons/vue/solid';
+import { InformationCircleIcon, PencilAltIcon, DocumentDuplicateIcon, LinkIcon } from '@heroicons/vue/solid';
 import useClipboard from 'vue-clipboard3'
 import Pagination from '@/Components/Pagination.vue';
 import { auth } from '../Permissions';
+import DialogModal from '@/Jetstream/DialogModal.vue'
+import JetInput from '@/Jetstream/Input.vue';
+import JetInputError from '@/Jetstream/InputError.vue';
 
 const props = defineProps({
   products: Object,
@@ -15,26 +18,30 @@ const filters = ref({
   all: { value: '', keys: ['name', 'sku'] }
 })
 
-const showLinkModal = ref(false)
+const showModal = ref(false)
 
-const linkForm = useForm({
+const form = useForm({
   product: '',
   link : '',
   product_id : '',
+  pricings : [],
+  commission : '',
 })
 
 const getLinkModal = (product) => {
-  showLinkModal.value = true
-  linkForm.product = product.name
-  linkForm.link = product.link
-  linkForm.product_id = product.id
+  showModal.value = true
+  form.product = product.name
+  form.link = product.link
+  form.product_id = product.id
+  form.commission = product.commission
+  form.pricings = product.pricings
 }
 
-const updateLink = () => {
-  linkForm.put(route('products.update_link'), {
+const update = () => {
+  form.put(route('products.update'), {
     preserveScroll: true,
     onSuccess : () => {
-      showLinkModal.value= false,
+      showModal.value= false,
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -44,7 +51,7 @@ const updateLink = () => {
         icon: 'success',
         title: 'Link updated.',
       }),
-      linkForm.reset()
+      form.reset()
     }
   })
 }
@@ -101,7 +108,7 @@ const copyToClipboard = async (value) =>{
                       </div>
                     </div>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.recommanded_price+' SAR' }}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.price+' SAR' }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.commission}}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
                     <div class="flex flex-wrap items-left">
@@ -112,11 +119,11 @@ const copyToClipboard = async (value) =>{
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium">
-                    <button class="btn-primary" v-if="!product.link" @click="getLinkModal(product)">set Link</button>
-                    <button class="btn-primary" v-else @click="getLinkModal(product)"><PencilAltIcon class="w-5"/></button>
+                    <a v-if="product.link" :href="product.link" target="_blank" ><LinkIcon class="w-5 h-5 text-primary-600 hover:text-primary-400"/></a>
                   </td>
 
                   <td class="whitespace-nowrap py-4 pl-6 pr-4 text-sm font-medium text-gray-500">
+                    <button class="btn-primary" @click="getLinkModal(product)">Edit</button>
                   </td>
 
                 </tr>
@@ -131,32 +138,31 @@ const copyToClipboard = async (value) =>{
         <Pagination class="mt-6" :links="products.links" />
       </div>
 
-      <div id="info-modal" v-show="showLinkModal" class="m w tx la flex items-center np justify-center vs jj"
-        role="dialog" aria-modal="true">
-        <div class="bg-white rounded bd lu up ou oe">
-          <div class="dz flex fy">
-            <div class="od sy rounded-full flex items-center justify-center ub hl">
-              <InformationCircleIcon class="text-primary-500 w-5"/>
-            </div>
-            <div>
-              <div class="ru">
-                <div class="ga gh text-primary-800">Update Link for<span class="font-weight">{{linkForm.product}}</span></div>
-              </div>
-              <div class="text-sm nx">
-                <div class="fb">
-                  <textarea class="w-full border-slate-200 rounded focus:border-primary-400" v-model="linkForm.link"></textarea>
-                  <div class="text-danger" v-if="linkForm.errors.link">{{ linkForm.errors.link }}</div>
-                </div>
-              </div>
-              <div class="flex flex-wrap justify-end fc">
-                <button class="r border-slate-200 hover--border-slate-300 g_" v-on:click="showLinkModal = false">Cancel</button>
-                <a :href="linkForm.link" target="_blank" class="bg-gray-300 r ye hover:bg-gray-200" v-if="linkForm.link != null">Open Link</a>
-                <button class="r ho xi ye bg-primary-700 hover:bg-primary-600" v-on:click="updateLink()">Update Link</button>
-              </div>
-            </div>
+      <DialogModal :show="showModal" >
+        <template #title>
+            Edit Product
+        </template>
+        <template #content>
+          Set Link for {{ form.product }} and choice your commission (your commission depends on the selling price of the product. So please choose the commission corresponding to the price you use)
+
+          <div class="mt-4">
+            <textarea class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.link"></textarea>
+            <JetInputError :message="form.errors.link" class="mt-2" />
           </div>
-        </div>
-      </div>
+          <div class="mt-4">
+            <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
+              <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
+            </select>
+            <JetInputError :message="form.errors.commission" class="mt-2" />
+          </div>
+        </template>
+        <template #footer>
+          <div class="flex flex-wrap justify-end fc">
+              <button class="r border-slate-200 hover--border-slate-300 g_" v-on:click="showModal = false">Cancel</button>
+              <button class="r ho xi ye bg-primary-700 hover:bg-primary-600" v-on:click="update()">Update</button>
+          </div>
+        </template>
+      </DialogModal>
     </template>
   </AppLayout>
 </template>
