@@ -236,15 +236,7 @@ export default {
                 onSuccess: () => {
                     this.$emit('closemodal')
                     this.form.reset()
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        timer: 3000,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        icon: 'success',
-                        title: $this.page.props.value.flash.success,
-                    })
+
 
                 }
             })

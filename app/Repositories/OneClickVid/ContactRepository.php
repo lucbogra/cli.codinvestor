@@ -37,31 +37,19 @@ class ContactRepository
 
     public function sendMessage($request,$id)
     {
-        // dd($request->all());
         $request->user()->investor->unreadNotifications->where('type', 'App\Notifications\ContactNotification')->markAsRead();
 
-        $response=Http::asForm()->withToken($this->token())->withHeaders(['Accept'=>'application/json'])->put($this->link().'/api/SendMessage/'.$id, [
+        Http::asForm()->withToken($this->token())->withHeaders(['Accept'=>'application/json'])->put($this->link().'/api/SendMessage/'.$id, [
             'messages' => serialize($request->message_data),
             'type'=>'sent'
         ]);
 
-        // $message=json_decode($response->getBody()->getContents());
-
         return back();
-        //  dd($message->message);
-        // if($message->message=='success')
-        // {
-        //     return back();
-        // }
-        // else
-        // {
-        //     return back()->with('error','error ');
-        // }
+       
     }
 
     public function createContactNotification($id,$message,$route)
     {
-        // dd([$id,$message,$route]);
         $user=Investor::findorfail((int)$id);
         
         

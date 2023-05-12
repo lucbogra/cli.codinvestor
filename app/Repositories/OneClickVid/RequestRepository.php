@@ -38,15 +38,14 @@ class RequestRepository
 
     public function Rate(Request $request,$id)
     {
-        // $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        // ->where('integrable_type','App\Models\Investor')->first('token');
-
-        Http::withToken($this->token())
+        Http::asForm()->withToken($this->token())
             ->withHeaders([
                 'cpl'=>$request->cpl,
-                'cpc'=>$request->cpc
+                'cpc'=>$request->cpc,
+                'observations'=>$request->observation,
+                'rates'=>$request->rate
                 ])
-            ->put($this->link().'/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
+            ->put($this->link().'/api/rateCreative/'. $id );
             // ->put('http://127.0.0.1:8002/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
     }
 
