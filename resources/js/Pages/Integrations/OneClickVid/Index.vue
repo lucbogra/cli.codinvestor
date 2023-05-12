@@ -180,13 +180,13 @@
                                                 <EyeIcon class="text-primary-500 cursor-pointer" />
 
                                                 </Link>
-                                                <button v-if="request.read === false"
+                                                <button v-if="request.read === false && request.answer==null"
                                                     @click="toggleduplicatemodal(request, 'update')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <PencilIcon class="text-primary-500" />
 
                                                 </button>
-                                                <button @click="destroy(request.id)" v-if="request.read === false"
+                                                <button @click="destroy(request.id)" v-if="request.read === false &&  request.answer==null"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <TrashIcon class="text-primary-500" />
                                                 </button>
