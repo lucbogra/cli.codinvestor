@@ -3,6 +3,7 @@
         <div class=" text-white bg-primary-700">
             <h1 class="ml-2 p-2 font-semibold text-xl text-center">Answer Information</h1>
         </div>
+        <!-- {{ answer }} -->
         <div class="flex flex-col justify-center items-center">
             <div
                 class="relative flex flex-col items-center rounded-[20px] w-[700px] max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500  p-3">
@@ -75,6 +76,15 @@
                         </p>
                     </div>
                 </div>
+                <div v-if="answer.observation" class="grid grid-cols-1 gap-4 px-2 w-full">
+                    <div
+                        class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
+                        <p class="text-sm text-gray-600">Video Observation</p>
+                        <p class="text-base font-medium text-navy-700">
+                            {{ answer.observation }}
+                        </p>
+                    </div>
+                </div>
                 <div v-if="answer.rates != null" class="grid grid-cols-1 gap-4 px-2 w-full">
                     <div
                         class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
@@ -97,7 +107,7 @@
                 </div>
                 <div v-if="answer.compaign_data != null" class="grid grid-cols-2 gap-4  px-2 w-full ">
 
-                    <div
+                    <div v-if="JSON.parse(answer.compaign_data).cpl!=''"
                         class="mt-2 flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">CPL (Cost Per Lead)</p>
                         <p class="text-base font-medium text-navy-700 ">
@@ -105,7 +115,7 @@
                         </p>
                     </div>
 
-                    <div
+                    <div v-if="JSON.parse(answer.compaign_data).cpc!=''"
                         class="mt-2 flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500 ">
                         <p class="text-sm text-gray-600">CPC (Cost Per Click)</p>
                         <p class="text-base font-medium text-navy-700 ">
@@ -114,7 +124,7 @@
                     </div>
                 </div>
                 <div v-if="answer.rates_Observations" class="grid grid-cols-1 gap-4 px-2 w-full">
-                    <div
+                    <div v-if="answer.rates_Observations.rate_observation!=''"
                         class="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4 shadow-3xl shadow-shadow-500">
                         <p class="text-sm text-gray-600">Your Rate Observation</p>
                         <p class="text-base font-medium text-navy-700">
