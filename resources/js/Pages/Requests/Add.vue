@@ -2,7 +2,7 @@
     <Modal :show="show" @close="$emit('close_modal')">
 
         <div class=" px-6 py-12 bg-white border-0 shadow-lg sm:rounded-3xl">
-            <h1 class="text-2xl font-bold mb-8">Request A Product</h1>
+            <h1 class="text-2xl font-bold mb-8">Request A Creative</h1>
             <form @submit.prevent="store">
                 <div class="relative z-0 w-full mb-5">
                     <JetLabel for="product" value="Product" />
@@ -56,7 +56,7 @@
                         <JetLabel class="mt-4 relative inline-flex items-center cursor-pointer">
                             <input v-model="form.voice" type="checkbox" class="sr-only peer">
                             <div
-                                class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-primary-500">
+                            class="w-14 h-7 bg-gray-100 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-100 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-500">
                             </div>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
                         </JetLabel>
@@ -67,7 +67,7 @@
                         <JetLabel class="mt-4 relative inline-flex items-center cursor-pointer">
                             <input v-model="form.music" type="checkbox" class="sr-only peer">
                             <div
-                                class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-primary-500">
+                                class="w-14 h-7 bg-gray-100 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-100 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary-500">
                             </div>
                             <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
                         </JetLabel>

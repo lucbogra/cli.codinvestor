@@ -146,8 +146,7 @@
                             type="number" step="any" />
                     </div>
                     <div class="mt-2 flex items-end justify-end w-full">
-                        <button
-                            class="btn-primary">Submit</button>
+                        <button class="btn-primary">Submit</button>
                     </div>
                     <button
                         class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
@@ -168,6 +167,7 @@
 <script>
 import Modal from '../../../Jetstream/Modal.vue'
 import JetLabel from '@/Jetstream/Label.vue'
+import { startsWith } from 'lodash'
 export default {
     components: {
         Modal,
@@ -195,41 +195,56 @@ export default {
     methods: {
         star(index) {
             this.form.rate = index
-            if (index === 1) {
-                this.S1 = true
-                this.S2 = false
-                this.S3 = false
-                this.S4 = false
-                this.S5 = false
+            let stars=[this.S1,this.S2,this.S3,this.S4,this.S5]
+            
+            for (let i = 0; i < index; i++) {
+                stars[i] = true
             }
-            else if (index === 2) {
-                this.S1 = true
-                this.S2 = true
-                this.S3 = false
-                this.S4 = false
-                this.S5 = false
+           
+            for (let i = 0; i < stars.length - index; i++) {
+                stars[(stars.length-1) - i] = false
             }
-            else if (index === 3) {
-                this.S1 = true
-                this.S2 = true
-                this.S3 = true
-                this.S4 = false
-                this.S5 = false
-            }
-            else if (index === 4) {
-                this.S1 = true
-                this.S2 = true
-                this.S3 = true
-                this.S4 = true
-                this.S5 = false
-            }
-            else {
-                this.S1 = true
-                this.S2 = true
-                this.S3 = true
-                this.S4 = true
-                this.S5 = true
-            }
+            this.S1=stars[0]
+            this.S2=stars[1]
+            this.S3=stars[2]
+            this.S4=stars[3]
+            this.S5=stars[4]
+            // console.log(stars)
+            // if (index === 1) {
+            //     this.S1 = true
+            //     this.S2 = false
+            //     this.S3 = false
+            //     this.S4 = false
+            //     this.S5 = false
+            // }
+            // else if (index === 2) {
+            //     this.S1 = true
+            //     this.S2 = true
+            //     this.S3 = false
+            //     this.S4 = false
+            //     this.S5 = false
+            // }
+            // else if (index === 3) {
+            //     this.S1 = true
+            //     this.S2 = true
+            //     this.S3 = true
+            //     this.S4 = false
+            //     this.S5 = false
+            // }
+            // else if (index === 4) {
+            //     this.S1 = true
+            //     this.S2 = true
+            //     this.S3 = true
+            //     this.S4 = true
+            //     this.S5 = false
+            // }
+            // else {
+            //     this.S1 = true
+            //     this.S2 = true
+            //     this.S3 = true
+            //     this.S4 = true
+            //     this.S5 = true
+            // }
         },
         Rate() {
             this.form.put(route('rate.creative', this.id), {
