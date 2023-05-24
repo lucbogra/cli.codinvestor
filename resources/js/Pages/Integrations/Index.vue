@@ -7,7 +7,7 @@ import {
   ArrowRightIcon,
 } from "@heroicons/vue/solid";
 import CheckUser from "./CheckUser.vue";
-
+// import survey from './OneClickVid/Survey.vue'
 export default {
   components: {
     AppLayout,
@@ -16,6 +16,7 @@ export default {
     ChevronLeftIcon,
     CheckUser,
     ArrowRightIcon,
+    // survey
   },
   props: {
     Integrations: Object,
@@ -26,11 +27,11 @@ export default {
       show: false,
       name: "",
       id_integrat: "",
+      survey_check:true
     };
   },
   methods: {
     showCheckModal(name, id) {
-      console.log(name);
       this.id_integrat = id;
       this.show = !this.show;
       this.name = name;
@@ -71,6 +72,7 @@ export default {
     </template>
 
     <template #content>
+      <!-- <survey :show="survey_check"></survey> -->
       <CheckUser
         :id_integration="id_integrat"
         :key="name"
@@ -95,9 +97,9 @@ export default {
             <!--p class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">FREE
                               </p-->
           </div>
-          <h1 class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
+          <p class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
             {{ Integration.description }}
-          </h1>
+          </p>
           <div class="flex mt-4 content-center space-x-2 lg:mt-6">
             <a
               :href="Integration.external_link"
