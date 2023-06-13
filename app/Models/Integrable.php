@@ -13,6 +13,13 @@ class Integrable extends Model
         'integration_id',
         'integrable_type',
         'integrable_id',
-        'token'
+        'token',
+        'connected'
     ];
+
+    public function integration()
+    {
+        return $this->belongsTo(Integration::class);
+    }
+
 }

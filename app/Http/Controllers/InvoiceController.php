@@ -21,7 +21,7 @@ class InvoiceController extends Controller
   }
 
   public function show(Invoice $invoice){
-    $invoice = new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings'));
+    $invoice = new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings','integrationPayments'));
     return Inertia::render('Invoices/Show', compact('invoice'));
   }
 

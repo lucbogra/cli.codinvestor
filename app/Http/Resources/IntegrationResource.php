@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Integrable;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class IntegrationResource extends JsonResource
 {
@@ -21,7 +23,8 @@ class IntegrationResource extends JsonResource
         'description' => $this->description,
         'status' => $this->status,
         'external_link' => $this->external_link,
-        'logo' => $this->logo
+        'logo' => $this->logo,
+        'connected'=>$this->pivot->connected==1
       ];
     }
 }

@@ -37,7 +37,6 @@
                         <option value="" selected disabled hidden>Choose Type Of Video</option>
                         <option value="Real">Real</option>
                         <option value="Presentation">Presentation</option>
-                        <option value="2D">2D</option>
                         <option value="SlideShow">SlideShow</option>
                         <option value="Before & After">Before & After</option>
                     </select>
@@ -103,7 +102,8 @@ import JetLabel from "@/Jetstream/Label.vue";
 import LoadingButton from '@/Components/LoadingButton.vue';
 export default {
     props: {
-        show: Boolean
+        show: Boolean,
+        products:Object
     },
     components:
     {
@@ -115,7 +115,7 @@ export default {
     },
     data() {
         return {
-            products: [],
+            // products: [],
             form: this.$inertia.form({
                 product: '',
                 platform: '',
@@ -130,14 +130,14 @@ export default {
         }
     },
     methods: {
-        getproducts() {
-            axios.get(route('products.user'))
-                .then((response) => {
-                    this.products = response.data
-                }).catch(response => {
-                    console.log('error');
-                })
-        },
+        // getproducts() {
+        //     axios.get(route('products.user'))
+        //         .then((response) => {
+        //             this.products = response.data
+        //         }).catch(response => {
+        //             console.log('error');
+        //         })
+        // },
         store() {
             this.loading = true
             this.form.post(route('requests.store'), {
@@ -153,7 +153,7 @@ export default {
     },
     mounted() {
 
-        this.getproducts();
+        // this.getproducts();
     }
 }
 </script>

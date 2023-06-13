@@ -108,7 +108,7 @@ const secondaryNavigation = [
   { name: 'Messages', href: route('messages.index'), icon: InboxIcon, current: isUrl('/messages'), show: auth.value.hasRole('Investor'), indicator: usePage().props.value.message_notifications },
 
   { name: 'Help', href: route('help'), icon: QuestionMarkCircleIcon, show: true },
-  //{ name: 'Integrations', href: route('integrations.index'), icon: CashIcon, current: isUrl('/integrations'), show: true },
+  { name: 'Integrations', href: route('integrations.index'), icon: CashIcon, current: isUrl('/integrations'), show: true },
   // { name: 'Services', href: route('services.index'), icon: CollectionIcon, show : true},
   //   { name: 'Privacy', href: '#', icon: ShieldCheckIcon },
 ]

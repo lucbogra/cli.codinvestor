@@ -102,7 +102,22 @@ class Investor extends Model
 
     public function integrations()
     {
-      return $this->morphToMany(Integration::class, 'integrable');
+      return $this->morphToMany(Integration::class, 'integrable')
+                  ->withPivot('created_at', 'connected');
     }
 
+    public function integrationsPayment()
+    {
+      return $this->morphMany(IntegrationPayment::class, 'integrable');
+    }
+
+    public function not_withdrawn_integration_payments(){
+      return $this->morphMany(IntegrationPayment::class, 'integrable')->where('withdrawn', false);
+    }
+
+    public function pendingIntegrationPayment()
+    {
+      return $this->hasMany(IntegrationPayment::class, 'integrable_id')->where('status','!=','paid');
+    }
+    
 }

@@ -93,7 +93,7 @@
                                     Yes, Create A New Account
                                 </div>
                             </button>
-                            
+
                         </div>
                     </div>
                     <div v-else>
@@ -113,12 +113,10 @@
                             <div>
                                 <jetLabel>what type of platforms do you use the most for your
                                     advertising campaigns ?</jetLabel>
-                                <select
-                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
-                                    v-model="form.platforms">
-                                    <option value="" selected disabled>Select A Platform</option>
-                                    <option value="Facebook">Facebook</option>
-                                </select>
+                                <el-select class="w-full" v-model="form.platforms" multiple placeholder="Select Platforms">
+                                        <el-option v-for="platform in platforms" :key="platform" :label="platform"
+                                            :value="platform" />
+                                    </el-select>
                             </div>
 
                             <div class="mt-4">
@@ -139,7 +137,7 @@
                                         Yes
                                     </span>
                                     <span class="block font-medium text-sm text-gray-700"><input type="radio"
-                                            name="similaire" value="No"  v-model="form.similar_service" />
+                                            name="similaire" value="No" v-model="form.similar_service" />
                                         No
                                     </span>
                                 </div>
@@ -154,46 +152,49 @@
                                 <jetLabel>why you subscribe to this service?</jetLabel>
                                 <ul class="list-disc ml-7">
                                     <li>
-                                        <input  class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox" @click="check" value="Gain Time" v-model="form.subscribe" />
+                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox"
+                                            @click="check" value="Gain Time" v-model="form.subscribe" />
                                         Gain Time
                                     </li>
                                     <li>
-                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm"  type="checkbox" value="I have no experience in creating videos."
-                                            v-model="form.subscribe" />
+                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox"
+                                            value="I have no experience in creating videos." v-model="form.subscribe" />
 
                                         have no experience in creating videos.
                                     </li>
                                     <li>
-                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm"  type="checkbox" value="to have the best videos and a better conversion rate"
+                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox"
+                                            value="to have the best videos and a better conversion rate"
                                             v-model="form.subscribe" />
 
                                         To have the best videos and a better conversion rate
                                     </li>
                                     <li>
-                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox" value="others" v-model="form.subscribe" />
+                                        <input class="rounded border-gray-300 text-primary-600 shadow-sm" type="checkbox"
+                                            value="others" v-model="form.subscribe" />
                                         Others
-                                        <jetInput v-model="form.others_observation" v-if="form.subscribe.includes('others')" type="text"></jetInput>
+                                        <jetInput v-model="form.others_observation" v-if="form.subscribe.includes('others')"
+                                            type="text"></jetInput>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="flex items-center justify-center mt-6 w-full">
-                                <button
-                                @click="$emit('closemodal')"
+                                <button @click="$emit('closemodal')"
                                     class="btn-primary bg-gray-100 text-primary-800 mr-2 hover:bg-primary-600 hover:text-white">
                                     Cancel
                                 </button>
-                                <button v-if="!loading"  class="btn-primary" type="button" @click="togglecreate()">
+                                <button v-if="!loading" class="btn-primary" type="button" @click="togglecreate()">
                                     Create Account
                                 </button>
                                 <button v-else
-                                class="mb-2 md:mb-0 bg-primary-500 border border-primary-500 px-7 py-4 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-primary-600">
-                                <div class="grid place-items-center">
-                                    <div
-                                        class="w-6 h-6 rounded-full animate-spin absolute border-2 border-solid border-white border-t-transparent">
+                                    class="mb-2 md:mb-0 bg-primary-500 border border-primary-500 px-7 py-4 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-primary-600">
+                                    <div class="grid place-items-center">
+                                        <div
+                                            class="w-6 h-6 rounded-full animate-spin absolute border-2 border-solid border-white border-t-transparent">
+                                        </div>
                                     </div>
-                                </div>
-                            </button>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -212,7 +213,7 @@ export default {
         Modal,
         MailIcon,
         jetInput,
-        jetLabel,
+        jetLabel
     },
     props: {
         show: Boolean,
@@ -232,16 +233,19 @@ export default {
                 password: this.$page.props.user.password,
                 type: "",
                 subscribe: [],
-                platforms: "",
+                platforms: [],
                 leads: "",
                 cpl: "",
                 similar_service: "Yes",
                 service_observation: "",
-                others_observation:""
+                others_observation: ""
             }),
             have_account: null,
             loading: false,
             survey: false,
+            value: [
+            ],
+            platforms : ['Facebook','Google','Snapshat','Tiktok']
         };
     },
     methods: {
@@ -252,14 +256,14 @@ export default {
         },
         togglecreate() {
             this.form.type = "Create";
-            
+
             this.store();
         },
         togglelink() {
             this.form.type = "Link";
             this.link = !this.link;
             this.loading = false;
-            this.survey=false;
+            this.survey = false;
             this.form.password = "";
         },
         store() {
@@ -270,7 +274,7 @@ export default {
                     this.create = false;
                     this.link = false;
                     this.use_info = false;
-                    this.survey=false
+                    this.survey = false
                     this.form.reset();
                     this.$emit("closemodal");
                 },
