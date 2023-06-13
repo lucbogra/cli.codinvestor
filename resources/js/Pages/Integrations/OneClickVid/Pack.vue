@@ -7,6 +7,7 @@
                 <h1 v-if="errorMessage!=''" class="text-md bg-red-200 text-red-800 p-2 mx-6 mb-4 rounded-md text-center">{{ errorMessage }}
                 </h1>
                 <div class="grid grid-cols-3">
+                    <div v-if="packs.length==0 && freePack!=null"></div>
                     <div v-if="freePack != null" class="w-full rounded-lg bg-primary-800 p-3 mr-6 ">
                         <div class="flex-1">
 
@@ -70,7 +71,7 @@
                             </button>
                         </div>
                     </div>
-                    <div v-if="packs.length==1"></div>
+                    <div v-if="packs.length==1 && freePack==null"></div>
                     <div v-for="pack in packs" :key="pack.id"
                         class="w-full rounded-lg bg-primary-800 p-3 mr-6 ">
                         <div class="flex-1">
