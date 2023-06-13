@@ -56,7 +56,7 @@ class IntegrationController extends Controller
         $integrable = Integrable::where('integrable_id', Auth::user()->investor->id)
             ->where('integrable_type', 'App\Models\Investor')
             ->wherehas('integration', function (Builder $builder) {
-                $builder->where('name', 'One Click Vid');
+                $builder->where('name', 'OneClickVid');
             })->first();
 
         if ($integrable) {
