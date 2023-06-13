@@ -101,7 +101,6 @@ import JetInputError from "@/Jetstream/InputError.vue";
 import JetLabel from "@/Jetstream/Label.vue";
 import LoadingButton from '@/Components/LoadingButton.vue';
 export default {
-    name: "One Click Vid",
     props: {
         show: Boolean,
         request: Object,

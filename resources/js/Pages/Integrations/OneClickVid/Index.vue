@@ -16,7 +16,7 @@
                     </li>
                     <li class="text-sm">
                         <div class="font-medium text-gray-500 hover:text-gray-600">
-                            One Click Vid
+                            OneClickVid
                         </div>
                     </li>
                 </ol>
@@ -25,7 +25,7 @@
         <template #content>
             <h1
                 class="text-2xl font-medium text-primary-800 flex hover:text-primary-600 items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
-                One CLick Vid</h1>
+                OneCLickVid</h1>
             <div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3 mt-7 mx-7">
                 <!-- Begin Card Uploaded-->
                 <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
@@ -280,7 +280,7 @@ import Packs from './Pack.vue'
 import moment from 'moment'
 import { Head } from '@inertiajs/inertia-vue3'
 export default {
-    name: "One Click Vid",
+    name: "OneClickVid",
     props:{
         hasIntegrationPayment:Boolean,
         investorRemain:Number
