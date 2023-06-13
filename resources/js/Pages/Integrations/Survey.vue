@@ -54,6 +54,9 @@
         >
           <option value="" selected disabled>Select A Platform</option>
           <option value="Facebook">Facebook</option>
+          <option value="Tiktok">Tiktok</option>
+          <option value="Google">Google</option>
+          <option value="Instagram">Instagram</option>
         </select>
       </div>
 

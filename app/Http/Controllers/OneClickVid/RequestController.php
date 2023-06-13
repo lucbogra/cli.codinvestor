@@ -48,7 +48,6 @@ class RequestController extends Controller
 
     public function store(RequestCreativeRequest $request)
     {
-        // dd($request->all());
         $this->requestrepository->store($request);
         return back()->with('success', 'Request Created successfully');
     }
@@ -82,9 +81,7 @@ class RequestController extends Controller
     {
         
         $requests=Http::withToken($this->token())->get($this->link().'/api/getUserRequests');
-        //  $requests=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequests');
-        // return $requests->json();
-        
+      
         if($requests->json()['message']==='error')
         {
             return response()->json([]);   
@@ -99,8 +96,7 @@ class RequestController extends Controller
     public function userequest($id)
     {
         $requests=Http::withToken($this->token())->get($this->link().'/api/getUserRequest'.$id);
-        // $requests=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequest'.$id);
-
+     
         return response()->json($requests->json());
     }
 

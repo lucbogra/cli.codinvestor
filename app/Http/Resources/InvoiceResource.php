@@ -18,6 +18,7 @@ class InvoiceResource extends JsonResource
     $admin = $this->whenLoaded('admin');
     $invoiceable = $this->whenLoaded('invoiceable');
     $fundings = $this->whenLoaded('fundings');
+    $integrationPayment = $this->whenLoaded('integrationPayments');
     return [
       'created_at' => $this->created_at->format('Y-m-d'),
       'invoice_date' => $this->created_at->format('M d, Y'),
@@ -42,6 +43,7 @@ class InvoiceResource extends JsonResource
           ];
       }),
       'fundings' => $fundings,
+      'integrationPayment'=>$integrationPayment
       // 'can_download' => $this->invoiceable->company != null && $this->invoiceable->address != null && $this->invoiceable->phone != null ? true : false
 
     ];

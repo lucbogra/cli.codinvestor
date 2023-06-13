@@ -19,10 +19,6 @@ class RequestRepository
     use Url;
     public function store($request)
     {
-
-        // $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        // ->where('integrable_type','App\Models\Investor')->first('token');
-
         $product = $this->encrypt_decrypt('encrypt', $request->product, 'create Request');
         $platform = $this->encrypt_decrypt('encrypt', $request->platform, 'create Request');
         $type = $this->encrypt_decrypt('encrypt', $request->type, 'create Request');
@@ -31,9 +27,15 @@ class RequestRepository
         $voice = $this->encrypt_decrypt('encrypt', $request->voice === false ? 0 : 1, 'create Request');
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'create Request');
 
-        // dd([$this->token(),'http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation]);
-        Http::withToken($this->token())->post($this->link().'/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
-        // Http::withToken($integrable->token)->post('http://127.0.0.1:8002/api/create/request/'. $product . '/' . $platform . '/' . $type . '/' . $duration . '/' . $music . '/' . $voice . '/' . $observation);
+        Http::withToken($this->token())->post($this->link().'/api/create/request/',[
+            'product'=>$product,
+            'platform'=>$platform,
+            'type'=>$type,
+            'duration'=>$duration,
+            'music'=>$music,
+            'voice'=>$voice,
+            'observation'=>$observation
+        ]);
     }
 
     public function Rate(Request $request,$id)
@@ -46,15 +48,10 @@ class RequestRepository
                 'rates'=>$request->rate
                 ])
             ->put($this->link().'/api/rateCreative/'. $id );
-            // ->put('http://127.0.0.1:8002/api/rateCreative/'. $id .'/' . $request->rate . '/' . $request->observation);
     }
 
     public function update($request,$id)
     {
-        // $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        // ->where('integrable_type','App\Models\Investor')->first('token');
-        //dd($integrable);
-        // $token_user = $integrable->token;
         $product = $this->encrypt_decrypt('encrypt', $request->product, 'update Request');
         $platform = $this->encrypt_decrypt('encrypt', $request->platform, 'update Request');
         $type = $this->encrypt_decrypt('encrypt', $request->type, 'update Request');
@@ -63,7 +60,6 @@ class RequestRepository
         $voice = $this->encrypt_decrypt('encrypt', $request->voice === false ? 0 : 1, 'update Request');
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'update Request');
 
-        // dd([$token_user,$product,$platform,$type,$duration,$music,$voice,$observation]);
          Http::withToken($this->token())->withHeaders([
             'product'=>$product,
             'platform'=>$platform,
@@ -73,7 +69,6 @@ class RequestRepository
             'voice'=>$voice,
             'observation'=>$observation
         ])
-        // ->put('http://127.0.0.1:8002/api/requests/'.$id);
         ->put($this->link().'/api/requests/'.$id);
         
 
@@ -81,11 +76,7 @@ class RequestRepository
 
     public function destroy( $id)
     {
-        // $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        // ->where('integrable_type','App\Models\Investor')->first('token');
-        //dd($integrable);
          Http::withToken($this->token())->delete($this->link().'/api/requests/'.$id);
-        // Http::withToken($integrable->token)->delete('http://127.0.0.1:8002/api/requests/'.$id);
 
         return back();
     }

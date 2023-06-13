@@ -10,6 +10,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\OneClickVid\PackController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\RegisterStepsController;
@@ -143,6 +144,7 @@ Route::middleware([
     Route::post('store', [IntegrationController::class, 'store'])->name('integrations.store');
     Route::get('oneclickVid', [IntegrationController::class, 'oneclickvid'])->name('oneclickvid.index');
     Route::get('oneclickVid/{id}', [IntegrationController::class, 'request_show'])->name('oneclickvid.show');
+    Route::put('Logout/{integration}',[IntegrationController::class,'logout'])->name('oneclickvid.logout');
 
   });
 
@@ -176,6 +178,9 @@ Route::middleware([
   Route::get('getuserRequests', [RequestController::class, 'userequests'])->name('userequests');
   Route::put('rate/{id}', [RequestController::class, 'rate'])->name('rate.creative');
 
+  //packs
+  Route::get('getpacks',[PackController::class,'getpacks'])->name('getpacks');
+  Route::post('subscribePack',[PackController::class,'subscribe'])->name('subscribe');
 
     Route::get('/', [HomeController::class, 'help'])->name('help');
     Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');

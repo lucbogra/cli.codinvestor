@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Http\Traits\Url;
+use App\Models\Invoice;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class IntegrationController extends Controller
@@ -23,84 +24,65 @@ class IntegrationController extends Controller
     use Url;
     public $integrationRepository;
 
+    private $investor;
+
     public function __construct(IntegrationRepository $integrationRepository)
     {
+        $this->middleware(function ($request, $next) {
+            $this->investor = $request->user()->hasRole('Investor') ? $request->user()->investor : ($request->user()->hasRole('Member') ? $request->user()->member->investor : null);
+            return $next($request);
+        });
         $this->integrationRepository = $integrationRepository;
     }
 
     public function index()
     {
-        $integrations_user=[];
-        $integrations=[];
-        if (Auth()->user()->role == 'Investor') {
-            $integrations_user= Auth()->user()->investor->integrations()->get();
-            $integrable=Integrable::where('integrable_id', Auth()->user()->investor->id)
-                        ->where('integrable_type', Auth()->user()->investor->getMorphClass())
-                        ->get("integration_id")->toarray();
-             $integrations=Integration::whereNotIn('id', $integrable)->get();
-
+            $data= $this->integrationRepository->integrationData($this->investor);
+            
             return Inertia::render('Integrations/Index', [
-                'Integration_user' => IntegrationResource::collection($integrations_user),
-                'Integrations' => $integrations,
+                'integration_user' => IntegrationResource::collection($data['userIntegration']),
+                'integrations' => $data['integration'],
             ]);
-        }
-
-        
     }
 
     public function oneclickVid()
     {
-        
-        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        ->where('integrable_type','App\Models\Investor')->first();
-        // dd($integrable->token);
-        if($integrable)
+        $remain=0;
+        $investorPayments=$this->investor->pendingIntegrationPayment()->get();
+        foreach($investorPayments as $payment)
         {
-            return Inertia::render('Integrations/OneClickVid/Index',[
-                'products'=>Product::all()
+            $remain+=$payment->remain;
+        }
+        $integrable = Integrable::where('integrable_id', Auth::user()->investor->id)
+            ->where('integrable_type', 'App\Models\Investor')
+            ->wherehas('integration', function (Builder $builder) {
+                $builder->where('name', 'One Click Vid');
+            })->first();
+
+        if ($integrable) {
+            return Inertia::render('Integrations/OneClickVid/Index', [
+                'hasIntegrationPayment' => count($this->investor->pendingIntegrationPayment) > 0,
+                'investorRemain'=>$remain 
             ]);
-        }
-        else
-        {
-           return  $this->index();
-        }
-       
+        } else  return  redirect()->route('integrations.index');
     }
 
     public function request_show($id)
     {
-        Notification::wherejsoncontains('data->id', $id)->update(['read_at'=> now()]);
-        $integrable=Integrable::where('integrable_id',Auth::user()->investor->id)
-        ->where('integrable_type','App\Models\Investor')->first('token');
-        $request=Http::withToken($integrable->token)->get($this->link().'/api/getUserRequest/'.$id);
-        // $request=Http::withToken($integrable->token)->get('http://127.0.0.1:8002/api/getUserRequest/'.$id);
-        return Inertia::render('Integrations/OneClickVid/Show',[
-            'id'=>$id,
-            'request'=>$request->json()
+        Notification::wherejsoncontains('data->id', $id)->update(['read_at' => now()]);
+        $integrable = Integrable::where('integrable_id', Auth::user()->investor->id)
+            ->where('integrable_type', 'App\Models\Investor')->first('token');
+        $request = Http::withToken($integrable->token)->get($this->link() . '/api/getUserRequest/' . $id);
+        return Inertia::render('Integrations/OneClickVid/Show', [
+            'id' => $id,
+            'request' => $request->json()
         ]);
     }
 
-    
-    public function show($id)
+    public function logout(Integration $integration)
     {
-        
-    }
+        $checkConnected = $this->integrationRepository->logout($integration, $this->investor);
 
-    
-    public function edit($id)
-    {
-        //
-    }
-
-    
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    
-    public function destroy($id)
-    {
-        //
+        return $checkConnected ? redirect()->route('oneclickvid.index')->with('success', 'Connected Successfully') : back()->with('success', 'Logout Successfully');
     }
 }

@@ -46,9 +46,8 @@ class UserController extends Controller
 
   public function create_oneclickvid(Request $request)
   {
+    // dd($request->all());
      return $this->userepository->create_oneclickvid($request);
-
-      
   }
 
   public function user_token(Request $request)

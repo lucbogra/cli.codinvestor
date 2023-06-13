@@ -1,5 +1,8 @@
+
 <template >
+    <Head title="OneclickVid" />
     <AppLayout>
+
         <template #page-header>
             <nav aria-label="Breadcrumb" class="mt-8">
                 <ol role="list" class="max-w-2xl mx-3 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -20,7 +23,6 @@
             </nav>
         </template>
         <template #content>
-
             <h1
                 class="text-2xl font-medium text-primary-800 flex hover:text-primary-600 items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                 One CLick Vid</h1>
@@ -55,18 +57,34 @@
                 </div>
                 <!-- Begin Card Duplicate-->
                 <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
-                    <div class="p-3 mr-4 bg-red-100 rounded-full">
-                        <BellIcon class="w-5 h-5 text-danger" />
+                    <div class="p-3 mr-4 bg-blue-100 rounded-full">
+                        <CameraIcon class="w-5 h-5 text-blue-400" />
                     </div>
                     <div>
                         <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">Not Readed Responses</p>
+                            <p class="font-bold text-gray-600">Number Of Creatives Left</p>
                         </div>
                         <p class="text-lg font-bold text-gray-600">
-                            {{ this.$page.props.not_readed_responses }}
+                            {{ number_video }} Creative(s)
                         </p>
+
                     </div>
                 </div>
+            </div>
+            <div :class="{
+                'bg-green-200 text-green-800': investorRemain==null,
+                'bg-red-200 text-red-800': investorRemain!=null,
+                }" class="p-4 mx-6 mb-4 text-md ">
+                <span v-if="investorRemain==null">Your subscription <span class="font-semibold">Has Been Paid</span></span>
+                <span v-else>There's Still <span class="font-semibold">${{ investorRemain }}</span> remaining from your last Invoice</span>
+            </div>
+            <div v-if="pack!=null" :class="{
+                'bg-green-200 text-green-800': (days_left.toFixed(0) > 15),
+                'bg-orange-200 text-orange-800': (days_left.toFixed(0) <= 15 && days_left.toFixed(0) >= 10),
+                'bg-red-200 text-red-800': (days_left.toFixed(0) < 10 || number_video == 0),
+                }" class="p-4 mx-6 mb-4 text-md " role="alert">
+                Your subscription <span class="font-semibold" v-if="pack!=null">{{ 'to '+pack.name }}</span> <span class="font-medium">{{ days_left.toFixed(0) <= 0 || number_video == 0
+                    ? 'has Been Expired' : 'will expire in ' + days_left.toFixed(0) + ' days' }}</span>
             </div>
             <div>
                 <div class="flex justify-between mb-1 min-w-max my-6 mx-5">
@@ -81,23 +99,26 @@
                     </div>
                 </div>
                 <div class="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
-                    <div v-bind:class="{'w-full':requests.length==0}" class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                    <div class="-mx-4 w-full sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                         <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                            <table class="min-w-full leading-normal">
-                                <thead>
-                                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                                        <th class="py-3 px-6 text-left">Reference</th>
-                                        <th class="py-3 px-6 text-left">Product</th>
-                                        <th class="py-3 px-6 text-left">Platform</th>
-                                        <th class="py-3 px-6 text-left">Type</th>
-                                        <th class="py-3 px-6 text-center ">Status</th>
-                                        <th class="py-3 px-6 text-center">Rate</th>
-                                        <th class="py-3 px-6 text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-gray-600 text-sm font-light">
-                                    <tr v-if="requests.length !== 0" v-for="(request, index) in requests"
-                                        class="border-b border-gray-200 hover:bg-gray-100">
+                            <VTable :data="requests" class="min-w-full table-fixed  " :page-size="10"
+                                v-model:currentPage="page" @totalPagesChanged="totalPages = $event">
+                                <template #head>
+                                    <VTh sortKey="ref" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Reference</VTh>
+                                    <VTh sortKey="created_at" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Date</VTh>
+                                    <th  class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Product</th>
+                                    <th  class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Platform</th>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Type</th>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Status</th>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Rate</th>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Actions</th>
+
+
+                                </template>
+                                <template #body="{ rows }">
+                                    <tr v-for="(request, index) in rows" :key="index"
+                                        class="border-t border-gray-200 bg-white hover:bg-gray-50 focus-within:bg-gray-100"
+                                        :class="index % 2 === 0 ? undefined : 'bg-gray-50'">
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="w-9 h-9 rounded-full flex-shrink-0 bg-primary-500 my-2 mr-3">
@@ -120,20 +141,26 @@
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
-                                            <div class="flex items-center font-bold">
+                                            <div class="flex items-center">
+                                                <span>{{ request.created_at }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 px-6 text-left">
+                                            <div class="flex items-center">
                                                 <span>{{ request.product }}</span>
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
-                                            <div class="flex items-center font-bold">
+                                            <div class="flex items-center">
                                                 <span>{{ request.platform }}</span>
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
-                                            <div class="flex items-center  font-bold">
+                                            <div class="flex items-center">
                                                 <span>{{ request.type }}</span>
                                             </div>
                                         </td>
+                                        
                                         <td v-if="request.answer" class="py-4 px-6 text-center">
                                             <button type="button" @click="answerToggle(request.answer)"
                                                 class="bg-green-400 hover:bg-green-300 py-1 px-2 rounded-full text-sm font-bold text-white">Answered</button>
@@ -147,8 +174,7 @@
                                         </td>
                                         <td v-if="request.answer && request.answer.rates === null"
                                             class="py-3 px-6 text-center font-bold">
-                                            <button @click="rateToggle(request.answer)"
-                                                class="bg-primary-400 p-2 w-full rounded text-white hover:bg-primary-500">Rate</button>
+                                            <button @click="rateToggle(request.answer)" class="btn-primary">Rate</button>
                                         </td>
                                         <td v-else-if="request.answer && request.answer.rates !== null"
                                             class="py-3 px-6 text-center font-bold">
@@ -162,15 +188,11 @@
                                                     d="M287.9 0C297.1 0 305.5 5.25 309.5 13.52L378.1 154.8L531.4 177.5C540.4 178.8 547.8 185.1 550.7 193.7C553.5 202.4 551.2 211.9 544.8 218.2L433.6 328.4L459.9 483.9C461.4 492.9 457.7 502.1 450.2 507.4C442.8 512.7 432.1 513.4 424.9 509.1L287.9 435.9L150.1 509.1C142.9 513.4 133.1 512.7 125.6 507.4C118.2 502.1 114.5 492.9 115.1 483.9L142.2 328.4L31.11 218.2C24.65 211.9 22.36 202.4 25.2 193.7C28.03 185.1 35.5 178.8 44.49 177.5L197.7 154.8L266.3 13.52C270.4 5.249 278.7 0 287.9 0L287.9 0zM287.9 78.95L235.4 187.2C231.9 194.3 225.1 199.3 217.3 200.5L98.98 217.9L184.9 303C190.4 308.5 192.9 316.4 191.6 324.1L171.4 443.7L276.6 387.5C283.7 383.7 292.2 383.7 299.2 387.5L404.4 443.7L384.2 324.1C382.9 316.4 385.5 308.5 391 303L476.9 217.9L358.6 200.5C350.7 199.3 343.9 194.3 340.5 187.2L287.9 78.95z" />
                                             </svg>
                                         </td>
-                                        <td v-else class="py-3 px-6 text-center font-bold">
+                                        <td v-else class="py-3 px-6 text-center">
                                             Pending
                                         </td>
                                         <td class="py-3 px-6 text-center">
                                             <div class="flex item-center justify-center">
-                                                <!-- <div v-if="request.message===false" @click="contactToggle(request,'create')"
-                                                    class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
-                                                    <PhoneIcon class="text-primary-500" />
-                                                </div> -->
                                                 <div @click="toggleduplicatemodal(request, 'Duplicate')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <DuplicateIcon class="text-primary-500" />
@@ -180,13 +202,14 @@
                                                 <EyeIcon class="text-primary-500 cursor-pointer" />
 
                                                 </Link>
-                                                <button v-if="request.read === false && request.answer==null"
+                                                <button v-if="request.read === false && request.answer == null"
                                                     @click="toggleduplicatemodal(request, 'update')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <PencilIcon class="text-primary-500" />
 
                                                 </button>
-                                                <button @click="destroy(request.id)" v-if="request.read === false &&  request.answer==null"
+                                                <button @click="destroy(request, index)"
+                                                    v-if="request.read === false && request.answer == null"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <TrashIcon class="text-primary-500" />
                                                 </button>
@@ -194,8 +217,27 @@
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
+                                </template>
+                            </VTable>
+
+                            <VTPagination class="flex justify-center " v-model:currentPage="page" :total-pages="totalPages"
+                                :boundary-links="false" :maxPageLinks="requests.length">
+                                <template #firstPage>
+                                    <i class="fas fa-arrow-left text-[#BBBBBB] text-xs" />
+                                </template>
+
+                                <template #lastPage>
+                                    <i class="fas fa-arrow-right text-[#BBBBBB] text-xs" />
+                                </template>
+
+                                <template #next>
+                                    <i class="fas fa-chevron-right text-[#BBBBBB] text-xs" />
+                                </template>
+
+                                <template #previous>
+                                    <i class="fas fa-chevron-left text-[#BBBBBB] text-xs" />
+                                </template>
+                            </VTPagination>
                         </div>
                     </div>
                 </div>
@@ -210,7 +252,7 @@
                 <div v-if="not_readed_messages" class="rounded-full bg-red-600 w-3 h-3 absolute top-0 right-0"></div>
             </button>
             <Answer_Modal :answer="current_answer" :show="show_answer" @closemodal="answerToggle"></Answer_Modal>
-            <Add_request :show="show_add" @close_modal="addRequestToggle"></Add_request>
+            <Add_request :products="products" :show="show_add" @close_modal="addRequestToggle"></Add_request>
             <Rate v-if="current_answer" :id="current_answer.id" :show="show_rate"
                 @closemodal="rateToggle(current_answer)" />
             <Duplicate_request v-if="selected_request != null" :action="action_request" :key="selected_request"
@@ -218,34 +260,36 @@
                 @close_modal="toggleduplicatemodal(selected_request, 'Duplicate')"></Duplicate_request>
             <Contact :key="request" :status='status' :request="request" :show="contact" @closemodal="contactToggle(null)"
                 @reload_request="getrequets()"></Contact>
-            <!-- {{ requests }} -->
+            <Packs :hasPackPaid="hasIntegrationPayment" :key="packModal" :show="packModal" @closemodal="togglepack" />
+            <br>
         </template>
-
+       
     </AppLayout>
 </template>
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronRightIcon, PaperAirplaneIcon, BellIcon, UploadIcon, RefreshIcon, StarIcon, XIcon } from '@heroicons/vue/solid'
-import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon, PhoneIcon } from '@heroicons/vue/outline'
+import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon, PhoneIcon, CameraIcon } from '@heroicons/vue/outline'
 import Add_request from '../../Requests/Add.vue'
 import Answer_Modal from './Answer.vue'
 import Rate from './Rate.vue'
 import Duplicate_request from '../../Requests/Duplicate.vue'
 import Contact from '../OneClickVid/Contact.vue'
+import Packs from './Pack.vue'
+import moment from 'moment'
+import { Head } from '@inertiajs/inertia-vue3'
 export default {
     name: "One Click Vid",
-    components: {
-        AppLayout,
-        ChevronRightIcon,
-        PaperAirplaneIcon,
-        Link,
-        UploadIcon, BellIcon,
-        Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
-        Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon
+    props:{
+        hasIntegrationPayment:Boolean,
+        investorRemain:Number
     },
-    props: {
-        products: Object
+    components: {
+        AppLayout, ChevronRightIcon, PaperAirplaneIcon, Link,UploadIcon, BellIcon,
+        Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
+        Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon,
+        Packs, CameraIcon
     },
     data() {
         return {
@@ -265,23 +309,39 @@ export default {
             status: '',
             not_readed_messages: false,
             copy: false,
-            selected_index: ''
+            selected_index: '',
+            pack: [],
+            packModal: false,
+            number_video: 0,
+            days_left: 0,
+            products: [],
+            page: 1,
+            paidPayment:0,
+            mustPaidPayment:0
 
         }
     },
     methods: {
+
         contactToggle(request, status) {
             this.contact = !this.contact
             this.request = request
             this.status = status
             this.countNotReadedMessages()
         },
+        getproducts() {
+            axios.get(route('products.user'))
+                .then((response) => {
+                    this.products = response.data
+                }).catch(response => {
+                    console.log('error');
+                })
+        },
         answerToggle(answer) {
             if (answer !== null) {
                 this.current_answer = answer
                 this.show_answer = !this.show_answer
             }
-
         },
         rateToggle(answer) {
             this.getrequets()
@@ -289,34 +349,61 @@ export default {
             this.show_rate = !this.show_rate
         },
         addRequestToggle() {
-            this.getrequets()
-            this.show_add = !this.show_add
+            if (this.pack != null) {
+                if (moment(this.pack.pivot.end_date).isSameOrBefore(moment().format('YYYY-MM-DD')) || this.number_video <= 0)
+                    this.packModal = !this.packModal
+                else {
+                    this.getrequets()
+                    this.show_add = !this.show_add
+                }
+
+            }
+            else this.packModal = !this.packModal
+
+
         },
         toggleduplicatemodal(request, action) {
-            this.getrequets()
-            this.selected_request = request
-            this.action_request = action
-            this.show_duplicate = !this.show_duplicate
+            if (this.pack != null) {
+                if (moment(this.pack.pivot.end_date).isSameOrBefore(moment().format('YYYY-MM-DD')) || this.number_video <= 0)
+                    this.packModal = !this.packModal
+                else {
+                    this.getrequets()
+                    this.selected_request = request
+                    this.action_request = action
+                    this.show_duplicate = !this.show_duplicate
+                }
+            }
+            else this.packModal = !this.packModal
         },
         getrequets() {
             this.load = true;
             axios.get(route('userequests'))
                 .then((response) => {
-                    // console.log(response.data)
+                    console.log(response.data['user_pack'])
                     this.answers_count = 0
-                    this.requests = response.data
-                    this.requests.map(item => {
-                        if (item.answer != null) {
-                            this.answers_count += 1
-                        }
-                    })
+                    this.requests = response.data['requests']
+                    this.pack = response.data['user_pack']
+
+                    if (this.pack != null) {
+
+                        this.number_video = response.data['user_pack'] != null ? response.data['user_pack'].number_video : 0
+                        this.days_left = moment.duration(moment(this.pack.pivot.end_date).diff(moment())).asDays()
+
+                        this.requests.map((request) => {
+                            if (moment(moment(request.created_at).startOf('hour').format('YYYY-MM-DD hh:mm:ss')).isBetween(this.pack.pivot.start_date, this.pack.pivot.end_date) && request.pack?.id == response.data['user_pack'].pivot.id) this.number_video -= 1
+                            if (request.answer != null) this.answers_count += 1
+                        })
+
+                    }
+
                     this.load = false
                 })
                 .catch(resonse => {
                     console.log('error');
                 })
         },
-        destroy(id) {
+        destroy(request, index) {
+            this.getrequets();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -327,16 +414,26 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.form.delete(route('requests.destroy', id), {
-                        onSuccess: () => {
-                            this.getrequets();
-                            Swal.fire(
-                                'Deleted!',
-                                'Your Request has been deleted.',
-                                'success'
-                            )
-                        }
-                    })
+                    if (this.requests[index].read === false && this.requests[index].answer == null) {
+
+                        this.form.delete(route('requests.destroy', request.id), {
+                            onSuccess: () => {
+                                this.getrequets();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your Request has been deleted.',
+                                    'success'
+                                )
+                            }
+                        })
+                    }
+                    else {
+                        Swal.fire(
+                            'This Request is already answered',
+                            'Your Request has Not been deleted.',
+                            'error'
+                        )
+                    }
 
                 }
             })
@@ -346,7 +443,7 @@ export default {
             axios.get(route('messages.get'))
                 .then((response) => {
                     this.not_readed_messages = false
-                    Object.values(response.data[0].messages).map((message) => {
+                    Object.values(response.data.length ? response.data[0].messages : []).map((message) => {
 
                         if (message['read'] == null && message['response']) {
                             this.not_readed_messages = true
@@ -366,12 +463,33 @@ export default {
             this.copy = true
             setTimeout(this.timout, 1000)
         }
+        ,
+        togglepack() {
+            this.getrequets();
+            this.packModal = !this.packModal
+        }
     },
     mounted() {
         this.getrequets();
         this.countNotReadedMessages()
+        this.getproducts()
     }
 
 }
 </script>
-<style></style>
+<style>
+.vt-pagination {
+  @apply flex justify-center pr-1 py-2
+}
+.pagination {
+  @apply flex
+}
+
+li.page-item{
+  @apply bg-transparent	 mx-1 px-2 text-gray-500 rounded-lg hover:bg-[#dcecffff]
+}
+
+li.page-item.active{
+  @apply bg-primary-500 mx-1 px-2 text-white rounded-lg
+}
+  </style>
