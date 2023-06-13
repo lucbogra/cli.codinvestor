@@ -72,10 +72,10 @@
                 </div>
             </div>
             <div :class="{
-                'bg-green-200 text-green-800': investorRemain==null,
-                'bg-red-200 text-red-800': investorRemain!=null,
+                'bg-green-200 text-green-800': investorRemain==0,
+                'bg-red-200 text-red-800': investorRemain>0,
                 }" class="p-4 mx-6 mb-4 text-md ">
-                <span v-if="investorRemain==null">Your subscription <span class="font-semibold">Has Been Paid</span></span>
+                <span v-if="investorRemain==0">Your subscription <span class="font-semibold">Has Been Paid</span></span>
                 <span v-else>There's Still <span class="font-semibold">${{ investorRemain }}</span> remaining from your last Invoice</span>
             </div>
             <div v-if="pack!=null" :class="{
