@@ -102,4 +102,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getStepStatusAttribute(){
       return json_decode($this->attributes['registration_steps'])?->finished;
     }
+
+    public function customerService()
+    {
+        return $this->belongsTo(User::class, 'agent_id');
+    }
+
+    public function accountManager()
+    {
+        return $this->hasOne(User::class, 'agent_id');
+    }
+
+    public function customerServices()
+    {
+        return $this->hasOne(CustomerService::class, 'user_id');
+    }
+
 }

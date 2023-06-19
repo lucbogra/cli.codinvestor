@@ -110,8 +110,7 @@ class HandleInertiaRequests extends Middleware
         ];
       },
       'auth' => function () use ($request) {
-        // $token = $request->user() ? PersonalAccessToken::where('tokenable_id', Auth::user()->investor->id)->orderby('created_at', 'desc')->first('name') : null;
-            return [
+        return [
               'user' => $request->user() ? [
                 'ip' => $_SERVER['REMOTE_ADDR'],
                 'role' => $request->user()->role,
@@ -119,6 +118,7 @@ class HandleInertiaRequests extends Middleware
                 'balance' => $request->user()->investor?->wallet,
                 'funding' => $request->user()->investor?->funding,
                 'seller_status' => $request->user()->investor?->seller_status,
+                'agentPhone'=>$request->user()->customerServices!=null ? $request->user()->customerServices->customerService->first('phone') : null
               ] : null,
             ];
           },
