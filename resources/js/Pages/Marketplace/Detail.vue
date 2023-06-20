@@ -46,8 +46,6 @@ const submitRequest = () => {
   })
 }
 
-const selectedColor = ref(props.product.colors[0])
-
 const filterDuplicateData = (arr) => {
   return arr.filter(function (value, index, array) {
     return array.indexOf(value) === index;

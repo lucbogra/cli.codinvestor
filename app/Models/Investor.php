@@ -81,19 +81,19 @@ class Investor extends Model
     }
 
     public function products(){
-      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price')->where('active', true)->withTimestamps();
+      return $this->morphToMany(Product::class, 'productable')->withTimestamps()->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price')->where('active', true)->withTimestamps();
     }
 
     public function accessProducts(){
-      return $this->belongsToMany(Product::class)->wherePivot('status', 'access')->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price')->withTimestamps();
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', 'access')->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price')->withTimestamps();
     }
 
     public function request_state($status){
-      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('status', $status);
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', $status);
     }
 
     public function has_requested($product_id){
-      return $this->belongsToMany(Product::class, 'investor_product','investor_id','product_id')->wherePivot('product_id', $product_id);
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('product_id', $product_id);
     }
 
     public function balance_histories(){

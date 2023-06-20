@@ -96,7 +96,7 @@ Route::middleware([
     ])->group(function () {
   Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
   Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
-  Route::get('marketplace-detail/{slug}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
+  Route::get('marketplace-detail/{product}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
   Route::post('marketplace/request', [MarketplaceController::class, 'request'])->name('marketplace.request')->middleware('permission:affiliate send product request');
   Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
   Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');

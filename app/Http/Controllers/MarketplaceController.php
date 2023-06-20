@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\OrderImport;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
-use App\Models\Investor;
-use App\Models\InvestorProduct;
 use App\Models\Location;
 use App\Models\Product;
-use App\Models\Warehouse;
 use App\Notifications\ProductRequestNotification;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class MarketplaceController extends Controller
@@ -62,33 +55,10 @@ class MarketplaceController extends Controller
     return $products;
   }
 
-  public function detail($slug)
+  public function detail(Product $product)
   {
-    $product = Product::where('slug', $slug)->first();
-
     return Inertia::render('Marketplace/Detail', [
-      'product' => [
-        'id' => $product->id,
-        'slug' => $product->slug,
-        'name' => $product->name,
-        'gallery' => $product->gallery,
-        'recommanded_price' => $product->recommanded_price,
-        'commission' => $product->commission,
-        'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
-        'description' => $product->description,
-        'link' => $product->link,
-        'sizes' => $product->variants()->select('size')->distinct()->get(),
-        'colors' => $product->variants()->select('color')->distinct()->get(),
-        'countries' =>  DB::table('products')->join('variants', 'products.id', '=', 'variants.product_id')
-          ->join('supplier_products', 'variants.id', '=', 'supplier_products.variant_id')
-          ->join('locations', 'locations.id', '=', 'supplier_products.location_id')
-          ->where('products.id', $product->id)
-          ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
-          ->groupBy('country')->get(),
-        'exist_request' => $this->investor->has_requested($product->id)->select('status')->first(),
-        'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
-      ],
-
+      'product' => new ProductResource($product)
     ]);
   }
 
