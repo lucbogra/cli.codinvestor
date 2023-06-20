@@ -23,11 +23,11 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
       // dd(config('services.recaptcha.secret_key'));
-      $response = Http::asForm()->post("https://www.google.com/recaptcha/api/siteverify", [
-        'secret' => config('services.recaptcha.secret_key'),
-        'response' => $input['recaptcha_token'],
-        'ip' => request()->ip(),
-      ]);
+      // $response = Http::asForm()->post("https://www.google.com/recaptcha/api/siteverify", [
+      //   'secret' => config('services.recaptcha.secret_key'),
+      //   'response' => $input['recaptcha_token'],
+      //   'ip' => request()->ip(),
+      // ]);
 
       // dd([$response->json('success'), $response->json('score')]);
 
