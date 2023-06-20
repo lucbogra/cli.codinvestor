@@ -8,6 +8,7 @@ import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import { CheckIcon } from '@heroicons/vue/solid';
+import { onMounted } from 'vue';
 
 const form = useForm({
   first_name: '',
@@ -17,12 +18,19 @@ const form = useForm({
   password: '',
   password_confirmation: '',
   terms: false,
+  recaptcha_token : ''
 });
 
 const submit = () => {
-  form.post(route('register'), {
-    onFinish: () => form.reset('password', 'password_confirmation'),
+  grecaptcha.execute('6LeoF7AmAAAAAIRWR-EXHzP8l_J7We_b29lpzQFi', { action: 'register' })
+    .then(function (token) {
+      console.log(token);
+      form.recaptcha_token = token;
+      form.post(route('register'), {
+      onFinish: () => form.reset('password', 'password_confirmation'),
+      });
   });
+
 };
 
 const steps = [
@@ -31,8 +39,15 @@ const steps = [
   { name: 'Step 3', href: '#', status: 'upcoming' },
   { name: 'Step 4', href: '#', status: 'upcoming' },
 ]
+onMounted(() => {
+  const recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute(
+      "src",
+      "https://www.google.com/recaptcha/api.js?render=6LeoF7AmAAAAAIRWR-EXHzP8l_J7We_b29lpzQFi"
+    );
+    document.head.appendChild(recaptchaScript);
+})
 </script>
-
 <template>
   <Head title="Register" />
 
@@ -84,7 +99,8 @@ const steps = [
 
     <JetValidationErrors class="mb-4" />
 
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" id="registerForm">
+      <input type="hidden" class="g-recaptcha" v-model="form.recaptcha_token" id="recaptcha_token">
       <div>
         <JetLabel for="first_name" value="First Name" />
         <JetInput id="first_name" v-model="form.first_name" type="text"
