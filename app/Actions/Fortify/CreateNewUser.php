@@ -29,7 +29,7 @@ class CreateNewUser implements CreatesNewUsers
         'ip' => request()->ip(),
       ]);
 
-      dd([$response->json('success'), $response->json('score')]);
+      // dd([$response->json('success'), $response->json('score')]);
 
       $messages = [
         'required' => 'The :attribute field is required.',
