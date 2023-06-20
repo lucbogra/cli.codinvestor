@@ -3,7 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Rules\Recaptcha;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
@@ -20,6 +22,15 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+      // dd($input['recaptcha_token']);
+      $response = Http::asForm()->post("https://www.google.com/recaptcha/api/siteverify", [
+        'secret' => config('services.recaptcha.secret_key'),
+        'response' => $input['recaptcha_token'],
+        'ip' => request()->ip(),
+      ]);
+
+      // dd($response->json('success'));
+
       $messages = [
         'required' => 'The :attribute field is required.',
         'max' => 'The :attribute must not exceed 255 caracters',
@@ -31,11 +42,11 @@ class CreateNewUser implements CreatesNewUsers
       Validator::make($input, [
         'first_name' => ['required', 'string', 'max:255'],
         'last_name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
         'phone' => ['required', 'numeric'],
         'password' => $this->passwordRules(),
         'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-
+        'recaptcha_token' => ['required', new Recaptcha($input['recaptcha_token'])],
       ], $messages)->validate();
 
       $user = User::create([
