@@ -118,7 +118,7 @@ class HandleInertiaRequests extends Middleware
                 'balance' => $request->user()->investor?->wallet,
                 'funding' => $request->user()->investor?->funding,
                 'seller_status' => $request->user()->investor?->seller_status,
-                'agentPhone'=>$request->user()->customerServices!=null ? $request->user()->customerServices->customerService->first('phone') : null
+                'agentPhone'=>$request->user()->customerServices!=null ? $request->user()->customerServices->customerService : null
               ] : null,
             ];
           },
