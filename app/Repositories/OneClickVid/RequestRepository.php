@@ -23,6 +23,7 @@ class RequestRepository
         $platform = $this->encrypt_decrypt('encrypt', $request->platform, 'create Request');
         $type = $this->encrypt_decrypt('encrypt', $request->type, 'create Request');
         $duration = $this->encrypt_decrypt('encrypt', $request->duration, 'create Request');
+        $video_size = $this->encrypt_decrypt('encrypt', $request->video_size, 'create Request');
         $music = $this->encrypt_decrypt('encrypt', $request->music === false ? 0 : 1, 'create Request');
         $voice = $this->encrypt_decrypt('encrypt', $request->voice === false ? 0 : 1, 'create Request');
         $observation = $this->encrypt_decrypt('encrypt', $request->observation, 'create Request');
@@ -34,7 +35,8 @@ class RequestRepository
             'duration'=>$duration,
             'music'=>$music,
             'voice'=>$voice,
-            'observation'=>$observation
+            'observation'=>$observation,
+            'video_size'=>$video_size
         ]);
     }
 
