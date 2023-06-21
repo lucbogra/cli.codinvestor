@@ -30,6 +30,7 @@ class RequestCreativeRequest extends FormRequest
             'duration' => 'required | integer ',
             'music' => 'required',
             'voice' => 'required',
+            'video_size'=>'required',
             'observation' => 'nullable',
         ];
     }
