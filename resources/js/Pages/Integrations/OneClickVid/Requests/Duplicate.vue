@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="relative z-0 w-full mb-5">
-                    <JetLabel for="video_size" value="Size" />
+                    <JetLabel for="video_size" value="Size(Optional)" />
                     <select name="video_size" v-model="form.video_size"
                         class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         <option value="" selected disabled hidden>Choose Size Of Video</option>
@@ -146,16 +146,6 @@ export default {
         }
     },
     methods: {
-        getproducts() {
-            // console.log(this.products)
-            // axios.get(route('products.user'))
-            //     .then((response) => {
-            //         // console.log(response.data)
-            //         this.products = response.data
-            //     }).catch(response => {
-            //         console.log('error');
-            //     })
-        },
         store() {
             this.loading=true
             if (this.action === 'Duplicate') {
@@ -178,10 +168,6 @@ export default {
             }
 
         }
-    },
-    mounted() {
-
-        this.getproducts();
     },
     computed: {
         video_sizes()
