@@ -28,8 +28,8 @@
           </div>
         </div>
       </div>
-      <div class="flex-grow bottom-0 fixe"></div>
-      <div v-if="$page.props.auth.user.agentPhone != null" class="border-t border-primary-600 bg-white mt-auto py-4 px-2 z-40 ">
+      <!-- <div class="flex-grow bottom-0 fixe"></div> -->
+      <div v-if="$page.props.auth.user.agentPhone != null" class=" bg-white mt-auto py-4 px-2 z-40 ">
         <p class="text-primary-800 text-md font-semibold">
           <i class="fa-solid fa-headset w-5 h-5 mr-0.5 mt-0.5 "></i>
                 Get in touch On Whatsapp: 

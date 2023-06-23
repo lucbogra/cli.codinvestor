@@ -26,7 +26,7 @@
             <h1
                 class="text-2xl font-medium text-primary-800 flex hover:text-primary-600 items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                 OneCLickVid</h1>
-            <div class="grid gap-6 mb-8 md:grid-cols-3 xl:grid-cols-3 mt-7 mx-7">
+            <div class="grid gap-6 mb-8 md:grid-cols-4 xl:grid-cols-4 mt-7 mx-7">
                 <!-- Begin Card Uploaded-->
                 <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
                     <div class="p-3 mr-4 bg-cyan-100 rounded-full">
@@ -70,21 +70,34 @@
 
                     </div>
                 </div>
+                <!-- Begin Card Duplicate-->
+                <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
+                    <div class="p-3 mr-4 bg-red-100 rounded-full">
+                        <CurrencyDollarIcon class="w-6 h-6 text-red-400" />
+                    </div>
+                    <div>
+                        <div class="mb-2 font-medium text-gray-600">
+                            <p class="font-bold text-gray-600">The Remaining Amout To Pay</p>
+                        </div>
+                        <p class="text-lg font-bold text-gray-600">
+                            ${{ investorRemain }}
+                        </p>
+
+                    </div>
+                </div>
             </div>
-            <div :class="{
-                'bg-green-200 text-green-800': investorRemain==0,
-                'bg-red-200 text-red-800': investorRemain>0,
-                }" class="p-4 mx-6 mb-4 text-md ">
-                <span v-if="investorRemain==0">Your subscription <span class="font-semibold">Has Been Paid</span></span>
-                <span v-else>There's Still <span class="font-semibold">${{ investorRemain }}</span> remaining from your last Invoice</span>
-            </div>
-            <div v-if="pack!=null" :class="{
-                'bg-green-200 text-green-800': (days_left.toFixed(0) > 15),
-                'bg-orange-200 text-orange-800': (days_left.toFixed(0) <= 15 && days_left.toFixed(0) >= 10),
+            <div v-if="pack != null && (days_left.toFixed(0) < 5 || number_video == 0)" :class="{
                 'bg-red-200 text-red-800': (days_left.toFixed(0) < 10 || number_video == 0),
-                }" class="p-4 mx-6 mb-4 text-md " role="alert">
-                Your subscription <span class="font-semibold" v-if="pack!=null">{{ 'to '+pack.name }}</span> <span class="font-medium">{{ days_left.toFixed(0) <= 0 || number_video == 0
-                    ? 'has Been Expired' : 'will expire in ' + days_left.toFixed(0) + ' days' }}</span>
+            }" class="p-4 mx-6 mb-4 text-md flex justify-between" role="alert">
+                <span>
+                    Your subscription
+                    <span class="font-semibold" v-if="pack != null">{{ 'to ' + pack.name }}</span>
+                    <span class="font-medium"> {{ days_left.toFixed(0) <= 0 || number_video == 0 ? ' has Been Expired'
+                        : ' will expire in ' + days_left.toFixed(0) + ' days' }}</span>
+                </span>
+                <div v-if="(days_left.toFixed(0) <= 0 || number_video == 0)">
+                    <button @click="togglepack" class="font-semibold">Renew Your Pack</button>
+                </div>
             </div>
             <div>
                 <div class="flex justify-between mb-1 min-w-max my-6 mx-5">
@@ -104,10 +117,12 @@
                             <VTable :data="requests" class="min-w-full table-fixed  " :page-size="10"
                                 v-model:currentPage="page" @totalPagesChanged="totalPages = $event">
                                 <template #head>
-                                    <VTh sortKey="ref" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Reference</VTh>
-                                    <VTh sortKey="created_at" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Date</VTh>
-                                    <th  class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Product</th>
-                                    <th  class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Platform</th>
+                                    <VTh sortKey="ref" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Reference
+                                    </VTh>
+                                    <VTh sortKey="created_at" class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Date
+                                    </VTh>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Product</th>
+                                    <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Platform</th>
                                     <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Type</th>
                                     <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Status</th>
                                     <th class="bg-gray-200 text-gray-600 py-3 px-6 text-left">Rate</th>
@@ -133,7 +148,8 @@
                                                     class="text-primary-700 text-lg font-medium	 tracking-wide">
                                                     {{ request.ref }}
                                                     <span v-if="copy && selected_index == index"
-                                                        class="block mt-2 text-center text-gray-800 text-sm">Ref Copied !
+                                                        class="block mt-2 text-center text-gray-800 text-sm">Ref Copied
+                                                        !
                                                     </span>
                                                 </button>
 
@@ -160,7 +176,7 @@
                                                 <span>{{ request.type }}</span>
                                             </div>
                                         </td>
-                                        
+
                                         <td v-if="request.answer" class="py-4 px-6 text-center">
                                             <button type="button" @click="answerToggle(request.answer)"
                                                 class="bg-green-400 hover:bg-green-300 py-1 px-2 rounded-full text-sm font-bold text-white">Answered</button>
@@ -263,14 +279,14 @@
             <Packs :hasPackPaid="hasIntegrationPayment" :key="packModal" :show="packModal" @closemodal="togglepack" />
             <br>
         </template>
-       
+
     </AppLayout>
 </template>
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronRightIcon, PaperAirplaneIcon, BellIcon, UploadIcon, RefreshIcon, StarIcon, XIcon } from '@heroicons/vue/solid'
-import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon, PhoneIcon, CameraIcon } from '@heroicons/vue/outline'
+import { EyeIcon, PencilIcon, TrashIcon, DuplicateIcon, PhoneIcon, CameraIcon, InformationCircleIcon, CurrencyDollarIcon } from '@heroicons/vue/outline'
 import Add_request from './Requests/Add.vue'
 import Answer_Modal from './Answer.vue'
 import Rate from './Rate.vue'
@@ -281,15 +297,15 @@ import moment from 'moment'
 import { Head } from '@inertiajs/inertia-vue3'
 export default {
     name: "OneClickVid",
-    props:{
-        hasIntegrationPayment:Boolean,
-        investorRemain:Number
+    props: {
+        hasIntegrationPayment: Boolean,
+        investorRemain: Number
     },
     components: {
-        AppLayout, ChevronRightIcon, PaperAirplaneIcon, Link,UploadIcon, BellIcon,
+        AppLayout, ChevronRightIcon, PaperAirplaneIcon, Link, UploadIcon, BellIcon,
         Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
         Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon,
-        Packs, CameraIcon
+        Packs, CameraIcon, InformationCircleIcon, CurrencyDollarIcon
     },
     data() {
         return {
@@ -316,8 +332,8 @@ export default {
             days_left: 0,
             products: [],
             page: 1,
-            paidPayment:0,
-            mustPaidPayment:0
+            paidPayment: 0,
+            mustPaidPayment: 0
 
         }
     },
@@ -479,17 +495,18 @@ export default {
 </script>
 <style>
 .vt-pagination {
-  @apply flex justify-center pr-1 py-2
+    @apply flex justify-center pr-1 py-2
 }
+
 .pagination {
-  @apply flex
+    @apply flex
 }
 
-li.page-item{
-  @apply bg-transparent	 mx-1 px-2 text-gray-500 rounded-lg hover:bg-[#dcecffff]
+li.page-item {
+    @apply bg-transparent mx-1 px-2 text-gray-500 rounded-lg
 }
 
-li.page-item.active{
-  @apply bg-primary-500 mx-1 px-2 text-white rounded-lg
+li.page-item.active {
+    @apply bg-primary-500 mx-1 px-2 text-white rounded-lg
 }
-  </style>
+</style>
