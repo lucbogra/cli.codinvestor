@@ -17,6 +17,6 @@ class InvoiceScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-      $builder->where('invoiceable_id', auth()->user()->investor->id)->where('type', 'affiliate');
+      $builder->where('invoiceable_id', auth()->user()->investor->id)->where('invoiceable_type', 'App\Models\Investor');
     }
 }
