@@ -21,7 +21,7 @@
                         class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                         <option value="" selected disabled hidden>Choose Your Platform</option>
                         <option value="Facebook">Facebook</option>
-                        <option value="Snapshat">Snapshat</option>
+                        <option value="Snapchat">Snapchat</option>
                         <option value="Google">Google</option>
                         <option value="Tiktok">Tiktok</option>
                         <option value="Instagram">Instagram</option>
@@ -154,6 +154,15 @@ export default {
                     onSuccess: () => {
                         this.loading = false
                         this.$emit('close_modal');
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            timer: 5000,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            icon: 'success',
+                            title: 'Added successfully.',
+                        })
                     },
                 })
             }
@@ -162,7 +171,15 @@ export default {
                     onSuccess: () => {
                         this.loading = false
                         this.$emit('close_modal');
-                      
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            timer: 5000,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            icon: 'success',
+                            title: 'Updated successfully.',
+                        })
                     },
                 })
             }

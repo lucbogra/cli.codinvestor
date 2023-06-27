@@ -4,12 +4,14 @@
             <div class="bg-white rounded-lg p-6">
                 <h1 class="text-2xl text-gray-700 font-semibold mb-4 text-center">You Need To Subscribe in One Of Packages
                 </h1>
-                <h1 v-if="errorMessage != ''" class="text-md bg-red-200 text-red-800 p-2 mx-6 mb-4 rounded-md text-center">{{
-                    errorMessage }}
+                <h1 v-if="errorMessage != ''" class="text-md bg-red-200 text-red-800 p-2 mx-6 mb-4 rounded-md text-center">
+                    {{
+                        errorMessage }}
                 </h1>
                 <div class="grid grid-cols-3  gap-4 mx-2">
                     <div v-if="packs.length == 0 && freePack != null"></div>
-                    <div v-if="freePack != null" class="w-full rounded-lg bg-primary-800 h-full p-3 mr-6 flex flex-col justify-between">
+                    <div v-if="freePack != null"
+                        class="w-full rounded-lg bg-primary-800 h-full p-3 mr-6 flex flex-col justify-between">
                         <div class="flex-1">
 
                             <div class='max-w-md mx-auto space-y-6 mr-2 rounded-lg p-6 flex-grow'>
@@ -128,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="flex justify-center items-center mb-4">
-                                <button v-if="hasPackPaid == false" @click="submit(pack)"
+                                <button v-if="hasPackPaid == false" @click="confirmPack(pack)"
                                     class="flex items-center justify-center w-10/12 py-3 space-x-2 text-center bg-primary-400 rounded-lg text-white">
                                     <span>{{ pack.cost == 0 ? 'Free Trial' : 'Subscribe' }}</span>
                                 </button>
@@ -142,6 +144,8 @@
                 </div>
             </div>
         </div>
+        <ConfirmationModal :situation="'confirm'" :message="'Do you really want to Subscribe to This Pack ?'"
+            :show="toggleConfirmation" @cancel="confirmPack(selected_pack)" @confirm="submit(selected_pack)" />
     </Modal>
 </template>
 <script setup>
@@ -150,12 +154,12 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { VideoCameraIcon, CalendarIcon, CurrencyDollarIcon, ClipboardIcon } from '@heroicons/vue/outline'
 import { useForm } from '@inertiajs/inertia-vue3';
-
+import ConfirmationModal from './ConfirmationModal.vue';
 const props = defineProps({
     show: Boolean,
     hasPackPaid: Boolean
 })
-const emit = defineEmits('closemodal')
+const emit = defineEmits(['closemodal', 'cancel'])
 
 const packs = ref([])
 const freePack = ref([])
@@ -183,12 +187,28 @@ const form = useForm({
 })
 
 const errorMessage = ref('')
+const selected_pack = ref('')
+const toggleConfirmation = ref(false)
+const confirmPack = (pack) => {
+    selected_pack.value = pack
+    toggleConfirmation.value = !toggleConfirmation.value
+}
 
 const submit = (pack) => {
+    toggleConfirmation.value = !toggleConfirmation.value
     form.pack = pack
     if (props.hasPackPaid == false) {
         form.post(route('subscribe'), {
             onSuccess: () => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: 'Subscribe successfully.',
+                })
                 emit('closemodal')
             }
         })
@@ -200,5 +220,4 @@ const submit = (pack) => {
 .container {
     margin-top: 5rem;
     max-width: 30%;
-}
-</style>
+}</style>

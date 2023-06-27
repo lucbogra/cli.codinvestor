@@ -24,7 +24,7 @@ const form = useForm({
 const submit = () => {
   grecaptcha.execute('6LeoF7AmAAAAAIRWR-EXHzP8l_J7We_b29lpzQFi', { action: 'register' })
     .then(function (token) {
-      console.log(token);
+      // console.log(token);
       form.recaptcha_token = token;
       form.post(route('register'), {
       onFinish: () => form.reset('password', 'password_confirmation'),

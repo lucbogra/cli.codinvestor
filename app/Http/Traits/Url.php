@@ -8,13 +8,9 @@ use Illuminate\Support\Facades\Auth;
 trait Url{
     function link()
     {
-        if(app()->environment('local'))
-        {
-            return 'http://admin.oneclickvid.test';
-        }
-        else{
-            return 'https://adminapp.oneclickvid.com';
-        }
+        if(app()->environment('local')) return 'http://admin.oneclickvid.test';
+        else return 'https://adminapp.oneclickvid.com';
+        
     }
 
     function token()
