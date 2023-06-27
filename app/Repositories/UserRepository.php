@@ -33,19 +33,21 @@ class UserRepository
         'service_observation'=> 'nullable',
         'others_observation'=>'nullable'
       ]);
+
+      $email = $this->encrypt_decrypt('encrypt', $request->user()->email, 'Create an Account on One Click Vid');
+      $password = $this->encrypt_decrypt('encrypt', $request->user()->password , 'Create an Account on One Click Vid');
     }
-    
-    $investor=Investor::findorfail($request->id);
-      
-      $id = $this->encrypt_decrypt('encrypt', $request->id, 'Create an Account on One Click Vid');
-      $type = $this->encrypt_decrypt('encrypt', $request->type, 'Create an Account on One Click Vid');
-      $id_integration = $this->encrypt_decrypt('encrypt', $request->id_integration, 'Create an Account on One Click Vid');
-      $name = $this->encrypt_decrypt('encrypt', $request->name, 'Create an Account on One Click Vid');
+    else{
       $email = $this->encrypt_decrypt('encrypt', $request->email, 'Create an Account on One Click Vid');
       $password = $this->encrypt_decrypt('encrypt', $request->password, 'Create an Account on One Click Vid');
-      // $subscribe = $this->encrypt_decrypt('decrypt', $request->subscribe, 'Create an Account on One Click Vid');
-      // $platforms = $this->encrypt_decrypt('encrypt', $request->platforms, 'Create an Account on One Click Vid');
+    }
+      
+      $id = $this->encrypt_decrypt('encrypt', $request->user()->investor->id, 'Create an Account on One Click Vid');
+      $type = $this->encrypt_decrypt('encrypt', $request->type, 'Create an Account on One Click Vid');
+      $id_integration = $this->encrypt_decrypt('encrypt', $request->id_integration, 'Create an Account on One Click Vid');
+      $name = $this->encrypt_decrypt('encrypt', $request->name==null ? $request->user()->name : $request->name, 'Create an Account on One Click Vid');
       $leads = $this->encrypt_decrypt('encrypt',$request->leads, 'Create an Account on One Click Vid');
+      $application = $this->encrypt_decrypt('encrypt','CODINVESTOR', 'Create an Account on One Click Vid');
       $cpl = $this->encrypt_decrypt('encrypt', $request->cpl, 'Create an Account on One Click Vid');
       $similar_service = $this->encrypt_decrypt('encrypt', $request->similar_service, 'Create an Account on One Click Vid');
       $service_observation = $this->encrypt_decrypt('encrypt', $request->service_observation, 'Create an Account on One Click Vid');
@@ -63,48 +65,30 @@ class UserRepository
         'cpl'=>$cpl,
         'similar_service'=>$similar_service,
         'service_observation'=>$service_observation,
-        'others_observation'=>$others_observation
+        'others_observation'=>$others_observation,
+        'application'=>$application
       ]);
     
       $message=json_decode($response->getBody()->getContents());
-      
-      // dd($message);
-      
       if($message->message=='success')
       {
-
           $integration=Integration::findorfail($request->id_integration);
         
-          $investor = Investor::find($request->id);
-        
-          // $integrable=Integrable::where('integrable_type',$investor->getMorphClass())
-          //                       ->where('integration_id',$integration->id)
-          //                       ->where('integrable_id',$investor->id)
-          //                       ->count();
-          // if($integrable==0)
-          // {   
             Integrable::Create([
               'integration_id'=>$integration->id,
-              'integrable_type'=>$investor->getMorphClass(),
-              'integrable_id'=>$investor->id,
+              'integrable_type'=>$request->user()->investor->getMorphClass(),
+              'integrable_id'=>$request->user()->investor->id,
               'token'=>$message->token
             ]);
-          // }
 
         return redirect()->route('oneclickvid.index')->with('success','Integrated Successfully');
       }
-      else if($message->message=='exists')
-      {
-        return back()->with('error','Email Already Exists In This Integration');
-      }
-      else if($message->message=='Password Incorrect')
-      {
-        return back()->with('error','Password Incorrect');
-      }
-      else{
-
-        return back()->with('error','Error Integration');
-      }
+      else if($message->message=='exists') return back()->with('error','Email Already Exists In This Integration');
+      
+      else if($message->message=='Password Incorrect') return back()->with('error','Password Incorrect');
+      
+      else return back()->with('error','Error Integration');
+      
     
   }
 

@@ -139,6 +139,6 @@ const form = useForm({
 const subscribe=ref([])
 
 const check =  ()=>{
-console.log(form.subscribe);
+// console.log(form.subscribe);
 }
 </script>

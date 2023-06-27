@@ -10,7 +10,7 @@ const filters = ref({
 })
 
 onMounted(() =>{
-    console.log(props.orders);
+    // console.log(props.orders);
 });
 
 const selectedOrders = ref([])

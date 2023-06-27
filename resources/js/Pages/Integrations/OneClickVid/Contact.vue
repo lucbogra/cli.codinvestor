@@ -161,8 +161,8 @@ const getmessages = () => {
             .then((response) => {
                 
                 messages.value = response.data
-                console.log(messages.value.length==0)
-                console.log(messages.value)
+                // console.log(messages.value.length==0)
+                // console.log(messages.value)
 
                 nextTick(() => {
                     select_message(1)
@@ -179,7 +179,7 @@ const getmessages = () => {
 const chatContainer = ref(null)
 
 function scrollToBottom() {
-    console.log(chatContainer.value)
+    // console.log(chatContainer.value)
     if (chatContainer.value) {
         chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
     }

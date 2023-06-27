@@ -19,6 +19,7 @@ use App\Http\Controllers\OneClickVid\RequestController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebController;
+use App\Http\Middleware\DomainCheckMiddleware;
 use App\Models\Integration;
 use App\Http\Middleware\RegisterSteps;
 use App\Providers\RouteServiceProvider;
@@ -152,7 +153,7 @@ Route::middleware([
 
   Route::prefix('user')->middleware('role:Investor')->group(function () {
     Route::get('company', [UserController::class, 'company'])->name('users.company');
-    Route::post('create_account_oneclickvid', [UserController::class, 'create_oneclickvid'])->name('users.oneclickvid');
+    Route::post('create_account_oneclickvid', [UserController::class, 'create_oneclickvid'])->name('users.oneclickvid')->middleware(DomainCheckMiddleware::class);
     Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
     Route::resource('/members', MemberController::class);
   });

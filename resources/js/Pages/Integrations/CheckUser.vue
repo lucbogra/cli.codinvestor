@@ -114,19 +114,22 @@
                                 <jetLabel>what type of platforms do you use the most for your
                                     advertising campaigns ?</jetLabel>
                                 <el-select class="w-full" v-model="form.platforms" multiple placeholder="Select Platforms">
-                                        <el-option v-for="platform in platforms" :key="platform" :label="platform"
-                                            :value="platform" />
-                                    </el-select>
+                                    <el-option v-for="platform in platforms" :key="platform" :label="platform"
+                                        :value="platform" />
+                                </el-select>
+                                <jetErrorInput :message='form.errors.platforms' />
                             </div>
 
                             <div class="mt-4">
                                 <jetLabel>what is your average number of leads/day?</jetLabel>
                                 <jetInput type="number" class="block w-full p-2" v-model="form.leads"></jetInput>
+                                <jetErrorInput :message='form.errors.leads' />
                             </div>
 
                             <div class="mt-4">
                                 <jetLabel>what is your CPL?</jetLabel>
                                 <jetInput type="number" class="block w-full p-2" v-model="form.cpl"></jetInput>
+                                <jetErrorInput :message='form.errors.cpl' />
                             </div>
 
                             <div class="mt-4">
@@ -141,11 +144,13 @@
                                         No
                                     </span>
                                 </div>
+                                <jetErrorInput :message='form.errors.similar_service' />
                             </div>
                             <div class="mt-4" v-if="form.similar_service === 'No'">
                                 <jetLabel>tell us more about this service</jetLabel>
                                 <textarea v-model="form.service_observation"
                                     class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"></textarea>
+                                <jetErrorInput :message='form.errors.service_observation' />
                             </div>
 
                             <div class="mt-4">
@@ -177,6 +182,7 @@
                                             type="text"></jetInput>
                                     </li>
                                 </ul>
+                                <jetErrorInput :message='form.errors.subscribe' />
                             </div>
 
                             <div class="flex items-center justify-center mt-6 w-full">
@@ -207,13 +213,15 @@
 import Modal from "../../Jetstream/Modal.vue";
 import { MailIcon } from "@heroicons/vue/solid";
 import jetInput from "@/Jetstream/Input.vue";
+import jetErrorInput from "@/Jetstream/InputError.vue";
 import jetLabel from "@/Jetstream/Label.vue";
 export default {
     components: {
         Modal,
         MailIcon,
         jetInput,
-        jetLabel
+        jetLabel,
+        jetErrorInput
     },
     props: {
         show: Boolean,
@@ -226,11 +234,10 @@ export default {
             link: false,
             use_info: false,
             form: this.$inertia.form({
-                id: this.$page.props.user.investor.id,
                 id_integration: this.id_integration,
                 name: this.$page.props.user.name,
-                email: this.$page.props.user.email,
-                password: this.$page.props.user.password,
+                email: '',
+                password: '',
                 type: "",
                 subscribe: [],
                 platforms: [],
@@ -245,7 +252,7 @@ export default {
             survey: false,
             value: [
             ],
-            platforms : ['Facebook','Google','Snapshat','Tiktok']
+            platforms: ['Facebook', 'Google', 'Snapshat', 'Tiktok']
         };
     },
     methods: {
@@ -256,7 +263,6 @@ export default {
         },
         togglecreate() {
             this.form.type = "Create";
-
             this.store();
         },
         togglelink() {
@@ -266,19 +272,30 @@ export default {
             this.survey = false;
             this.form.password = "";
         },
-        store() {
-            this.loading = true;
-            this.form.post(route("users.oneclickvid"), {
-                onSuccess: () => {
+        async store() {
+
+            try {
+                this.loading = true;
+                await this.form.post(route("users.oneclickvid"));
+                if (this.form.errors) {
+                    this.loading = false;
+                } else {
                     this.loading = false;
                     this.create = false;
                     this.link = false;
                     this.use_info = false;
-                    this.survey = false
+                    this.survey = false;
                     this.form.reset();
                     this.$emit("closemodal");
-                },
-            });
+                }
+
+            } catch (error) {
+                this.loading = false;
+                console.log(error);
+            }
+
+
+
         },
         useInformation() {
             if (this.use_info) {

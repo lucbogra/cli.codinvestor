@@ -60,7 +60,7 @@ const update = () => {
 const copyToClipboard = async (value) =>{
   try {
     await toClipboard(value)
-    console.log('Copied to clipboard')
+    // console.log('Copied to clipboard')
   } catch (e) {
     console.error(e)
   }

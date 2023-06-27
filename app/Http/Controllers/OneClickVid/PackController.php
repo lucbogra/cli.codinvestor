@@ -32,6 +32,6 @@ class PackController extends Controller
     {
         $this->packreposirtory->subscribe($request);
         
-        return back();
+        return back()->with('success','Subscribe Successfully');
     }
 }

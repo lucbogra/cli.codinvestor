@@ -77,7 +77,7 @@
                     </div>
                     <div>
                         <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">The Remaining Amout To Pay</p>
+                            <p class="font-bold text-gray-600">Remaining Amount To Pay</p>
                         </div>
                         <p class="text-lg font-bold text-gray-600">
                             ${{ investorRemain }}
@@ -94,10 +94,10 @@
                     <span class="font-semibold" v-if="pack != null">{{ 'to ' + pack.name }}</span>
                     <span class="font-medium"> {{ days_left.toFixed(0) <= 0 || number_video == 0 ? ' has Been Expired'
                         : ' will expire in ' + days_left.toFixed(0) + ' days' }}</span>
-                </span>
-                <div v-if="(days_left.toFixed(0) <= 0 || number_video == 0)">
-                    <button @click="togglepack" class="font-semibold">Renew Your Pack</button>
-                </div>
+                    </span>
+                    <div v-if="(days_left.toFixed(0) <= 0 || number_video == 0)">
+                        <button @click="togglepack" class="font-semibold">Renew Your Pack</button>
+                    </div>
             </div>
             <div>
                 <div class="flex justify-between mb-1 min-w-max my-6 mx-5">
@@ -222,9 +222,8 @@
                                                     @click="toggleduplicatemodal(request, 'update')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <PencilIcon class="text-primary-500" />
-
                                                 </button>
-                                                <button @click="destroy(request, index)"
+                                                <button @click="confimrdestroy(request, index)"
                                                     v-if="request.read === false && request.answer == null"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <TrashIcon class="text-primary-500" />
@@ -273,11 +272,15 @@
                 @closemodal="rateToggle(current_answer)" />
             <Duplicate_request v-if="selected_request != null" :action="action_request" :key="selected_request"
                 :request="selected_request" :products="products" :show="show_duplicate"
-                @close_modal="toggleduplicatemodal(selected_request, 'Duplicate')"></Duplicate_request>
+                @close_modal="toggleduplicatemodal(selected_request, 'update')"></Duplicate_request>
             <Contact :key="request" :status='status' :request="request" :show="contact" @closemodal="contactToggle(null)"
                 @reload_request="getrequets()"></Contact>
             <Packs :hasPackPaid="hasIntegrationPayment" :key="packModal" :show="packModal" @closemodal="togglepack" />
             <br>
+            <ConfirmationModal :situation="'danger'" :show="confirm"
+                :message="'Are You Sure You want to Delete this Request ?'"
+                @cancel="confimrdestroy(selected_request, selected_index)"
+                @confirm="destroy(selected_request, selected_index)" />
         </template>
 
     </AppLayout>
@@ -295,6 +298,7 @@ import Contact from '../OneClickVid/Contact.vue'
 import Packs from './Pack.vue'
 import moment from 'moment'
 import { Head } from '@inertiajs/inertia-vue3'
+import ConfirmationModal from './ConfirmationModal.vue'
 export default {
     name: "OneClickVid",
     props: {
@@ -305,7 +309,7 @@ export default {
         AppLayout, ChevronRightIcon, PaperAirplaneIcon, Link, UploadIcon, BellIcon,
         Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
         Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon,
-        Packs, CameraIcon, InformationCircleIcon, CurrencyDollarIcon
+        Packs, CameraIcon, InformationCircleIcon, CurrencyDollarIcon, ConfirmationModal
     },
     data() {
         return {
@@ -333,12 +337,12 @@ export default {
             products: [],
             page: 1,
             paidPayment: 0,
-            mustPaidPayment: 0
+            mustPaidPayment: 0,
+            confirm: false,
 
         }
     },
     methods: {
-
         contactToggle(request, status) {
             this.contact = !this.contact
             this.request = request
@@ -380,8 +384,15 @@ export default {
         },
         toggleduplicatemodal(request, action) {
             if (this.pack != null) {
-                if (moment(this.pack.pivot.end_date).isSameOrBefore(moment().format('YYYY-MM-DD')) || this.number_video <= 0)
-                    this.packModal = !this.packModal
+                if (moment(this.pack.pivot.end_date).isSameOrBefore(moment().format('YYYY-MM-DD')) || this.number_video <= 0) {
+                    if (action == 'Duplicate') this.packModal = !this.packModal
+                    else {
+                        this.getrequets()
+                        this.selected_request = request
+                        this.action_request = action
+                        this.show_duplicate = !this.show_duplicate
+                    }
+                }
                 else {
                     this.getrequets()
                     this.selected_request = request
@@ -395,7 +406,7 @@ export default {
             this.load = true;
             axios.get(route('userequests'))
                 .then((response) => {
-                    console.log(response.data['user_pack'])
+                    // console.log(response.data['user_pack'])
                     this.answers_count = 0
                     this.requests = response.data['requests']
                     this.pack = response.data['user_pack']
@@ -418,41 +429,30 @@ export default {
                     console.log('error');
                 })
         },
+        confimrdestroy(request, index) {
+            this.selected_request = request
+            this.selected_index = index
+            this.confirm = !this.confirm
+        },
         destroy(request, index) {
             this.getrequets();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (this.requests[index].read === false && this.requests[index].answer == null) {
-
-                        this.form.delete(route('requests.destroy', request.id), {
-                            onSuccess: () => {
-                                this.getrequets();
-                                Swal.fire(
-                                    'Deleted!',
-                                    'Your Request has been deleted.',
-                                    'success'
-                                )
-                            }
+            this.confirm = false
+            if (this.requests[index].read === false && this.requests[index].answer == null) {
+                this.form.delete(route('requests.destroy', request.id), {
+                    onSuccess: () => {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            timer: 5000,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            icon: 'success',
+                            title: 'Deleted successfully.',
                         })
+                        this.getrequets();
                     }
-                    else {
-                        Swal.fire(
-                            'This Request is already answered',
-                            'Your Request has Not been deleted.',
-                            'error'
-                        )
-                    }
-
-                }
-            })
+                })
+            }
 
         },
         countNotReadedMessages() {
@@ -483,7 +483,8 @@ export default {
         togglepack() {
             this.getrequets();
             this.packModal = !this.packModal
-        }
+        },
+
     },
     mounted() {
         this.getrequets();
