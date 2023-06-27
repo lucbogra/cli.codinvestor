@@ -18,6 +18,6 @@ class AffiliateScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
       $investor = request()->user()->hasRole('Investor') ? request()->user()->investor : (request()->user()->hasRole('Member') ? request()->user()->member->investor : null);
-      $builder->where('investor_id', $investor->id);
+      $builder->where('orderable_id', $investor->id)->where('orderable_type', 'App\Models\Investor');
     }
 }
