@@ -91,7 +91,7 @@ class HandleInertiaRequests extends Middleware
         ];
       }) : null;
 
-      $messages = $request->user() ? $request->user()->investor->unreadNotifications->where('type', 'App\Notifications\ContactNotification')->map(function ($notification){
+      $messages = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\ContactNotification')->map(function ($notification){
         return[
           'id' => $notification->id,
           'text' => $notification->data['message'],
