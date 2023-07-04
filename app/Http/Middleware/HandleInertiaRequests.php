@@ -113,7 +113,7 @@ class HandleInertiaRequests extends Middleware
         return [
               'user' => $request->user() ? [
                 'ip' => $_SERVER['REMOTE_ADDR'],
-                'role' => $request->user()->role,
+                'role' => $request->user()->getRoleNames(),
                 'permissions' => $request->user()->getAllPermissions()->pluck('name'),
                 'balance' => $request->user()->investor?->wallet,
                 'funding' => $request->user()->investor?->funding,

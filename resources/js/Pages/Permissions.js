@@ -14,7 +14,7 @@ export const auth = ref({
     if (usePage().props.value.auth.user.role == 'Super Admin') {
       return true
     }
-    return usePage().props.value.auth.user.role == role
+    return usePage().props.value.auth.user.role.includes(role)
   },
 
   hasAnyPermission(permissions) {
@@ -28,7 +28,7 @@ export const auth = ref({
     if (usePage().props.value.auth.user.role == 'Super Admin') {
       return true
     }
-    return roles.some((role) => usePage().props.value.auth.user.role == role)
+    return roles.some((role) => usePage().props.value.auth.user.role.includes(role))
   },
 
 });

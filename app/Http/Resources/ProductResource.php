@@ -34,7 +34,7 @@ class ProductResource extends JsonResource
         'alias' => $this->alias,
         'website_link' => $this->website_link,
         'deleted_at' => $this->deleted_at,
-        'exist_request' => $this->investor($request->user()->investor->id)->select('status', 'link')->first(),
+        'exist_request' => $this->investor($request->user()->investor->id)->select('productables.status', 'link')->first(),
         'countries' => $this->supplier_products()
         ->join('locations', 'supplier_products.location_id', '=', 'locations.id')
         ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
