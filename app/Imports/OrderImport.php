@@ -84,9 +84,9 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
     }
 
     public function products($sku){
-      if(Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com'){
-        return Product::whereJsonContains('alias', $sku)->first();
-      }
+      // if(Investor::find($this->investor_id)->user->email == 'oneads@codinvestor.com'){
+      //   return Product::whereJsonContains('alias', $sku)->first();
+      // }
       return Investor::find($this->investor_id)->accessProducts()->whereJsonContains('alias', $sku)->first();
     }
 
