@@ -38,6 +38,13 @@
                                                 </div>{{ freePack.cost }}$ For {{ freePack.duration }} {{
                                                     freePack.duration_type }}
                                             </li>
+                                            <li v-if="freePack.limit" class="flex items-center py-2 text-white">
+                                                    <div
+                                                        class="flex items-center justify-center w-6 h-6 mr-3 bg-green-800 rounded-full">
+                                                        <BookmarkAltIcon class="h-4 w-4 text-white" />
+                                                    </div>{{ freePack.limit }} Creative(s) Daily
+                                             </li>
+                                            
                                             <li class="flex items-center py-2 text-white">
                                                 <div
                                                     class="flex items-center justify-center w-6 h-6 mr-3 bg-green-800 rounded-full">
@@ -100,6 +107,12 @@
                                                         <CurrencyDollarIcon class="h-4 w-4 text-white" />
                                                     </div>{{ pack.cost }}$ For {{ pack.duration }} {{ pack.duration_type }}
                                                 </li>
+                                                <li v-if="pack.limit" class="flex items-center py-2 text-white">
+                                                    <div
+                                                        class="flex items-center justify-center w-6 h-6 mr-3 bg-green-800 rounded-full">
+                                                        <BookmarkAltIcon class="h-4 w-4 text-white" />
+                                                    </div>{{ pack.limit }} Creative(s) Daily
+                                                </li>
                                                 <li class="flex items-center py-2 text-white">
                                                     <div
                                                         class="flex items-center justify-center w-6 h-6 mr-3 bg-green-800 rounded-full">
@@ -152,7 +165,7 @@
 import Modal from '@/Jetstream/Modal.vue'
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import { VideoCameraIcon, CalendarIcon, CurrencyDollarIcon, ClipboardIcon } from '@heroicons/vue/outline'
+import { VideoCameraIcon, CalendarIcon, CurrencyDollarIcon, ClipboardIcon,BookmarkAltIcon } from '@heroicons/vue/outline'
 import { useForm } from '@inertiajs/inertia-vue3';
 import ConfirmationModal from './ConfirmationModal.vue';
 const props = defineProps({
