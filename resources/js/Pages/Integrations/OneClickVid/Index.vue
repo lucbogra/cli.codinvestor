@@ -26,65 +26,13 @@
             <h1
                 class="text-2xl font-medium text-primary-800 flex hover:text-primary-600 items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
                 OneCLickVid</h1>
-            <div class="grid gap-6 mb-8 md:grid-cols-4 xl:grid-cols-4 mt-7 mx-7">
-                <!-- Begin Card Uploaded-->
-                <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
-                    <div class="p-3 mr-4 bg-cyan-100 rounded-full">
-                        <UploadIcon class="w-5 h-5 text-cyan-500" />
-                    </div>
-                    <div>
-                        <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">Requests</p>
-                        </div>
-                        <p class="text-lg font-bold text-gray-600">
-                            {{ requests.length }}
-                        </p>
-                    </div>
-                </div>
-                <!-- Begin Card Wrong Number-->
-                <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
-                    <div class="p-3 mr-4 bg-green-100 rounded-full">
-                        <PaperAirplaneIcon class="w-5 h-5 text-success" />
-                    </div>
-                    <div>
-                        <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">Answers</p>
-                        </div>
-                        <p class="text-lg font-bold text-gray-600">
-                            {{ answers_count }}
-                        </p>
-                    </div>
-                </div>
-                <!-- Begin Card Duplicate-->
-                <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
-                    <div class="p-3 mr-4 bg-blue-100 rounded-full">
-                        <CameraIcon class="w-5 h-5 text-blue-400" />
-                    </div>
-                    <div>
-                        <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">Number Of Creatives Left</p>
-                        </div>
-                        <p class="text-lg font-bold text-gray-600">
-                            {{ number_video }} Creative(s)
-                        </p>
+            <!--Cards -->
+            <Cards :request_number="requests.length" :answers_count="answers_count" :number_video="number_video"
+                :investorRemain="investorRemain" :dailylimit="pack ? pack.limit : 0"></Cards>
 
-                    </div>
-                </div>
-                <!-- Begin Card Duplicate-->
-                <div class="flex items-start p-4 bg-white rounded-lg shadow-xl overflow-hidden">
-                    <div class="p-3 mr-4 bg-red-100 rounded-full">
-                        <CurrencyDollarIcon class="w-6 h-6 text-red-400" />
-                    </div>
-                    <div>
-                        <div class="mb-2 font-medium text-gray-600">
-                            <p class="font-bold text-gray-600">Remaining Amount To Pay</p>
-                        </div>
-                        <p class="text-lg font-bold text-gray-600">
-                            ${{ investorRemain }}
-                        </p>
-
-                    </div>
-                </div>
+            <!--Error Bars -->
+            <div v-if="pack!=null && passlimit.length>=pack.limit" class="p-4 mx-6 mb-4 text-md bg-red-200 text-red-800" role="alert">
+                    You Passed Your Daily Limit To Request Creatives <span class="font-semibold">({{ pack.limit }} Requests)</span>
             </div>
             <div v-if="pack != null && (days_left.toFixed(0) < 5 || number_video == 0)" :class="{
                 'bg-red-200 text-red-800': (days_left.toFixed(0) < 10 || number_video == 0),
@@ -99,6 +47,8 @@
                         <button @click="togglepack" class="font-semibold">Renew Your Pack</button>
                     </div>
             </div>
+
+            <!--buttons-->
             <div>
                 <div class="flex justify-between mb-1 min-w-max my-6 mx-5">
                     <h1 class="text-primary-800 font-bold">Request Creatives</h1>
@@ -107,10 +57,16 @@
                             <RefreshIcon v-bind:class="{ 'animate-spin': load === true, 'animate-none': load === false }"
                                 class="w-4"></RefreshIcon>
                         </button>
-                        <button @click="addRequestToggle" type="button" class="btn-primary cursor-pointer">Request
+                        <button v-if="pack ? passlimit.length < pack.limit : true" @click="addRequestToggle" type="button"
+                            class="btn-primary cursor-pointer">Request
+                            Creative</button>
+                        <button v-else disabled type="button"
+                            class="px-6 py-3 rounded bg-gray-400 text-white text-sm leading-4 font-bold whitespace-nowrap">Request
                             Creative</button>
                     </div>
                 </div>
+
+                <!--request table-->
                 <div class="bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
                     <div class="-mx-4 w-full sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                         <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -142,7 +98,6 @@
                                                             d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z">
                                                         </path>
                                                     </svg>
-
                                                 </div>
                                                 <button @click="copyRef(request.ref, index)"
                                                     class="text-primary-700 text-lg font-medium	 tracking-wide">
@@ -152,8 +107,6 @@
                                                         !
                                                     </span>
                                                 </button>
-
-                                                <!-- <span class="font-medium text-lg text-primary-500">{{ request.ref }}</span> -->
                                             </div>
                                         </td>
                                         <td class="py-3 px-6 text-left">
@@ -209,7 +162,7 @@
                                         </td>
                                         <td class="py-3 px-6 text-center">
                                             <div class="flex item-center justify-center">
-                                                <div @click="toggleduplicatemodal(request, 'Duplicate')"
+                                                <div v-if="pack!=null ? passlimit.length<pack.limit : false" @click="toggleduplicatemodal(request, 'Duplicate')"
                                                     class="w-5 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
                                                     <DuplicateIcon class="text-primary-500" />
                                                 </div>
@@ -257,7 +210,7 @@
                     </div>
                 </div>
             </div>
-
+            <!--button of Messages -->
             <button @click="contactToggle(null)" title="Contact Sale"
                 class="fixed z-40 right-5 bottom-5 shadow-lg flex justify-center items-center w-14 h-14 bg-primary-500 rounded-full focus:outline-none hover:bg-primary-600 focus:bg-primary-600 transition duration-300 ease">
                 <PhoneIcon v-if="!contact" class="text-white w-6 h-6" />
@@ -266,6 +219,8 @@
                 </div>
                 <div v-if="not_readed_messages" class="rounded-full bg-red-600 w-3 h-3 absolute top-0 right-0"></div>
             </button>
+
+            <!--Modals -->
             <Answer_Modal :answer="current_answer" :show="show_answer" @closemodal="answerToggle"></Answer_Modal>
             <Add_request :products="products" :show="show_add" @close_modal="addRequestToggle"></Add_request>
             <Rate v-if="current_answer" :id="current_answer.id" :show="show_rate"
@@ -299,6 +254,7 @@ import Packs from './Pack.vue'
 import moment from 'moment'
 import { Head } from '@inertiajs/inertia-vue3'
 import ConfirmationModal from './ConfirmationModal.vue'
+import Cards from './Cards.vue'
 export default {
     name: "OneClickVid",
     props: {
@@ -309,7 +265,7 @@ export default {
         AppLayout, ChevronRightIcon, PaperAirplaneIcon, Link, UploadIcon, BellIcon,
         Add_request, EyeIcon, PencilIcon, TrashIcon, Answer_Modal, DuplicateIcon,
         Rate, Duplicate_request, RefreshIcon, StarIcon, PhoneIcon, Contact, XIcon,
-        Packs, CameraIcon, InformationCircleIcon, CurrencyDollarIcon, ConfirmationModal
+        Packs, CameraIcon, InformationCircleIcon, CurrencyDollarIcon, ConfirmationModal, Cards
     },
     data() {
         return {
@@ -339,6 +295,7 @@ export default {
             paidPayment: 0,
             mustPaidPayment: 0,
             confirm: false,
+            passlimit: []
 
         }
     },
@@ -406,13 +363,11 @@ export default {
             this.load = true;
             axios.get(route('userequests'))
                 .then((response) => {
-                    // console.log(response.data['user_pack'])
+                    this.passlimit = (response.data['requests'].filter((request) => (moment(request.created_at).format('YYYY-MM-DD') == moment().format('YYYY-MM-DD')) && request.pack.pack_info.id == response.data['user_pack'].id))
                     this.answers_count = 0
                     this.requests = response.data['requests']
                     this.pack = response.data['user_pack']
-
                     if (this.pack != null) {
-
                         this.number_video = response.data['user_pack'] != null ? response.data['user_pack'].number_video : 0
                         this.days_left = moment.duration(moment(this.pack.pivot.end_date).diff(moment())).asDays()
 
