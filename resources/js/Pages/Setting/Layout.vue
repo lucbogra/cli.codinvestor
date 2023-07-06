@@ -32,7 +32,7 @@ const navigation = [
 </script>
 
 <template>
-  <AppLayout>
+  <AppLayout title="Settings">
     <template #page-header>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="py-6">

@@ -1,7 +1,7 @@
 
 <template >
     <Head title="OneclickVid" />
-    <AppLayout>
+    <AppLayout title="OneclickVid">
 
         <template #page-header>
             <nav aria-label="Breadcrumb" class="mt-8">

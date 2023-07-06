@@ -34,7 +34,7 @@ const LoadingOverlay = defineAsyncComponent(() =>
 </script>
 
 <template>
-  <AppLayout >
+  <AppLayout title="Reports">
      <template #page-header>
       <div class="mt-2 p-5 mx-10">
         <div class="">

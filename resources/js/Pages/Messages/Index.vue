@@ -15,7 +15,7 @@ const props = defineProps({
 
 </script>
 <template>
-  <AppLayout>
+  <AppLayout title="Messages">
     <template #page-header>
       <div class="mt-2 p-5 mx-10">
         <div class="">

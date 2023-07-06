@@ -46,7 +46,7 @@ const submitTicket = () => {
 </script>
 
 <template>
-  <Layout title="Profile">
+  <Layout title="Tickets">
     <div class="max-w-6xl bg-white mx-auto sm:px-6 lg:px-8 p-8">
       <h3 class="text-xl font-bold mb-4">Create a new Ticket</h3>
       <form @submit.prevent="submitTicket">
