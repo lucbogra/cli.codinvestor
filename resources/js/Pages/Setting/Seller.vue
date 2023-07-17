@@ -23,10 +23,10 @@ const get_started = () => {
       <h2 class="text-3xl font-bold tracking-tight text-primary-800 sm:text-4xl">Ready to dive in?<br />Start for free today.</h2>
       <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0" v-if="$page.props.auth.user.seller_status == 'none'">
         <button @click="get_started" class="btn-primary">Get started</button>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+        <a target="_blank" href="https://codinvestor.com/seller-program/" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
       </div>
       <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0" v-if="$page.props.auth.user.seller_status == 'approved'">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Seller Dashboard <span aria-hidden="true">→</span></a>
+        <a target="_blank" href="https://seller.codinvestor.com/" class="text-sm font-semibold leading-6 text-gray-900">Seller Dashboard <span aria-hidden="true">→</span></a>
       </div>
       <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0" v-if="$page.props.auth.user.seller_status == 'request'">
         <a href="#" class="btn-primary">Account Verification <i class="fa-solid fa-gear fa-spin text-white"></i></a>
