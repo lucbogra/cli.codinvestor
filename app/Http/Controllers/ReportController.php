@@ -90,7 +90,7 @@ class ReportController extends Controller
     $products = auth()->user()->investor->accessProducts()->get()->map(function ($product) use($id, $reports){
       $datas = $reports->map(function ($item) use($id, $product) {
         $values = collect(json_decode($item->datas, ','))->where('id', $id)->pluck('products')->flatten(1)->where('id', $product->id)->first();
-        $delivered = Order::delivered()->where('product_id', $product->id)->where('confirmed_at', $item->date)->count();
+        $delivered = Order::delivered()->where('product_id', $product->id)->where('confirmed_at', $item->date)->selectRaw("sum(commission) as commission, count(*) as count")->first();
         return [
           'date' => date('m-d', strtotime($item->date)),
           'uploaded' => $values !== null ? $values['uploaded'] : null,
@@ -98,8 +98,9 @@ class ReportController extends Controller
           'wrong_number' => $values !== null ? $values['wrong_number'] : null,
           'confirmed' => $values !== null ? $values['confirmed'] : null,
           'values' => $values,
-          'delivered' => $delivered,
-          'commission' => $values !== null ? $values['commission'] * $delivered : $product->commission * $delivered
+          'delivered' => $delivered->count,
+          'commission' => $delivered->commission,
+          // $values !== null ? $values['commission'] * $delivered : $product->commission * $delivered
         ];
       });
       $datas = collect($datas);
