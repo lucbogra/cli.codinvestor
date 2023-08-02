@@ -151,7 +151,7 @@ const copyToClipboard = async (value) =>{
           </div>
           <div class="mt-4">
             <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
-              <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
+              <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission+' '+item.commission_type }}</option>
             </select>
             <JetInputError :message="form.errors.commission" class="mt-2" />
           </div>

@@ -57,12 +57,17 @@ class OrderController extends Controller
 
   public function import(Request $request)
   {
+    $count = $this->investor->accessProducts()->wherePivot('commission_type', null)->count();
+    if($count > 0){
+      return back()->with('error', 'please update your products pricings !'.$count.' products left');
+    }
+
     $request->validate([
       'file' => ['required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'],
     ]);
 
     (new OrderImport($this->investor->id))->import($request->file('file'));
-    return redirect()->route('orders.index');
+    return redirect()->route('orders.index')->with('success', 'Orders uploaded successfully.');
 
   }
 

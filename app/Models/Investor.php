@@ -85,7 +85,7 @@ class Investor extends Model
     }
 
     public function accessProducts(){
-      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', 'access')->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price')->withTimestamps();
+      return $this->morphToMany(Product::class, 'productable')->wherePivot('status', 'access')->withPivot('status', 'link', 'affiliate_commission', 'affiliate_price', 'commission_type')->withTimestamps();
     }
 
     public function request_state($status){
@@ -119,5 +119,5 @@ class Investor extends Model
     {
       return $this->hasMany(IntegrationPayment::class, 'integrable_id')->where('status','!=','paid');
     }
-    
+
 }

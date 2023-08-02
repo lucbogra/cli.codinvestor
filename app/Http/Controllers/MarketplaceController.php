@@ -74,7 +74,8 @@ class MarketplaceController extends Controller
     if ($this->investor) {
       $this->investor->products()->attach($request->product_id, [
         'affiliate_commission' => $request->commission['commission'],
-        'affiliate_price' => $request->commission['price']
+        'affiliate_price' => $request->commission['price'],
+        'commission_type' => $request->commission['commission_type'],
       ]);
       Notification::send($this->investor->manager, new ProductRequestNotification($request->product_id, $this->investor));
       return back();
@@ -87,7 +88,7 @@ class MarketplaceController extends Controller
   {
     // dd($this->investor->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2));
     $products = [];
-    $products = $this->investor->products()->wherePivot('status', 'access')
+    $products = $this->investor->accessProducts()
       ->paginate(10)
       ->withQueryString()
       ->through(function ($product){
@@ -101,7 +102,10 @@ class MarketplaceController extends Controller
           'price' => $product->pivot->affiliate_price,
           'commission' => $product->pivot->affiliate_commission,
           'link' => $product->pivot->link,
-          'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : []
+          'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
+          'test' => $product->pivot->commission_type == 'fix'
+          ? collect(json_decode($product->pricings)->pricings)->where('price',  $product->pivot->affiliate_price)->flatten()->all()
+          : collect(json_decode($product->pricings)->pricings)->where('commission_type', $product->pivot->commission_type)->where('price',  $product->pivot->affiliate_price)->pluck('occurences')->flatten()->all()
         ];
       });
 
@@ -129,7 +133,8 @@ class MarketplaceController extends Controller
     $this->investor->products()->updateExistingPivot($request->product_id, [
       'link' => $request->link,
       'affiliate_commission' => $request->commission['commission'],
-      'affiliate_price' => $request->commission['price']
+      'affiliate_price' => $request->commission['price'],
+      'commission_type' => $request->commission['commission_type'],
     ]);
 
     return back()->with('success', 'Product updated.');

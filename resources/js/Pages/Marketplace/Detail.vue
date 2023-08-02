@@ -123,21 +123,41 @@ const filterDuplicateData = (arr) => {
                 </div>
               </div> -->
 
-              <div>
-                <table class="min-w-full divide-y divide-gray-300">
+              <div class="mt-4">
+                <!-- <table class="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
                       <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Price</th>
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Commission</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
                     <tr v-for="price in product.pricings">
                       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ price.price+' SAR' }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ '$'+price.commission }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ price.commission_type }}</td>
                     </tr>
                   </tbody>
-                </table>
+                </table> -->
+
+                <el-table :data="product.pricings" style="width: 100%" >
+                  <el-table-column type="expand">
+                    <template #default="props">
+                      <div class="px-2" v-if="props.row.occurences">
+                        <h3>Cross</h3>
+                        <el-table :data="props.row.occurences.filter((el) => el.show == true)" >
+                          <el-table-column label="Pieces" prop="pieces" />
+                          <el-table-column label="Prix" prop="price" />
+                          <el-table-column label="Commission" prop="commission" />
+                        </el-table>
+                      </div>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="Price" prop="price" />
+                  <el-table-column label="Commission" prop="commission" />
+                  <el-table-column label="Type" prop="commission_type" />
+                </el-table>
 
               </div>
 
@@ -206,7 +226,7 @@ const filterDuplicateData = (arr) => {
                         <div class="mt-4">
                           <JetLabel for="commission" value="select the price at which you want to sell the product" />
                           <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
-                            <option v-for="(item, index) in product.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
+                            <option v-for="(item, index) in product.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission+' '+item.commission_type }}</option>
                           </select>
                           <JetInputError :message="form.errors.commission" class="mt-2" />
                         </div>
