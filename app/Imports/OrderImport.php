@@ -52,7 +52,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'price'                      => $row['price'],
           'orderable_id'               => $this->investor_id,
           'orderable_type'             => 'App\Models\Investor',
-          'status'                     => $this->setStatus($product, $row['price']),
+          'status'                     => 'pending',
           'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
           'product_id'                 => isset($product) ? $product->id : null,
           'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
