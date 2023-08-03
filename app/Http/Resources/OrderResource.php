@@ -40,10 +40,11 @@ class OrderResource extends JsonResource
       'delayed_date' => $this->delayed_date,
       'delivered_at' => $this->delivered_at,
       'returned_at' => $this->returned_at,
-      'commission' => $this->commission,
+      'commission' => '$'.$this->commission,
       'status_date' => Carbon::parse($this->status_date)->format('Y-m-d'),
       'cancel_reason' => $this->cancel_reason,
       'before_closed' => $this->before_closed,
+      'supplier_products' => $this->whenLoaded('supplier_products')
     ];
   }
 }

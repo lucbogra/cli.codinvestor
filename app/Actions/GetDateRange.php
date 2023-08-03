@@ -8,11 +8,7 @@ class GetDateRange
 {
   public function action()
   {
-    $daterange = Request::get('daterange') ?? [Carbon::now()->startOfMonth()->format('Y-m-d'), date('Y-m-d')];
-    if ($daterange[0] == $daterange[1]){
-      $daterange[1] = Carbon::parse($daterange[0])->endOfDay();
-    }
-
+    $daterange = Request::get('daterange') ? [Carbon::parse(Request::get('daterange')[0])->startOfDay(), Carbon::parse(Request::get('daterange')[1])->endOfDay()] : [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()];
     return $daterange;
   }
 }

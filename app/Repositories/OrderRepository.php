@@ -9,6 +9,6 @@ class OrderRepository
 {
   public function history($daterange)
   {
-    return OrderResource::collection(Order::whereBetween('created_at', $daterange)->get())->groupBy('status');
+    return OrderResource::collection(Order::whereBetween('created_at', $daterange)->with(['supplier_products:id,variant_id','supplier_products.variant:id,sku'])->get())->groupBy('status');
   }
 }

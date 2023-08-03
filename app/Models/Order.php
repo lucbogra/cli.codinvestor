@@ -33,6 +33,11 @@ class Order extends Model
     );
   }
 
+  public function supplier_products()
+  {
+    return $this->belongsToMany(SupplierProduct::class, 'orderlines', 'order_id', 'variant_id')->withPivot('qty', 'note');
+  }
+
   public function scopeOrderByCreatedAt($query)
   {
     $query->orderBy('created_at', 'desc');

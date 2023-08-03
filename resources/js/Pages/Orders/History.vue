@@ -121,6 +121,8 @@ const shortcuts = [
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">sku</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress', 'Returned'].includes(datas[0]?.status)">Ordered products</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress'].includes(datas[0]?.status)">Commission</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'cancelled'">Cancel Reason</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'closed'">Reason for closing</th>
                         <!-- <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">website</th> -->
@@ -139,6 +141,11 @@ const shortcuts = [
                           {{ row.country + '-' + row.customer_city }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
                           {{ row.product_name }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress', 'Returned'].includes(datas[0]?.status)">
+                          <span class="mr-2" v-for="(line, index) in row.supplier_products" :key="index"> {{ line.variant.sku+' ('+line.pivot.qty+')' }} </span>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" v-if="['confirmed', 'Delivered', 'Delivery In Progress'].includes(datas[0]?.status)">
+                          {{ row.commission }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" v-if="row.status == 'cancelled'">
                           {{ row.cancel_reason }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500" v-if="row.status == 'closed'">
