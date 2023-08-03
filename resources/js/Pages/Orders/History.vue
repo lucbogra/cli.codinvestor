@@ -121,6 +121,7 @@ const shortcuts = [
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">sku</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'no answer'">Attempts</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress', 'Returned'].includes(datas[0]?.status)">Ordered products</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress'].includes(datas[0]?.status)">Commission</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" v-if="datas[0]?.status == 'cancelled'">Cancel Reason</th>
@@ -141,6 +142,8 @@ const shortcuts = [
                           {{ row.country + '-' + row.customer_city }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
                           {{ row.product_name }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-orange-600"  v-if="datas[0]?.status == 'no answer'">
+                          {{ row.tries }}</td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900" v-if="['confirmed', 'Delivered', 'Delivery In Progress', 'Returned'].includes(datas[0]?.status)">
                           <span class="mr-2" v-for="(line, index) in row.supplier_products" :key="index"> {{ line.variant.sku+' ('+line.pivot.qty+')' }} </span>
                         </td>
