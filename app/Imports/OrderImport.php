@@ -57,7 +57,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'product_id'                 => isset($product) ? $product->id : null,
           'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
           'source'                     => 'importation',
-          'pricings'                   => $this->pricings($product, $row['price'])
+          'pricings'                   => $product->pivot->pricings
       ]);
   }
 

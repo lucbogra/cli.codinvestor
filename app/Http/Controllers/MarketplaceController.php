@@ -135,6 +135,7 @@ class MarketplaceController extends Controller
       'affiliate_commission' => $request->commission['commission'],
       'affiliate_price' => $request->commission['price'],
       'commission_type' => $request->commission['commission_type'],
+      'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
     ]);
 
     return back()->with('success', 'Product updated.');
