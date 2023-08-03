@@ -65,6 +65,7 @@ class MarketplaceController extends Controller
 
   public function request(Request $request)
   {
+    // dd($request->commission);
     $request->validate([
       'product_id' => ['required', 'exists:products,id'],
       'commission.price' => ['required', 'numeric'],
@@ -76,6 +77,7 @@ class MarketplaceController extends Controller
         'affiliate_commission' => $request->commission['commission'],
         'affiliate_price' => $request->commission['price'],
         'commission_type' => $request->commission['commission_type'],
+        'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
       ]);
       Notification::send($this->investor->manager, new ProductRequestNotification($request->product_id, $this->investor));
       return back();
