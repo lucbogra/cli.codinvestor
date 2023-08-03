@@ -148,14 +148,30 @@ const filterDuplicateData = (arr) => {
                         <h3>Cross</h3>
                         <el-table :data="props.row.occurences.filter((el) => el.show == true)" >
                           <el-table-column label="Pieces" prop="pieces" />
-                          <el-table-column label="Prix" prop="price" />
-                          <el-table-column label="Commission" prop="commission" />
+                          <el-table-column label="Price">
+                            <template #default="scope">
+                              {{ scope.row.price+' SAR' }}
+                            </template>
+                          </el-table-column>
+                          <el-table-column label="Commission">
+                            <template #default="scope">
+                              {{ '$'+scope.row.commission }}
+                            </template>
+                          </el-table-column>
                         </el-table>
                       </div>
                     </template>
                   </el-table-column>
-                  <el-table-column label="Price" prop="price" />
-                  <el-table-column label="Commission" prop="commission" />
+                  <el-table-column label="Price" prop="price">
+                    <template #default="scope">
+                      {{ scope.row.price+' SAR' }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="Commission" prop="commission">
+                    <template #default="scope">
+                      {{ '$'+scope.row.commission }}
+                    </template>
+                  </el-table-column>
                   <el-table-column label="Type" prop="commission_type" />
                 </el-table>
 

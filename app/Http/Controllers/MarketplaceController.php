@@ -100,12 +100,11 @@ class MarketplaceController extends Controller
           'slug' => $product->slug,
           'categories' => $product->categories->pluck('name'),
           'price' => $product->pivot->affiliate_price,
-          'commission' => $product->pivot->affiliate_commission,
+          'min_commission' => collect(json_decode($product->pivot->pricings))->min('commission'),
+          'max_commission' => collect(json_decode($product->pivot->pricings))->max('commission'),
           'link' => $product->pivot->link,
           'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
-          'test' => $product->pivot->commission_type == 'fix'
-          ? collect(json_decode($product->pricings)->pricings)->where('price',  $product->pivot->affiliate_price)->flatten()->all()
-          : collect(json_decode($product->pricings)->pricings)->where('commission_type', $product->pivot->commission_type)->where('price',  $product->pivot->affiliate_price)->pluck('occurences')->flatten()->all()
+          'commission_type' => $product->pivot->commission_type
         ];
       });
 
