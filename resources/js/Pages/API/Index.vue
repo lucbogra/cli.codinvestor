@@ -16,8 +16,8 @@ defineProps({
                 API Tokens
             </h2>
         </template>
-
-        <div>
+        <template #content>
+            <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <ApiTokenManager
                     :tokens="tokens"
@@ -25,6 +25,9 @@ defineProps({
                     :default-permissions="defaultPermissions"
                 />
             </div>
-        </div>
+          </div>
+        </template>
+
+
     </AppLayout>
 </template>

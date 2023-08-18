@@ -75,6 +75,12 @@ const showNotifications = ref(false)
             <Link :href="route('user.profile')"
               :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile
             </Link>
+
+            </MenuItem>
+            <MenuItem v-slot="{ active }">
+              <Link v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')"
+              :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">API Token
+            </Link>
             </MenuItem>
             <!-- <MenuItem v-slot="{ active }">
             <Link :href="route('user.profile')"
