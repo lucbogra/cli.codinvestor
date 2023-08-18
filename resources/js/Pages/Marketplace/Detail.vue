@@ -124,24 +124,22 @@ const filterDuplicateData = (arr) => {
               </div> -->
 
               <div class="mt-4">
-                <!-- <table class="min-w-full divide-y divide-gray-300">
+                <table class="min-w-full divide-y divide-gray-300">
                   <thead>
                     <tr>
                       <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Price</th>
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Commission</th>
-                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
                     <tr v-for="price in product.pricings">
                       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ price.price+' SAR' }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ '$'+price.commission }}</td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ price.commission_type }}</td>
                     </tr>
                   </tbody>
-                </table> -->
+                </table>
 
-                <el-table :data="product.pricings" style="width: 100%" >
+                <!-- <el-table :data="product.pricings" style="width: 100%" >
                   <el-table-column type="expand">
                     <template #default="props">
                       <div class="px-2" v-if="props.row.occurences">
@@ -173,7 +171,7 @@ const filterDuplicateData = (arr) => {
                     </template>
                   </el-table-column>
                   <el-table-column label="Type" prop="commission_type" />
-                </el-table>
+                </el-table> -->
 
               </div>
 
