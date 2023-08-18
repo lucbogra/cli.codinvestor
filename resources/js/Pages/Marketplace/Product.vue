@@ -87,7 +87,7 @@ const copyToClipboard = async (value) =>{
                   <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Price</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission</th>
-                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission Type</th>
+                  <!-- <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission Type</th> -->
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Categories</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Link</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Actions</th>
@@ -111,10 +111,10 @@ const copyToClipboard = async (value) =>{
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.price+' SAR' }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.min_commission+'- $'+product.max_commission}}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')">
+                  <!-- <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')">
                       <span v-if="product.commission_type">{{ product.commission_type }}</span>
                      <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button>
-                  </td>
+                  </td> -->
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
                     <div class="flex flex-wrap items-left">
                       <span v-for="category in product.categories"
@@ -128,7 +128,8 @@ const copyToClipboard = async (value) =>{
                   </td>
 
                   <td class="whitespace-nowrap py-4 pl-6 pr-4 text-sm font-medium text-gray-500">
-                    <button class="btn-primary" @click="getLinkModal(product)">Edit</button>
+                    <button v-if="product.commission_type" class="btn-primary" @click="getLinkModal(product)">Edit</button>
+                    <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button>
                   </td>
 
                 </tr>
@@ -156,7 +157,7 @@ const copyToClipboard = async (value) =>{
           </div>
           <div class="mt-4">
             <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
-              <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission+' '+item.commission_type }}</option>
+              <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
             </select>
             <JetInputError :message="form.errors.commission" class="mt-2" />
           </div>
