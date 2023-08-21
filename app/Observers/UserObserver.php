@@ -14,13 +14,16 @@ class UserObserver
      */
     public function created(User $user)
     {
-      $user->registration_steps = json_encode(
-        [
-          'current' => 2,
-          'finished' => false
-        ]
-      );
-      $user->save();
+      if($user->hasRole('Investor')){
+         $user->registration_steps = json_encode(
+          [
+            'current' => 2,
+            'finished' => false
+          ]
+        );
+        $user->save();
+      };
+
     }
 
     /**
