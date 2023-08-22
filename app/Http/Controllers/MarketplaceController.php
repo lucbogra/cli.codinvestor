@@ -106,7 +106,8 @@ class MarketplaceController extends Controller
           'max_commission' => collect(json_decode($product->pivot->pricings))->max('commission'),
           'link' => $product->pivot->link,
           'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
-          'commission_type' => $product->pivot->commission_type
+          'commission_type' => $product->pivot->commission_type,
+          'affiliate_commission' => $product->pivot->affiliate_commission
         ];
       });
 

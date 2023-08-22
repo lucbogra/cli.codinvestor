@@ -110,7 +110,7 @@ const copyToClipboard = async (value) =>{
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.price+' SAR' }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.min_commission+'- $'+product.max_commission}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.affiliate_commission }}</td>
                   <!-- <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')">
                       <span v-if="product.commission_type">{{ product.commission_type }}</span>
                      <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button>
