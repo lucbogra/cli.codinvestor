@@ -18,9 +18,12 @@ class ProductResource extends JsonResource
       return [
         'id' => $this->id,
         'sku' => $this->sku,
-        'original_price' => $this->original_price,
-        'recommanded_price' => $this->recommanded_price,
-        'commission' => $this->commission,
+        'pivot' => $this->whenPivotLoaded('productables', function(){
+          return [
+            'commission' => $this->pivot->affiliate_commission,
+            'affiliate_price' => $this->pivot->affiliate_price
+          ];
+        }),
         'link' => $this->link,
         'name' => $this->name,
         'active' => $this->active,
@@ -29,7 +32,6 @@ class ProductResource extends JsonResource
         'photo' => $this->photo,
         'categories' => $categories,
         'gallery' => $this->gallery,
-        'link' => $this->link,
         'qty' => $this->variants->sum('qty'),
         'alias' => $this->alias,
         'website_link' => $this->website_link,

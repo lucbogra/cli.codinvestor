@@ -1,7 +1,7 @@
 <script setup>
 import ApiTokenManager from '@/Pages/API/Partials/ApiTokenManager.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-
+import Layout from '../Setting/Layout.vue'
 defineProps({
     tokens: Array,
     availablePermissions: Array,
@@ -10,14 +10,12 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="API Tokens">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                API Tokens
+    <Layout title="Integrations Tokens">
+       
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Api Tokens
             </h2>
-        </template>
-        <template #content>
-            <div>
+        <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <ApiTokenManager
                     :tokens="tokens"
@@ -26,8 +24,7 @@ defineProps({
                 />
             </div>
           </div>
-        </template>
 
 
-    </AppLayout>
+    </Layout>
 </template>

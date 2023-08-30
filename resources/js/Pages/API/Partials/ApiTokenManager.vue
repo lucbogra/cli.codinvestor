@@ -14,7 +14,8 @@ import JetInputError from '@/Jetstream/InputError.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
 import JetSectionBorder from '@/Jetstream/SectionBorder.vue';
-
+import axios from 'axios';
+import {DocumentDuplicateIcon} from '@heroicons/vue/outline'
 const props = defineProps({
     tokens: Array,
     availablePermissions: Array,
@@ -35,15 +36,22 @@ const deleteApiTokenForm = useForm();
 const displayingToken = ref(false);
 const managingPermissionsFor = ref(null);
 const apiTokenBeingDeleted = ref(null);
-
+const privateToken=ref(null)
 const createApiToken = () => {
-    createApiTokenForm.post(route('api-tokens.store'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            displayingToken.value = true;
+    axios.get(route('user.token.integration',createApiTokenForm.name))
+    .then((response)=>{
+        privateToken.value=response.data
+        displayingToken.value = true;
             createApiTokenForm.reset();
-        },
-    });
+    })
+
+    // createApiTokenForm.post(route('api-tokens.store'), {
+    //     preserveScroll: true,
+    //     onSuccess: () => {
+    //         displayingToken.value = true;
+    //         createApiTokenForm.reset();
+    //     }
+    // });
 };
 
 const manageApiTokenPermissions = (token) => {
@@ -70,6 +78,11 @@ const deleteApiToken = () => {
         onSuccess: () => (apiTokenBeingDeleted.value = null),
     });
 };
+
+const copyAPiToken=(value)=>
+{
+    navigator.clipboard.writeText(value)
+}
 </script>
 
 <template>
@@ -77,7 +90,7 @@ const deleteApiToken = () => {
         <!-- Generate API Token -->
         <JetFormSection @submitted="createApiToken">
             <template #title>
-                Create API Token
+                Create API Token 
             </template>
 
             <template #description>
@@ -94,12 +107,13 @@ const deleteApiToken = () => {
                         type="text"
                         class="mt-1 block w-full"
                         autofocus
+                        required
                     />
                     <JetInputError :message="createApiTokenForm.errors.name" class="mt-2" />
                 </div>
 
                 <!-- Token Permissions -->
-                <div v-if="availablePermissions.length > 0" class="col-span-6">
+                <!-- <div v-if="availablePermissions.length > 0" class="col-span-6">
                     <JetLabel for="permissions" value="Permissions" />
 
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -110,7 +124,7 @@ const deleteApiToken = () => {
                             </label>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </template>
 
             <template #actions>
@@ -151,13 +165,13 @@ const deleteApiToken = () => {
                                         Last used {{ token.last_used_ago }}
                                     </div>
 
-                                    <button
+                                    <!-- <button
                                         v-if="availablePermissions.length > 0"
                                         class="cursor-pointer ml-6 text-sm text-gray-400 underline"
                                         @click="manageApiTokenPermissions(token)"
                                     >
                                         Permissions
-                                    </button>
+                                    </button> -->
 
                                     <button class="cursor-pointer ml-6 text-sm text-red-500" @click="confirmApiTokenDeletion(token)">
                                         Delete
@@ -180,10 +194,12 @@ const deleteApiToken = () => {
                 <div>
                     Please copy your new API token. For your security, it won't be shown again.
                 </div>
-
-                <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
-                    {{ $page.props.jetstream.flash.token }}
+                <div v-if="privateToken!=null" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
+                    {{ privateToken }} 
                 </div>
+                <!-- <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500">
+                    {{ $page.props.jetstream.flash.token }}
+                </div> -->
             </template>
 
             <template #footer>
@@ -194,7 +210,7 @@ const deleteApiToken = () => {
         </JetDialogModal>
 
         <!-- API Token Permissions Modal -->
-        <JetDialogModal :show="managingPermissionsFor != null" @close="managingPermissionsFor = null">
+        <!-- <JetDialogModal :show="managingPermissionsFor != null" @close="managingPermissionsFor = null">
             <template #title>
                 API Token Permissions
             </template>
@@ -224,7 +240,7 @@ const deleteApiToken = () => {
                     Save
                 </JetButton>
             </template>
-        </JetDialogModal>
+        </JetDialogModal> -->
 
         <!-- Delete Token Confirmation Modal -->
         <JetConfirmationModal :show="apiTokenBeingDeleted != null" @close="apiTokenBeingDeleted = null">

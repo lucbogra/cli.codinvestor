@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\OneClickVid\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FundingController;
@@ -28,7 +29,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Symfony\Component\Routing\RequestContext;
-
+use App\Http\Controllers\GoGetLead\IntegrationController as GoGetLeadController;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -188,7 +189,7 @@ Route::middleware([
     Route::post('messages',[ContactController::class,'messages'])->name('messages.add');
     Route::get('getMessages',[ContactController::class,'getmessages'])->name('messages.get');
     Route::put('sendMessage/{id}',[ContactController::class,'sendMessage'])->name('messages.send');
-
+    Route::get('user/token/{name}',[GoGetLeadController::class,'createToken'])->name('user.token.integration');
 });
 
 

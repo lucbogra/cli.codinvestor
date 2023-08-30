@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { BellIcon, KeyIcon, OfficeBuildingIcon, ShoppingBagIcon, UserCircleIcon, UserGroupIcon } from '@heroicons/vue/outline'
+import { BellIcon, KeyIcon, OfficeBuildingIcon, ShoppingBagIcon, UserCircleIcon, UserGroupIcon,QrcodeIcon } from '@heroicons/vue/outline'
 import { usePage } from '@inertiajs/inertia-vue3'
 import { Link } from '@inertiajs/inertia-vue3'
 import { ChevronLeftIcon } from '@heroicons/vue/solid'
@@ -22,6 +22,7 @@ const isUrl = (...urls) => {
 const navigation = [
   { name: 'Account', href: route('user.profile'), icon: UserCircleIcon, current: isUrl('user/profile'), show : true },
   { name: 'Members', href: route('members.index'), icon: UserGroupIcon, current: isUrl('user/members'), show : auth.value.hasRole('Investor') },
+  { name: 'Api Tokens', href: route('api-tokens.index'), icon: QrcodeIcon, current: isUrl('user/api-tokens'), show : auth.value.hasRole('Investor') },
   { name: 'Company', href: route('users.company'), icon: OfficeBuildingIcon, current: isUrl('user/company'), show : auth.value.hasRole('Investor') },
   { name: 'Tickets', href: route('user.create.ticket'), icon: KeyIcon, current: isUrl('user/create-ticket'), show : true },
   { name: 'Notifications', href: route('user.notifications'), icon: BellIcon, current: isUrl('user/notifications'), show : true },
