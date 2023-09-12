@@ -25,10 +25,10 @@ class IntegrationController extends Controller
     {
         $tokenInfo = PersonalAccessToken::findToken($request->bearerToken());
         if ($tokenInfo) {
-            $user = Auth::user();
-
+            $user=User::find($tokenInfo->tokenable_id);
             if ($user) return response(['statut' => 'success', 'message' => 'Connected Successfully']);
             else return response(['statut' => 'error', 'message' => 'Connection Failed']);
+
         } else return response(['statut' => 'error', 'message' => 'Connection Failed']);
     }
 

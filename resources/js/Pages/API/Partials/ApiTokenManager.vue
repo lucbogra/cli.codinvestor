@@ -15,7 +15,9 @@ import JetLabel from '@/Jetstream/Label.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
 import JetSectionBorder from '@/Jetstream/SectionBorder.vue';
 import axios from 'axios';
-import {DocumentDuplicateIcon} from '@heroicons/vue/outline'
+import {DocumentDuplicateIcon} from '@heroicons/vue/outline';
+// import { router } from '@inertiajs/vue3'
+
 const props = defineProps({
     tokens: Array,
     availablePermissions: Array,
@@ -54,6 +56,14 @@ const createApiToken = () => {
     // });
 };
 
+const toggleDisplayTokenModal=()=>{
+    displayingToken.value=!displayingToken.value
+
+    // if(displayingToken.value==false){
+    //     console.log('entered') 
+    //      router.visit(route('api-tokens.index'))
+    //     }
+}
 const manageApiTokenPermissions = (token) => {
     updateApiTokenForm.permissions = token.abilities;
     managingPermissionsFor.value = token;
@@ -185,7 +195,7 @@ const copyAPiToken=(value)=>
         </div>
 
         <!-- Token Value Modal -->
-        <JetDialogModal :show="displayingToken" @close="displayingToken = false">
+        <JetDialogModal :show="displayingToken" @close="toggleDisplayTokenModal">
             <template #title>
                 API Token
             </template>
@@ -203,7 +213,7 @@ const copyAPiToken=(value)=>
             </template>
 
             <template #footer>
-                <JetSecondaryButton @click="displayingToken = false">
+                <JetSecondaryButton @click="toggleDisplayTokenModal">
                     Close
                 </JetSecondaryButton>
             </template>
