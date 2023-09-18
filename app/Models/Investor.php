@@ -120,4 +120,9 @@ class Investor extends Model
       return $this->hasMany(IntegrationPayment::class, 'integrable_id')->where('status','!=','paid');
     }
 
+    public function orders()
+    {
+      return $this->morphMany(Order::class,'orderable');
+    }
+
 }

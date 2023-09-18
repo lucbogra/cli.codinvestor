@@ -10,37 +10,63 @@ use Illuminate\Support\Facades\Session;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
 class IntegrationController extends Controller
 {
-    public function createToken(Request $request,$name)
+    public function createToken(Request $request, $name)
     {
-        return  $request->user()->createToken($name,['read'])->plainTextToken;
+        return  $request->user()->createToken($name, ['read'])->plainTextToken;
     }
 
     public function checkToken(Request $request)
     {
         $tokenInfo = PersonalAccessToken::findToken($request->bearerToken());
         if ($tokenInfo) {
-            $user=User::find($tokenInfo->tokenable_id);
+            $user = User::find($tokenInfo->tokenable_id);
             if ($user) return response(['statut' => 'success', 'message' => 'Connected Successfully']);
             else return response(['statut' => 'error', 'message' => 'Connection Failed']);
-
         } else return response(['statut' => 'error', 'message' => 'Connection Failed']);
     }
 
-    public function UserTokenProducts(Request $request)
+    public function UserTokenProducts()
     {
-        $user=Auth::user();
-        return response()->json(ProductResource::collection($user->investor->accessProducts));
+        return response()->json(ProductResource::collection(Auth::user()->investor->accessProducts));
     }
 
     public function ProductDetails($id)
-    {   
-        
-        return response()->json(new ProductResource(Product::find($id)));
+    {
+        return response()->json(new ProductResource(Auth::user()->investor->accessProducts->where('id',$id)->first()));
+    }
+
+    public function CreateOrders(Request $request)
+    {
+        $investor = Auth::user()->investor;
+        $product = $investor->accessProducts()->whereJsonContains('alias', $request->product)->first();
+
+        $order = $investor->orders()->create([
+            'customer_name'              => $request->customer_name,
+            'phone'                      => $request->customer_phone,
+            'customer_city'              => $request->customer_city,
+            'product_name'               => $product->sku,
+            'country'                    => $request->customer_country,
+            'website'                    => $request->website,
+            'price'                      => $request->price,
+            'status'                     => 'pending',
+            'product_link'               => isset($product) ? (isset($product->pivot->link) != null ? $product->pivot->link : $product->website_link) : null,
+            'product_id'                 => isset($product) ? $product->id : null,
+            'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
+            'source'                     => 'GoGetLead',
+            'pricings'                   => $product->pivot->pricings
+        ]);
+
+        if ($order) {
+            return response()->json('success');
+        } else {
+            return response()->json('error');
+        }
     }
 }
