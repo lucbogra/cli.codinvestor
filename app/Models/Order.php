@@ -13,10 +13,10 @@ class Order extends Model
     use HasFactory;
     protected $guarded = [];
 
-  public function investor()
-  {
-    return $this->belongsTo(Investor::class);
-  }
+    public function orderable()
+    {
+      return $this->morphTo();
+    }
 
   public function statusDate(): Attribute
   {

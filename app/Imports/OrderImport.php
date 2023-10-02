@@ -57,7 +57,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'product_id'                 => isset($product) ? $product->id : null,
           'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
           'source'                     => 'importation',
-          'pricings'                   => $product->pivot->pricings
+          // 'pricings'                   => $product->pivot->pricings
       ]);
   }
 
@@ -91,13 +91,13 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
       return Investor::find($this->investor_id)->accessProducts()->whereJsonContains('alias', $sku)->first();
     }
 
-    public function pricings($product, $price)
-    {
-      $pricings = $product->pivot->commission_type == 'fix'
-      ? collect(json_decode($product->pricings)->pricings)->where('price', $product->pivot->affiliate_price)->where('commission_type', 'fix')->flatten()->all()
-      : collect(json_decode($product->pricings)->pricings)->where('commission_type', $product->pivot->commission_type)->where('price', $product->pivot->affiliate_price)->pluck('occurences')->flatten()->all();
-      return $pricings ? json_encode($pricings) : null ;
-    }
+    // public function pricings($product, $price)
+    // {
+    //   $pricings = $product->pivot->commission_type == 'fix'
+    //   ? collect(json_decode($product->pricings)->pricings)->where('price', $product->pivot->affiliate_price)->where('commission_type', 'fix')->flatten()->all()
+    //   : collect(json_decode($product->pricings)->pricings)->where('commission_type', $product->pivot->commission_type)->where('price', $product->pivot->affiliate_price)->pluck('occurences')->flatten()->all();
+    //   return $pricings ? json_encode($pricings) : null ;
+    // }
 
     public function setStatus($product, $price)
     {
