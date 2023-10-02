@@ -44,9 +44,10 @@ class IntegrationController extends Controller
 
     public function CreateOrders(Request $request)
     {
+        
         $investor = Auth::user()->investor;
-        $product = $investor->accessProducts()->whereJsonContains('alias', $request->product)->first();
-
+        $product = $investor->accessProducts->where('id',$request->product)->first();
+        
         $order = $investor->orders()->create([
             'customer_name'              => $request->customer_name,
             'phone'                      => $request->customer_phone,
@@ -60,7 +61,8 @@ class IntegrationController extends Controller
             'product_id'                 => isset($product) ? $product->id : null,
             'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
             'source'                     => 'GoGetLead',
-            'pricings'                   => $product->pivot->pricings
+            'pricings'                   => $product->pivot->pricings,
+            'foreign_order_id'           =>$request->order_id
         ]);
 
         if ($order) {
