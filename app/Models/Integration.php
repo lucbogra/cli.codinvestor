@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\IntegrationScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,10 @@ class Integration extends Model
       return $this->whereDoesntHaveMorph('investors', $investormorphclass, function ($query) use ($investor_id) {
       $query->where('integrable_id','!=', $investor_id);
       })->get();
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new IntegrationScope());
     }
 }
