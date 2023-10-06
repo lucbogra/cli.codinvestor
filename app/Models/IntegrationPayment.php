@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\IntegrationScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +35,11 @@ class IntegrationPayment extends Model
     public function integrationInvoices()
     {
         return $this->belongsToMany(Invoice::class, 'integration_payment_invoice','integration_payment_id','invoice_id');
+    }
+
+    public function integration()
+    {
+        return $this->belongsTo(Integration::class,'integration_id')->withoutGlobalScope(IntegrationScope::class);
     }
 
 }

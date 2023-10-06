@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\IntegrationScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -103,7 +104,7 @@ class Investor extends Model
     public function integrations()
     {
       return $this->morphToMany(Integration::class, 'integrable')
-                  ->withPivot('created_at', 'connected');
+                  ->withPivot('created_at', 'connected','id');
     }
 
     public function integrationsPayment()

@@ -94,11 +94,15 @@ import { computed } from 'vue';
                 <template #head>
                   <tr>
                     <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Integration Name</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Description</th>
                     <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Paid amount</th>
                   </tr>
                 </template>
                 <template #body="{ rows }">
                   <tr v-for="(payment, index) in rows" :key="payment.id" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                      {{ payment.integration.name }}
+                   </td>
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                       {{ payment.payment_info }}
                    </td>
@@ -106,6 +110,7 @@ import { computed } from 'vue';
                   </tr>
                   <tr>
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900"> Total</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900"> </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-bold text-gray-900">- {{ integration_amount+' USD' }}</td>
                   </tr>
                   <tr v-if="rows.length === 0">
@@ -130,11 +135,11 @@ import { computed } from 'vue';
                     <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> + {{ products_amount+' USD' }}</td>
                   </tr>
 
-                  <tr v-if="invoice.integrationPayment.length !== 0" v-for="payment in invoice.integrationPayment" :key="payment.id" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
+                  <tr v-if="invoice.integrationPayment.length !== 0"  class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                      {{ payment.payment_info }}
+                      Your Purchase
                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> - {{ payment.pivot.amount_paid+' USD' }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> - {{ integration_amount+' USD' }}</td>
                   </tr>
 
                   <tr v-if="invoice.fundings.length !== 0" v-for="funding in invoice.fundings" :key="funding.slug" class="border-t border-gray-200 bg-white hover:bg-gray-100 focus-within:bg-gray-100">
