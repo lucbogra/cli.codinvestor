@@ -31,7 +31,7 @@ class InvoiceController extends Controller
   }
 
   public function download(Invoice $invoice){
-    $invoice = json_encode(new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings')));
+    $invoice = json_encode(new InvoiceResource($invoice->loadMissing('invoiceable', 'fundings','integrationPayments')));
     $invoice = json_decode( $invoice);
     $pdf = PDF::loadView('Invoice', compact('invoice'));
     return $pdf->download('invoice#-'.$invoice->slug.'.pdf');

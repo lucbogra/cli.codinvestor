@@ -622,7 +622,27 @@
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 @endforeach
-
+                                                                                                @if ( collect($invoice?->integrationPayment)->sum('amount') !== 0 )
+                                                                                                @foreach ($invoice?->integrationPayment as $payment)
+                                                                                                <tr>
+                                                                                                    <td style="padding:5px 10px 5px 0;Margin:0"
+                                                                                                        width="80%"
+                                                                                                        align="left">
+                                                                                                        <p
+                                                                                                            style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
+                                                                                                            {{$payment->payment_info}}</p>
+                                                                                                    </td>
+                                                                                                    <td style="padding:5px 0;Margin:0"
+                                                                                                        width="20%"
+                                                                                                        align="left">
+                                                                                                        <p
+                                                                                                            style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
+                                                                                                            -{{$payment->amount}}
+                                                                                                        </p>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                @endforeach
+                                                                                                @endif
                                                                                             </table>
                                                                                         </td>
                                                                                     </tr>
@@ -669,7 +689,7 @@
                                                                                                         style="padding:0;Margin:0">
                                                                                                         <h4
                                                                                                             style="Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px">
-                                                                                                            {{ collect($invoice->products)->sum('amount')}} USD
+                                                                                                            {{ collect($invoice->products)->sum('amount') - collect($invoice?->integrationPayment)->sum('amount')}} USD
                                                                                                         </h4>
                                                                                                     </td>
                                                                                                 </tr>

@@ -13,20 +13,20 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 use Exception;
-
+use App\Http\Traits\Crypt;
 class IntegrationRepository
 {
-
+    use Crypt;
     public function checkToken($request)
     {
         $tokenInfo = PersonalAccessToken::findToken($request->bearerToken());
         if ($tokenInfo) {
             $user = User::find($tokenInfo->tokenable_id);
             if ($user) {
-                $this->checkGogetLeadIntegration();
-                return response(['statut' => 'success', 'message' => 'Connected Successfully'], 200);
-            } else return response(['statut' => 'error', 'message' => 'Connection Failed'], 401);
-        } else return response(['statut' => 'error', 'message' => 'Connection Failed'], 401);
+                $this->checkGogetLeadIntegration($user);
+                return response()->json(['statut' => 'success', 'message' => 'Connected Successfully','investor'=>$this->encrypt_decrypt('encrypt',$user->investor->id,'Investor Id')],200);
+            } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
+        } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
     }
 
     public function userTokenProducts()
@@ -70,9 +70,9 @@ class IntegrationRepository
         }
     }
 
-    public function checkGogetLeadIntegration()
+    public function checkGogetLeadIntegration($user)
     {
-        $investor = Auth::user()->investor;
+        $investor = $user->investor;
         $myintegration = $investor->integrations()->withoutGlobalScope(IntegrationScope::class)->where('name', 'GoGetLead')->first();
 
         if ($myintegration) {
@@ -90,14 +90,15 @@ class IntegrationRepository
 
     public function transferBalance($request)
     {
-        $integrable = $this->checkGogetLeadIntegration();
-        if ($this->currentBalance(Auth::user()->investor) >= $request->transfer_value) {
+        $user=Auth::user();
+        $integrable = $this->checkGogetLeadIntegration($user);
+        if ($this->currentBalance($user->investor) >= $request->transfer_value) {
             $integrationPayment = IntegrationPayment::create([
                 'integration_id' => $integrable->integration_id,
                 'integrable_id' => $request->user()->investor->id,
                 'integrable_type' => $request->user()->investor->getMorphClass(),
                 'amount' => $request->transfer_value,
-                'payment_info' => 'Transfer ' . $request->transfer_value . '$ from CodInvestor to GOGetLead',
+                'payment_info' => 'Transfer of ' . $request->transfer_value . '$ from CodInvestor to GOGetLead',
                 'status' => 'pending'
             ]);
 
