@@ -53,6 +53,11 @@ class CreateNewUser implements CreatesNewUsers
         'name' => $input['first_name'].' '.$input['last_name'],
         'email' => $input['email'],
         'password' => Hash::make($input['password']),
+        'registration_steps'  => json_encode(
+          [
+            'current' => 2,
+            'finished' => false
+          ])
       ]);
 
       $investor = $user->investor()->create([

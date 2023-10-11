@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
       JsonResource::withoutWrapping();
 
-      User::observe(UserObserver::class);
+      // User::observe(UserObserver::class);
 
       Inertia::share('auth.user', function() {
           return [
