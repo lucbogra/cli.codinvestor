@@ -8,7 +8,7 @@ const steps = [
   { name: 'Step 1', description : 'registration', href: '#', status: 'complete' },
   { name: 'Step 2', description : 'personnal informations', href: '#', status: 'complete' },
   { name: 'Step 3', description : 'survey', href: '#', status: 'complete' },
-  { name: 'Step 4', description : 'document uploading', href: '#', status: 'complete' },
+  // { name: 'Step 4', description : 'document uploading', href: '#', status: 'complete' },
   { name: 'Step 5', description : 'verification', href: '#', status: 'current' },
 ]
 

@@ -67,7 +67,8 @@ Route::get('/', function () {
         return Inertia::render('Auth/ThirdStepRegister');
       }elseif($step !== null && $step == 4)
       {
-        return Inertia::render('Auth/FourthStepRegister');
+        // return Inertia::render('Auth/FourthStepRegister');
+        return Inertia::render('Auth/FirfthStepRegister');
       }elseif($step !== null && $step ==  5)
       {
         return Inertia::render('Auth/FirfthStepRegister');
