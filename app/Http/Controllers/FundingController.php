@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\FundingRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use \App\Models\Notification;
 
 class FundingController extends Controller
 {
@@ -17,5 +18,11 @@ class FundingController extends Controller
     return Inertia::render('Fundings/Index', [
       'fundings' => $this->fundingRepository->all()
     ]);
+  }
+
+  public function readWalletNotification(Notification $notification)
+  {
+    $notification->markAsRead();
+    return back();
   }
 }

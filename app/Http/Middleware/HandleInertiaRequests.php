@@ -102,6 +102,17 @@ class HandleInertiaRequests extends Middleware
         ];
       }) : null;
 
+      $balance = $request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\WalletNotification')->map(function ($notification){
+        return[
+          'id' => $notification->id,
+          'text' => $notification->data['message'],
+          'created_at' => Carbon::parse($notification->created_at)->diffForHumans(),
+          'link' => route('fundings.readWalletNotification',$notification),
+          'icon' => 'fa-solid fa-money-bill-transfer text-success',
+          'type' => 'New Funding'
+        ];
+      }) : null;
+
     return array_merge(parent::share($request), [
       'flash' => function () use ($request) {
         return [
@@ -124,7 +135,7 @@ class HandleInertiaRequests extends Middleware
           },
           'logo' => WebSetting::first()->logo_white,
           'logo_color' => WebSetting::first()->logo,
-          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers)->union($messages) : null,
+          'notifications' => $request->user() ? $requests_notifications->union($invoices_notifications)->union($paid_notifications)->union($new_fundings)->union($answers)->union($messages)->union($balance) : null,
           'message_notifications' => $request->user() ? $request->user()->messages()->wherePivot('read_at', null)->count() : null,
           'alerts_messages' => $request->user() ?  $request->user()->messages()->wherePivot('read_at', null)->wherePivot('alert', true)->get() : null,
           'not_readed_responses'=>$request->user() ? $request->user()->unreadNotifications->where('type', 'App\Notifications\CreativeNotification')->count() : null

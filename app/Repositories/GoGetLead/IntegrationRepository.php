@@ -3,6 +3,7 @@
 
 namespace App\Repositories\GoGetLead;
 
+use App\Actions\UpdateWallet;
 use App\Http\Resources\ProductResource;
 use App\Models\Integrable;
 use App\Models\Integration;
@@ -10,10 +11,13 @@ use App\Models\IntegrationPayment;
 use App\Models\Investor;
 use App\Models\Scopes\IntegrationScope;
 use App\Models\User;
+use App\Notifications\WalletNotification;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 use Exception;
 use App\Http\Traits\Crypt;
+use Illuminate\Support\Facades\Notification;
+
 class IntegrationRepository
 {
     use Crypt;
@@ -24,7 +28,7 @@ class IntegrationRepository
             $user = User::find($tokenInfo->tokenable_id);
             if ($user) {
                 $this->checkGogetLeadIntegration($user);
-                return response()->json(['statut' => 'success', 'message' => 'Connected Successfully','investor'=>$this->encrypt_decrypt('encrypt',$user->investor->id,'Investor Id')],200);
+                return response()->json(['statut' => 'success', 'message' => 'Connected Successfully', 'investor' => $this->encrypt_decrypt('encrypt', $user->investor->id, 'Investor Id')], 200);
             } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
         } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
     }
@@ -64,7 +68,6 @@ class IntegrationRepository
 
             if ($order) return response()->json(['message' => 'Transferred'], 200);
             else  return response()->json(['message' => 'Not Transferred'], 403);
-
         } catch (Exception $e) {
             return response()->json(['message' => 'Not Transferred'], 403);
         }
@@ -90,7 +93,7 @@ class IntegrationRepository
 
     public function transferBalance($request)
     {
-        $user=Auth::user();
+        $user = Auth::user();
         $integrable = $this->checkGogetLeadIntegration($user);
         if ($this->currentBalance($user->investor) >= $request->transfer_value) {
             $integrationPayment = IntegrationPayment::create([
@@ -102,20 +105,16 @@ class IntegrationRepository
                 'status' => 'pending'
             ]);
 
-            if ($integrationPayment) return response()->json(['message' => 'success'], 200);
-            else return response()->json(['message' => 'error'], 403);
+            if ($integrationPayment) {
+                (new UpdateWallet())->execute($user->investor);
+                $user->notify(new WalletNotification('Transfer of ' . $request->transfer_value . '$ from CodInvestor to GOGetLead'));
+                return response()->json(['message' => 'success'], 200);
+            } else return response()->json(['message' => 'error'], 403);
         } else return response()->json(['message' => 'error'], 403);
     }
 
     public function currentBalance($investor)
     {
-        $investorPayments = $investor->pendingIntegrationPayment()->get();
-        $pendingTotal = 0;
-
-        foreach ($investorPayments as $payment) {
-            $pendingTotal += $payment->amount;
-        }
-
-        return $investor?->wallet > $pendingTotal ? $investor?->wallet - $pendingTotal : 0;
+        return $investor?->wallet;
     }
 }

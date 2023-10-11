@@ -30,29 +30,31 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Symfony\Component\Routing\RequestContext;
 use App\Http\Controllers\GoGetLead\IntegrationController as GoGetLeadController;
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-  })->name('index');
+  return Inertia::render('Welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+    'laravelVersion' => Application::VERSION,
+    'phpVersion' => PHP_VERSION,
+  ]);
+})->name('index');
 
-  Route::get('email/change', function() {
-    return Inertia::render('Auth/EditEmail');
-  } )->middleware('auth')->name('user.get_email');
-  Route::put('email/change', [RegisterStepsController::class, 'change_email'])->middleware('auth')->name('user.change_email');
+Route::get('email/change', function () {
+  return Inertia::render('Auth/EditEmail');
+})->middleware('auth')->name('user.get_email');
+Route::put('email/change', [RegisterStepsController::class, 'change_email'])->middleware('auth')->name('user.change_email');
 
-  // Route::get('/register/steps/second_step', function() {
-  //   return Inertia::render('Auth/SecondStepRegister');
-  // })->middleware('auth:sanctum', 'verified')->name('user.register.second_step');
+// Route::get('/register/steps/second_step', function() {
+//   return Inertia::render('Auth/SecondStepRegister');
+// })->middleware('auth:sanctum', 'verified')->name('user.register.second_step');
 
-  Route::put('/register/steps/second_step', [RegisterStepsController::class, 'second_step'])->middleware('auth')->name('user.register.store_second_step');
+Route::put('/register/steps/second_step', [RegisterStepsController::class, 'second_step'])->middleware('auth')->name('user.register.store_second_step');
 
-  // Route::get('/register/steps/third_step', function() {
-  //   return Inertia::render('Auth/ThirdStepRegister');
-  // })->middleware('auth:sanctum', 'verified')->name('user.register.third_step');
+// Route::get('/register/steps/third_step', function() {
+//   return Inertia::render('Auth/ThirdStepRegister');
+// })->middleware('auth:sanctum', 'verified')->name('user.register.third_step');
+
 
   Route::get('/register/steps', function(Request $request) {
     $step = $request->user() ? $request->user()->step : null;
@@ -76,28 +78,28 @@ Route::get('/', function () {
     else return redirect(RouteServiceProvider::HOME);
   })->middleware('auth:sanctum', 'verified')->name('user.register.steps');
 
-  Route::put('register/steps/third_step', [RegisterStepsController::class, 'third_step'])->middleware('auth')->name('user.register.store_third_step');
-  Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'fourth_step'])->middleware('auth')->name('user.register.store_fourth_step');
+Route::put('register/steps/third_step', [RegisterStepsController::class, 'third_step'])->middleware('auth')->name('user.register.store_third_step');
+Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'fourth_step'])->middleware('auth')->name('user.register.store_fourth_step');
 
-  Route::middleware([
-      'auth:sanctum',
-      config('jetstream.auth_session'),
-      'verified',
-      'register_steps',
-  ])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
-    Route::get('/dashboard/performance', [DashboardController::class, 'performance'])->name('dashboard.performance')->middleware('auth');
-    Route::get('/dashboard/month_reports', [DashboardController::class, 'month_reports'])->name('dashboard.month_reports');
-  });
+Route::middleware([
+  'auth:sanctum',
+  config('jetstream.auth_session'),
+  'verified',
+  'register_steps',
+])->group(function () {
+  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+  Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
+  Route::get('/dashboard/performance', [DashboardController::class, 'performance'])->name('dashboard.performance')->middleware('auth');
+  Route::get('/dashboard/month_reports', [DashboardController::class, 'month_reports'])->name('dashboard.month_reports');
+});
 // }});
 
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-    'register_steps',
-    ])->group(function () {
+  'auth:sanctum',
+  config('jetstream.auth_session'),
+  'verified',
+  'register_steps',
+])->group(function () {
   Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
   Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
   Route::get('marketplace-detail/{product}', [MarketplaceController::class, 'detail'])->name('marketplace.detail');
@@ -105,7 +107,7 @@ Route::middleware([
   Route::get('products', [MarketplaceController::class, 'products'])->name('marketplace.products');
   Route::get('products/request/{notification}/{slug}', [MarketplaceController::class, 'product_read_notification'])->name('marketplace.products.read_notification');
   Route::put('products/update', [MarketplaceController::class, 'update'])->name('products.update')->middleware('permission:affiliate set product link');
-  Route::get('user/products',[MarketplaceController::class,'getuserProduct'])->name('products.user');
+  Route::get('user/products', [MarketplaceController::class, 'getuserProduct'])->name('products.user');
 
   Route::prefix('orders')->middleware('permission:affiliate import order')->group(function () {
     Route::get('index', [OrderController::class, 'orders'])->name('orders.index');
@@ -147,11 +149,11 @@ Route::middleware([
     Route::post('store', [IntegrationController::class, 'store'])->name('integrations.store');
     Route::get('oneclickVid', [IntegrationController::class, 'oneclickvid'])->name('oneclickvid.index');
     Route::get('oneclickVid/{id}', [IntegrationController::class, 'request_show'])->name('oneclickvid.show');
-    Route::put('Logout/{integration}',[IntegrationController::class,'logout'])->name('oneclickvid.logout');
-
+    Route::put('Logout/{integration}', [IntegrationController::class, 'logout'])->name('oneclickvid.logout');
   });
 
   Route::get('/fundings', [FundingController::class, 'index'])->name('fundings.index')->middleware('role:Investor');
+  Route::get('/wallet-notification/{notification}', [FundingController::class, 'readWalletNotification'])->name('fundings.readWalletNotification');
 
   Route::prefix('user')->middleware('role:Investor')->group(function () {
     Route::get('company', [UserController::class, 'company'])->name('users.company');
@@ -159,17 +161,16 @@ Route::middleware([
     Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
     Route::resource('/members', MemberController::class);
   });
-    Route::prefix('user')->middleware('role:Investor')->group( function() {
-      Route::get('company', [UserController::class, 'company'])->name('users.company');
-      Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
-      Route::resource('/members', MemberController::class);
-      Route::get('/notifications', [HomeController::class, 'all_notifications'])->name('user.notifications');
-      Route::put('/notifications/{id}/close', [HomeController::class, 'close_notification'])->name('user.notifications.close');
-      Route::put('/notifications/close', [HomeController::class, 'close_all_notifications'])->name('user.all_notifications.close');
-      Route::get('/seller/get_started', [HomeController::class, 'seller'])->name('seller.index');
-      Route::put('/seller/get_started', [HomeController::class, 'seller_get_started'])->name('seller.get_started');
-
-    });
+  Route::prefix('user')->middleware('role:Investor')->group(function () {
+    Route::get('company', [UserController::class, 'company'])->name('users.company');
+    Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
+    Route::resource('/members', MemberController::class);
+    Route::get('/notifications', [HomeController::class, 'all_notifications'])->name('user.notifications');
+    Route::put('/notifications/{id}/close', [HomeController::class, 'close_notification'])->name('user.notifications.close');
+    Route::put('/notifications/close', [HomeController::class, 'close_all_notifications'])->name('user.all_notifications.close');
+    Route::get('/seller/get_started', [HomeController::class, 'seller'])->name('seller.index');
+    Route::put('/seller/get_started', [HomeController::class, 'seller_get_started'])->name('seller.get_started');
+  });
 
   Route::prefix('messages')->middleware('role:Investor')->group(function () {
     Route::get('/index', [MessageController::class, 'index'])->name('messages.index');
@@ -182,16 +183,16 @@ Route::middleware([
   Route::put('rate/{id}', [RequestController::class, 'rate'])->name('rate.creative');
 
   //packs
-  Route::get('getpacks',[PackController::class,'getpacks'])->name('getpacks');
-  Route::post('subscribePack',[PackController::class,'subscribe'])->name('subscribe');
+  Route::get('getpacks', [PackController::class, 'getpacks'])->name('getpacks');
+  Route::post('subscribePack', [PackController::class, 'subscribe'])->name('subscribe');
 
-    Route::get('/', [HomeController::class, 'help'])->name('help');
-    Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');
-    Route::post('messages',[ContactController::class,'messages'])->name('messages.add');
-    Route::get('getMessages',[ContactController::class,'getmessages'])->name('messages.get');
-    Route::put('sendMessage/{id}',[ContactController::class,'sendMessage'])->name('messages.send');
-    Route::get('user/token/{name}',[GoGetLeadController::class,'createToken'])->name('user.token.integration');
+  Route::get('/', [HomeController::class, 'help'])->name('help');
+  Route::get('tutos', [HomeController::class, 'tutos'])->name('tutos');
+  Route::post('messages', [ContactController::class, 'messages'])->name('messages.add');
+  Route::get('getMessages', [ContactController::class, 'getmessages'])->name('messages.get');
+  Route::put('sendMessage/{id}', [ContactController::class, 'sendMessage'])->name('messages.send');
+  Route::get('user/token/{name}', [GoGetLeadController::class, 'createToken'])->name('user.token.integration');
 });
 
 
-  Route::get('getCreativesNotification/{id}/{investor_id}/{message}/{route}', [RequestController::class, 'getCreativesNotification']);
+Route::get('getCreativesNotification/{id}/{investor_id}/{message}/{route}', [RequestController::class, 'getCreativesNotification']);
