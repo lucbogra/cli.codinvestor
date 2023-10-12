@@ -63,7 +63,8 @@ Route::put('/register/steps/second_step', [RegisterStepsController::class, 'seco
     }
     if($step !== null && $step ==  2)
       {
-        return Inertia::render('Auth/SecondStepRegister');
+        // return Inertia::render('Auth/SecondStepRegister');
+        return Inertia::render('Auth/ThirdStepRegister');
       }elseif($step !== null && $step == 3)
       {
         return Inertia::render('Auth/ThirdStepRegister');
@@ -76,7 +77,7 @@ Route::put('/register/steps/second_step', [RegisterStepsController::class, 'seco
         return Inertia::render('Auth/FirfthStepRegister');
       }
     else return redirect(RouteServiceProvider::HOME);
-  })->middleware('auth:sanctum', 'verified')->name('user.register.steps');
+  })->middleware('auth:sanctum')->name('user.register.steps');
 
 Route::put('register/steps/third_step', [RegisterStepsController::class, 'third_step'])->middleware('auth')->name('user.register.store_third_step');
 Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'fourth_step'])->middleware('auth')->name('user.register.store_fourth_step');
@@ -84,7 +85,7 @@ Route::post('register/steps/fourth_step', [RegisterStepsController::class, 'four
 Route::middleware([
   'auth:sanctum',
   config('jetstream.auth_session'),
-  'verified',
+  // 'verified',
   'register_steps',
 ])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -97,7 +98,7 @@ Route::middleware([
 Route::middleware([
   'auth:sanctum',
   config('jetstream.auth_session'),
-  'verified',
+  // 'verified',
   'register_steps',
 ])->group(function () {
   Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');

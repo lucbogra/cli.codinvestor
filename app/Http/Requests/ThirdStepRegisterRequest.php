@@ -27,8 +27,8 @@ class ThirdStepRegisterRequest extends FormRequest
         'affiliate_experience' => ['required', 'in:yes,no'],
         'working_country' => ['required', 'max:255'],
         'ads_platforms' => ['required', 'array', 'max:255'],
-        'other_networks' => ['required_if:affiliate_experience,yes', 'max:255'],
-        'survey' => ['required', 'max:255']
+        'other_networks' => [ 'max:255'],
+        'survey' => ['max:255']
       ];
     }
 }

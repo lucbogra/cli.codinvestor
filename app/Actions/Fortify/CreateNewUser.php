@@ -43,7 +43,7 @@ class CreateNewUser implements CreatesNewUsers
         'first_name' => ['required', 'string', 'max:255'],
         'last_name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
-        'phone' => ['required', 'numeric'],
+        'phone' => ['required'],
         'password' => $this->passwordRules(),
         'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         'recaptcha_token' => ['required', new Recaptcha($input['recaptcha_token'])],
