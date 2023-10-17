@@ -26,7 +26,7 @@ class MarketplaceController extends Controller
   public function index(Request $request)
   {
     $products = Product::active()->filter(request()->only('search', 'country', 'category'))
-      ->orderBy('created_at', 'DESC')
+      ->orderBy('recommanded_price', 'ASC')
       ->paginate(request()->paginate ?? 12)
       ->withQueryString()
       ->through(function ($product) {
