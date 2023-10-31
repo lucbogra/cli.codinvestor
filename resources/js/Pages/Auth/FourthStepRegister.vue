@@ -47,7 +47,7 @@ const steps = [
 </script>
 
 <template>
-  <Head title="Register" />
+  <Head title="Register fourth step" />
 
   <JetAuthenticationCard>
     <template #logo>

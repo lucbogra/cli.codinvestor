@@ -9,6 +9,7 @@ import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import { CheckIcon } from '@heroicons/vue/solid';
 import { onMounted } from 'vue';
+import { google } from './Google';
 
 const form = useForm({
   first_name: '',
@@ -31,6 +32,8 @@ const submit = () => {
       });
   });
 
+  google.value.track()
+
 };
 
 const steps = [
@@ -46,6 +49,8 @@ onMounted(() => {
       "https://www.google.com/recaptcha/api.js?render=6LeoF7AmAAAAAIRWR-EXHzP8l_J7We_b29lpzQFi"
     );
     document.head.appendChild(recaptchaScript);
+
+
 })
 </script>
 <template>

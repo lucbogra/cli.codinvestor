@@ -21,6 +21,8 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11391713151"></script>
         @inertia
     </body>
 </html>
