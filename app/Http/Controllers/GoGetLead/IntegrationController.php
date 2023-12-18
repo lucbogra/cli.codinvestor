@@ -63,4 +63,13 @@ class IntegrationController extends Controller
     {
         return $this->integrationrepository->transferBalance($request);
     }
+
+    public function getRole(Request $request)
+    {
+        return [
+            'roles'=>$request->user()->getRoleNames()->toArray(),
+            'investor'=>$request->user()->investor?->id,
+            'seller'=>$request->user()->seller?->id
+        ];
+    }
 }

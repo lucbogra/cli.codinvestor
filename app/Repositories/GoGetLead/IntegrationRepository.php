@@ -27,15 +27,44 @@ class IntegrationRepository
         if ($tokenInfo) {
             $user = User::find($tokenInfo->tokenable_id);
             if ($user) {
-                $this->checkGogetLeadIntegration($user);
-                return response()->json(['statut' => 'success', 'message' => 'Connected Successfully', 'investor' => $this->encrypt_decrypt('encrypt', $user->investor->id, 'Investor Id')], 200);
+                $roles=$user->getRoleNames()->toArray();
+                if(in_array('Investor',$roles)) $this->checkGogetLeadIntegration($user);
+                return response()->json([
+                    'statut' => 'success', 
+                    'message' => 'Connected Successfully', 
+                    'investor' => $this->encrypt_decrypt('encrypt', in_array('Investor',$roles) ? $user->investor->id :null , 'Investor Id'),
+                    'seller' => $this->encrypt_decrypt('encrypt', in_array('Seller',$roles) ? $user->seller->id :null , 'Seller Id'),
+                    'roles'=>$roles
+                ], 200);
             } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
         } else return response()->json(['statut' => 'error', 'message' => 'Connection Failed'], 403);
     }
 
     public function userTokenProducts()
     {
-        return response()->json(ProductResource::collection(Auth::user()->investor->accessProducts), 200);
+        $roles=request()->user()->getRoleNames()->toArray();
+
+        if((in_array('Investor',$roles) && in_array('Seller',$roles))) {
+            return response()->json([
+                'seller_products'=>ProductResource::collection(request()->user()->seller->products),
+                'investor_products'=>ProductResource::collection(request()->user()->investor->accessProducts)
+            ],200);
+        }
+        else if(in_array('Investor',$roles))
+        {
+            return response()->json([
+                'seller_products'=>[],
+                'investor_products'=>ProductResource::collection(request()->user()->investor->accessProducts)
+            ],200);
+        }
+        else if(in_array('Seller',$roles)){
+            return response()->json([
+                'seller_products'=>ProductResource::collection(request()->user()->seller->products),
+                'investor_products'=>[]
+            ],200);
+        }
+        
+        // return response()->json(ProductResource::collection(Auth::user()->investor->accessProducts), 200);
     }
 
     public function productDetails($id)

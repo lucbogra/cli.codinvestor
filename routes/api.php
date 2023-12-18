@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('getrole',[IntegrationController::class,'getRole']);
     Route::get('getUserTokenProducts',[IntegrationController::class,'userTokenProducts']);
     Route::get('get_balance',[IntegrationController::class,'getBalance']);
     Route::get('getProductsDetails/{id}',[IntegrationController::class,'productDetails']);

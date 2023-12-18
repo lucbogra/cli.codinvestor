@@ -21,7 +21,8 @@ class ProductResource extends JsonResource
         'pivot' => $this->whenPivotLoaded('productables', function(){
           return [
             'commission' => $this->pivot->affiliate_commission,
-            'affiliate_price' => $this->pivot->affiliate_price
+            'affiliate_price' => $this->pivot->affiliate_price,
+            'type' => $this->pivot->productable_type=="App\Models\Investor" ? "Investor Product" : "Seller Product",
           ];
         }),
         'link' => $this->link,
@@ -36,7 +37,7 @@ class ProductResource extends JsonResource
         'alias' => $this->alias,
         'website_link' => $this->website_link,
         'deleted_at' => $this->deleted_at,
-        'exist_request' => $this->investor($request->user()->investor->id)->select('productables.status', 'link')->first(),
+        'exist_request' => $request->user()->investor ?  $this->investor($request->user()->investor->id)->select('productables.status', 'link')->first() : null,
         'countries' => $this->supplier_products()
         ->join('locations', 'supplier_products.location_id', '=', 'locations.id')
         ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
