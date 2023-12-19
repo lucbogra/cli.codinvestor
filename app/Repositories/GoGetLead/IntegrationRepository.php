@@ -63,8 +63,6 @@ class IntegrationRepository
                 'investor_products'=>[]
             ],200);
         }
-        
-        // return response()->json(ProductResource::collection(Auth::user()->investor->accessProducts), 200);
     }
 
     public function productDetails($id)

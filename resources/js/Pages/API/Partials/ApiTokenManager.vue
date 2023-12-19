@@ -15,7 +15,6 @@ import JetLabel from '@/Jetstream/Label.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
 import JetSectionBorder from '@/Jetstream/SectionBorder.vue';
 import axios from 'axios';
-import {DocumentDuplicateIcon} from '@heroicons/vue/outline';
 // import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
@@ -44,8 +43,14 @@ const createApiToken = () => {
     .then((response)=>{
         privateToken.value=response.data
         displayingToken.value = true;
-            createApiTokenForm.reset();
-    })
+        createApiTokenForm.reset();
+        createApiTokenForm.errors.name=""
+    }).catch((error) => {
+    if(error.response.status==422)
+    {
+        createApiTokenForm.errors.name='Name is required'
+    }
+})
 
     // createApiTokenForm.post(route('api-tokens.store'), {
     //     preserveScroll: true,

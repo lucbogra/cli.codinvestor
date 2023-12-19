@@ -31,7 +31,8 @@ class IntegrationController extends Controller
     }
     public function createToken(Request $request, $name)
     {
-        return  $request->user()->createToken($name, ['read'])->plainTextToken;
+        if(empty(str_replace(' ', '', $name))) return response()->json(null,422);
+        else return response()->json($request->user()->createToken($name, ['read'])->plainTextToken);
     }
 
     public function checkToken(Request $request)
