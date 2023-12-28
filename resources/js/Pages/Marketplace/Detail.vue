@@ -52,6 +52,8 @@ const filterDuplicateData = (arr) => {
   });
 }
 
+const filteredcountries = props.product.countries.filter((el) => el.country ==  'Saudi Arabia')
+
 </script>
 
 <template>
@@ -210,7 +212,7 @@ const filterDuplicateData = (arr) => {
                     </h3>
                     <DisclosurePanel as="div" class="prose prose-sm pb-6">
                       <ul role="list">
-                        <li v-for="(country, index) in product.countries" :key="index">{{ country.country+ ' : '+ country.qty + ' pieces' }}</li>
+                        <li v-for="(country, index) in filteredcountries" :key="index">{{ country.country+ ' : '+ country.qty + ' pieces' }}</li>
                       </ul>
                     </DisclosurePanel>
                   </Disclosure>
