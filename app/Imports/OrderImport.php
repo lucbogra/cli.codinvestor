@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Jobs\ImportOrdersjob;
 use App\Models\Investor;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Utils\Helper;
@@ -69,7 +70,7 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
         'customer phone'     =>  ['required', 'max:255'],
         'product sku'   =>  ['required', 'max:255', Rule::in( Investor::find($this->investor_id)->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2) )],
         'website'   =>  ['required', 'max:255'],
-        'country'   =>  ['nullable', 'max:255'],
+        'country'   =>  ['nullable', 'max:255', Rule::In(Location::select('country')->get()->pluck('country')) ],
         'price'     =>  ['nullable', 'max:255'],
       ];
     }
