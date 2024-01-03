@@ -25,21 +25,26 @@ class MarketplaceController extends Controller
 
   public function index(Request $request)
   {
-    $products = Product::active()->filter(request()->only('search', 'country', 'category'))
+    // $products = Product::active()->filter(request()->only('search', 'country', 'category'))
+    //   ->orderBy('recommanded_price', 'ASC')
+    //   ->paginate(request()->paginate ?? 12)
+    //   ->withQueryString()
+    //   ->through(function ($product) {
+    //     return [
+    //       'slug' => $product->slug,
+    //       'name' => $product->name,
+    //       'photo' => $product->photo,
+    //       'recommanded_price' => $product->recommanded_price,
+    //       'commission' => $product->commission,
+    //     ];
+    // });
+
+    $products = ProductResource::collection( Product::active()->filter(request()->only('search', 'country', 'category'))
       ->orderBy('recommanded_price', 'ASC')
       ->paginate(request()->paginate ?? 12)
-      ->withQueryString()
-      ->through(function ($product) {
-        return [
-          'slug' => $product->slug,
-          'name' => $product->name,
-          'photo' => $product->photo,
-          'recommanded_price' => $product->recommanded_price,
-          'commission' => $product->commission,
-        ];
-    });
+      )->withQueryString();
 
-    $countries = Location::select('id','country')->get();
+    $countries = Location::select('id','country')->where('country', 'Saudi Arabia')->get();
     $categories = Category::select('id', 'name')->get();
 
     return Inertia::render('Marketplace/Index', [

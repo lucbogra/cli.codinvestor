@@ -45,6 +45,8 @@ class Product extends Model
             ->join('supplier_products', 'variants.id', '=', 'supplier_products.variant_id')
             ->join('locations', 'locations.id', '=', 'supplier_products.location_id')
             ->where('locations.country', $country)
+            ->where('supplier_products.deleted_at', null)
+            ->where('variants.deleted_at', null)
             ->select('products.id')->distinct()
         );
     })->when($filters['category'] ?? null, function ($query, $category_id) {

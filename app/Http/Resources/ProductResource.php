@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'type' => $this->pivot->productable_type=="App\Models\Investor" ? "Investor Product" : "Seller Product",
           ];
         }),
+        'recommanded_price' => $this->recommanded_price,
         'link' => $this->link,
         'name' => $this->name,
         'active' => $this->active,
@@ -39,9 +40,9 @@ class ProductResource extends JsonResource
         'deleted_at' => $this->deleted_at,
         'exist_request' => $request->user()->investor ?  $this->investor($request->user()->investor->id)->select('productables.status', 'link')->first() : null,
         'countries' => $this->supplier_products()
-        ->join('locations', 'supplier_products.location_id', '=', 'locations.id')
-        ->selectRaw('locations.country as country, sum(supplier_products.qty) as qty')
-        ->groupBy('country', 'laravel_through_key')->get(),
+          ->join('locations', 'supplier_products.location_id', '=', 'locations.id')
+          ->selectRaw('locations.country as country, locations.flag_code as flag_code, sum(supplier_products.qty) as qty')
+          ->groupBy('country', 'laravel_through_key', 'flag_code')->get(),
         'pricings' => $this->pricings ? json_decode($this->pricings)->pricings : [],
       ];
     }

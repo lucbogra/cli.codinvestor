@@ -13,6 +13,10 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 import { auth } from '../Permissions';
+import "/node_modules/flag-icons/css/flag-icons.min.css";
+import Pagination from './Pagination.vue';
+import JetInput from '@/Jetstream/Input.vue';
+
 const props = defineProps({
   filters: Object,
   products: Array,
@@ -21,7 +25,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-  paginate : props.filters.paginate,
+  paginate : props.filters.paginate ?? 12,
   search : props.filters.search,
   country : props.filters.country ?? null,
   category : props.filters.category ?? null,
@@ -50,95 +54,44 @@ const open = ref(false)
     <template #content>
 
 
-      <TransitionRoot as="template" :show="open">
-      <Dialog as="div" class="relative z-40 sm:hidden" @close="open = false">
-        <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
-          <div class="fixed inset-0 bg-black bg-opacity-25" />
-        </TransitionChild>
-
-        <div class="fixed inset-0 z-40 flex">
-          <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="translate-x-full">
-            <DialogPanel class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-              <div class="flex items-center justify-between px-4">
-                <h2 class="text-lg font-medium text-gray-900">Filters</h2>
-                <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400" @click="open = false">
-                  <span class="sr-only">Close menu</span>
-                  <XCircleIcon class="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-              <!-- Filters -->
-              <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                <ul class="flex flex-wrap ">
-                  <li class="m-1">
-                    <select class="a ou rounded-full" v-model="form.country">
-                      <option disabled :value="null">Filter by country</option>
-                      <option value="all">All countries</option>
-                      <option v-for="country in countries" :key="country.id" :value="country.country">{{ country.country }}</option>
-                    </select>
-                  </li>
-                  <li class="m-1">
-                    <select v-model="form.category" class="a ou rounded-full">
-                      <option disabled :value="null">Filter by category</option>
-                      <option value="all">All categories</option>
-                      <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
-                      </option>
-                    </select>
-                  </li>
-                  <li class="m-1">
-                    <input class="s ou me xq border-1 border-slate-200 rounded-full w-full m-0 p-1" type="search"
-                      placeholder="Search product…" v-model="form.search" />
-                  </li>
-                  <li>
-                    <select v-model="form.paginate" id="country" class="a ou rounded-full">
-                      <option disabled selected>Showing</option>
-                      <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
-                    </select>
-                  </li>
-                </ul>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </Dialog>
-    </TransitionRoot>
-
-      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md pb-4 xl:mx-4 ">
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-white rounded pb-4 xl:mx-10 ">
 
         <!-- Filters -->
-        <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8 hidden sm:block">
-          <ul class="flex flex-wrap ">
-            <li class="m-1">
-              <select class="a ou rounded-full" v-model="form.country">
+        <div class="max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8 hidden sm:block">
+          <ul class="flex flex-wrap gap-x-4 gap-y-2">
+            <li class="">
+              <select class="block w-full rounded-full border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" v-model="form.country">
                 <option disabled :value="null">Filter by country</option>
                 <option value="all">All countries</option>
                 <option v-for="country in countries" :key="country.id" :value="country.country">{{ country.country }}</option>
               </select>
             </li>
-            <li class="m-1">
-              <select v-model="form.category" class="a ou rounded-full">
+            <li class="">
+              <select v-model="form.category" class="block w-full rounded-full border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
                 <option disabled :value="null">Filter by category</option>
                 <option value="all">All categories</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
                 </option>
               </select>
             </li>
-            <li class="m-1">
-              <input class="s ou me xq border-1 border-slate-200 rounded-full w-full m-0 p-1" type="search"
-                placeholder="Search product…" v-model="form.search" />
-            </li>
-            <li>
-              <select v-model="form.paginate" id="country" class="a ou rounded-full">
+            <li class="">
+              <select v-model="form.paginate" id="country" class="block w-full border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm rounded-full">
                 <option disabled>Showing</option>
-                <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ pagination }}</option>
+                <option v-for="(pagination, index) in paginations" :key="index"  :value="pagination">{{ "Showing "+pagination }}</option>
               </select>
             </li>
+            <li class="">
+              <JetInput class="block w-full rounded-full"  type="search"
+                placeholder="Search product…" v-model="form.search" />
+            </li>
+
           </ul>
         </div>
 
         <button type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden" @click="open = true">Filters</button>
 
-        <div>
-          <div class="mx-auto max-w-2xl py-4 px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+
+          <div class="mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-8xl lg:px-8">
             <h2 class="sr-only">Products</h2>
             <div class="text-sm text-slate-500 mb-2" v-if="products?.data">{{ products.data.length }} {{
               (products.data.length > 1) ?
@@ -184,18 +137,28 @@ const open = ref(false)
                 <div class="aspect-h-4 aspect-w-3 bg-gray-200 sm:aspect-none group-hover:opacity-75 sm:h-96">
                   <img :src="product.photo" :alt="product.name" class="h-full w-full object-cover object-center sm:h-full sm:w-full" />
                 </div>
-                <div class="flex flex-1 flex-col space-y-2 p-4">
-                  <h3 class="text-sm font-medium text-gray-900">
-                    <a :href="route('marketplace.detail', product.slug)">
-                      <span aria-hidden="true" class="absolute inset-0" />
-                      {{ product.name }}
-                    </a>
-                  </h3>
-                  <div class="flex flex-1 flex-col justify-end" v-if="auth.hasRole('Investor')">
-                    <p class="text-sm text-gray-900">{{ 'starts from '+ product.recommanded_price+' SAR' }}</p>
-                    <p class="text-base font-medium text-orange-600">{{ 'Commission : up to $'+product.commission }}</p>
+                <div class="flex justify-between">
+                   <div class="flex flex-1 flex-col space-y-2 p-4">
+                    <h3 class="text-sm font-medium text-gray-900">
+                      <a :href="route('marketplace.detail', product.slug)">
+                        <span aria-hidden="true" class="absolute inset-0" />
+                        {{ product.name }}
+                      </a>
+                    </h3>
+                    <div class="flex flex-1 flex-col justify-end" v-if="auth.hasRole('Investor')">
+                      <p class="text-sm text-gray-900">{{ 'starts from '+ product.recommanded_price+' SAR' }}</p>
+                      <p class="text-base font-medium text-orange-600">{{ 'Commission : up to $'+product.commission }}</p>
+                    </div>
+                    <div v-for="(item, index) in product.countries" :key="index">
+                      <span v-if="item.country == 'Saudi Arabia'" :class="['fi fi-'+item.flag_code, 'mr-2']"></span>
+                    </div>
                   </div>
+
+                  <!-- <div class="">
+                    <span v-for="(item, index) in product.countries" :key="index" :class="['fi fi-'+item.flag_code]"></span>
+                  </div> -->
                 </div>
+
               </div>
             </div>
 
@@ -209,32 +172,9 @@ const open = ref(false)
               </div>
             </div>
           </div>
-        </div>
-        <!-- Pagination -->
-        <div class="rk">
-          <div class="flex ak ja jc jd">
-            <nav class="ri _y _f" role="navigation" aria-label="Navigation"
-              v-if="products.next_page_url || products.prev_page_url">
-              <ul class="flex justify-center">
-                <li class="ml-3 first--ml-0">
-                  <Link :href="products.prev_page_url"
-                    class="btn bg-white border-slate-200 yf af hover--border-slate-300 text-indigo-500">&lt;-
-                    Previous</Link>
-                </li>
-                <li class="ml-3 first--ml-0">
-                  <Link :href="products.next_page_url"
-                    class="btn bg-white border-slate-200 hover--border-slate-300 text-indigo-500">Next -&gt;
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-            <div class="text-sm text-slate-500 gn qe">
-              Showing <span class="gp g_">{{ products.per_page }}</span> to <span class="gp g_">{{ products.to
-              }}</span> of <span class="gp g_">{{ products.total }}</span> results
-            </div>
-          </div>
-        </div>
 
+
+        <Pagination :datas="products" />
       </div>
 
     </template>
