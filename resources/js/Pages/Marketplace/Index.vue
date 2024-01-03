@@ -35,7 +35,7 @@ const paginations = [12, 24, 50, 100]
 
 watch(form, (newValue) => {
   if (newValue) {
-    Inertia.get(route('marketplace.index'), pickBy(newValue), { preserveState: true })
+    Inertia.get(route('marketplace.index'), pickBy(newValue), { preserveState: false })
   }
 
 })
