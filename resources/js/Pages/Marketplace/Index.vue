@@ -61,15 +61,13 @@ const open = ref(false)
           <ul class="flex flex-wrap gap-x-4 gap-y-2">
             <li class="">
               <select class="block w-full rounded-full border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" v-model="form.country">
-                <option disabled :value="null">Filter by country</option>
-                <option value="all">All countries</option>
+                <option :value="null">All countries</option>
                 <option v-for="country in countries" :key="country.id" :value="country.country">{{ country.country }}</option>
               </select>
             </li>
             <li class="">
               <select v-model="form.category" class="block w-full rounded-full border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
-                <option disabled :value="null">Filter by category</option>
-                <option value="all">All categories</option>
+                <option :value="null">All categories</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
                 </option>
               </select>

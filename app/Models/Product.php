@@ -38,7 +38,6 @@ class Product extends Model
     $query->when($filters['search'] ?? null, function ($query, $search) {
       $query->where('name', 'like', '%' . $search . '%');
     })->when($filters['country'] ?? null, function ($query, $country) {
-      if ($country != 'all')
         $query->whereIn(
           'id',
           DB::table('products')->join('variants', 'products.id', '=', 'variants.product_id')
@@ -50,7 +49,6 @@ class Product extends Model
             ->select('products.id')->distinct()
         );
     })->when($filters['category'] ?? null, function ($query, $category_id) {
-      if ($category_id != 'all')
         $query->whereIn(
           'id',
           DB::table('products')->join('category_product', 'products.id', '=', 'category_product.product_id')
