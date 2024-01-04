@@ -18,6 +18,7 @@ class ProductResource extends JsonResource
       return [
         'id' => $this->id,
         'sku' => $this->sku,
+        'commission' => $this->commission,
         'pivot' => $this->whenPivotLoaded('productables', function(){
           return [
             'commission' => $this->pivot->affiliate_commission,
