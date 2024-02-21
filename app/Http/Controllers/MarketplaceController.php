@@ -63,8 +63,14 @@ class MarketplaceController extends Controller
 
   public function detail(Product $product)
   {
+    // return collect( collect(json_decode( $product->pricings )->pricings)->where('country', 'Saudi Arabia')->first()->prices)->where('price', 128)->first()?->commission;
+
+    // return in_array(200, $values);
+
+    $locations = Location::select('country', 'currency', 'flag_code')->get();
     return Inertia::render('Marketplace/Detail', [
-      'product' => new ProductResource($product)
+      'product' => new ProductResource($product),
+      'locations' => $locations
     ]);
   }
 
@@ -73,16 +79,16 @@ class MarketplaceController extends Controller
     // dd($request->commission);
     $request->validate([
       'product_id' => ['required', 'exists:products,id'],
-      'commission.price' => ['required', 'numeric'],
-      'commission.commission' => ['required', 'numeric'],
-      'commission' => ['required']
+      // 'commission.price' => ['required', 'numeric'],
+      // 'commission.commission' => ['required', 'numeric'],
+      // 'commission' => ['required']
     ]);
     if ($this->investor) {
       $this->investor->products()->attach($request->product_id, [
-        'affiliate_commission' => $request->commission['commission'],
-        'affiliate_price' => $request->commission['price'],
-        'commission_type' => $request->commission['commission_type'],
-        'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
+        // 'affiliate_commission' => $request->commission['commission'],
+        // 'affiliate_price' => $request->commission['price'],
+        // 'commission_type' => $request->commission['commission_type'],
+        // 'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
       ]);
       Notification::send($this->investor->manager, new ProductRequestNotification($request->product_id, $this->investor));
       return back();
@@ -95,26 +101,7 @@ class MarketplaceController extends Controller
   {
     // dd($this->investor->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2));
     $products = [];
-    $products = $this->investor->accessProducts()
-      ->paginate(10)
-      ->withQueryString()
-      ->through(function ($product){
-        return [
-          'id' => $product->id,
-          'name' => $product->name,
-          'sku' => $product->pivot->status == 'access' ? $product->sku : null,
-          'photo' => $product->photo,
-          'slug' => $product->slug,
-          'categories' => $product->categories->pluck('name'),
-          'price' => $product->pivot->affiliate_price,
-          'min_commission' => collect(json_decode($product->pivot->pricings))->min('commission'),
-          'max_commission' => collect(json_decode($product->pivot->pricings))->max('commission'),
-          'link' => $product->pivot->link,
-          'pricings' => $product->pricings ? json_decode($product->pricings)->pricings : [],
-          'commission_type' => $product->pivot->commission_type,
-          'affiliate_commission' => $product->pivot->affiliate_commission
-        ];
-      });
+      $products = ProductResource::collection( $this->investor->accessProducts()->with('categories:name')->paginate(10) )->withQueryString();
 
     if ($this->investor) {
       return Inertia::render('Marketplace/Product', [
@@ -130,19 +117,19 @@ class MarketplaceController extends Controller
     $request->validate([
       'link' => ['required', 'url'],
       'product_id' => ['required', 'exists:products,id'],
-      'commission.price' => ['required', 'numeric'],
-      'commission.commission' => ['required', 'numeric'],
-      'commission' => ['required']
+      // 'commission.price' => ['required', 'numeric'],
+      // 'commission.commission' => ['required', 'numeric'],
+      // 'commission' => ['required']
     ]);
 
     // dd($request->all());
 
     $this->investor->products()->updateExistingPivot($request->product_id, [
       'link' => $request->link,
-      'affiliate_commission' => $request->commission['commission'],
-      'affiliate_price' => $request->commission['price'],
-      'commission_type' => $request->commission['commission_type'],
-      'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
+      // 'affiliate_commission' => $request->commission['commission'],
+      // 'affiliate_price' => $request->commission['price'],
+      // 'commission_type' => $request->commission['commission_type'],
+      // 'pricings' => $request->commission['commission_type'] == 'fix' ? json_encode([$request->commission]) : json_encode($request->commission['occurences']),
     ]);
 
     return back()->with('success', 'Product updated.');

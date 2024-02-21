@@ -1,50 +1,37 @@
-<script>
+<script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, useForm } from "@inertiajs/inertia-vue3";
 import {
   CollectionIcon,
   ChevronLeftIcon,
   ArrowRightIcon,
 } from "@heroicons/vue/solid";
 import CheckUser from "./CheckUser.vue";
-// import survey from './OneClickVid/Survey.vue'
-export default {
-  components: {
-    AppLayout,
-    Link,
-    CollectionIcon,
-    ChevronLeftIcon,
-    CheckUser,
-    ArrowRightIcon,
-    // survey
-  },
-  props: {
-    integrations: Object,
-    integration_user: Object,
-  },
-  data() {
-    return {
-      show: false,
-      name: "",
-      id_integrat: "",
-      survey_check: true,
-      form: this.$inertia.form({
-        logout: ''
-      })
-    };
-  },
-  methods: {
-    showCheckModal(name, id) {
-      this.id_integrat = id;
-      this.show = !this.show;
-      this.name = name;
-    },
-    logout(integration) {
-      // console.log(integration)
-      this.form.put(route('oneclickvid.logout', integration))
-    }
-  },
-};
+import { ref } from "vue";
+
+const props = defineProps({
+  integrations: Object,
+  integration_user: Object,
+})
+const show = ref(false)
+const name = ref(null)
+const id_integrat = ref(null)
+const survey_check = ref(true)
+
+const form = useForm({
+  logout : ''
+})
+
+const showCheckModal = (integration) => {
+  id_integrat.value = integration.id
+  show.value = !show.value
+  name.value = integration.name
+}
+
+const logout = (integration) => {
+  this.form.put(route('oneclickvid.logout', integration))
+
+}
 </script>
 <template>
   <AppLayout title="Integrations">
@@ -71,9 +58,12 @@ export default {
 
     <template #content>
       <!-- <survey :show="survey_check"></survey> -->
-      <CheckUser :id_integration="id_integrat" :key="name" :name="name" @closemodal="showCheckModal" :show="show">
-      </CheckUser>
-      <div class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
+      <CheckUser :id_integration="id_integrat" :key="name" :name="name" @closemodal="showCheckModal" :show="show"/>
+
+      <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 xl:mx-10 ">
+
+      <!-- <div class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
+
         <div v-for="integration in integration_user"
           class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
           <h3 class="mb-3 text-3xl text-center font-bold text-primary-700">
@@ -82,8 +72,6 @@ export default {
 
           <div class="relative">
             <img class="w-full h-10/12" :src="integration.logo" alt="Logos" />
-            <!--p class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">FREE
-                              </p-->
           </div>
           <p class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
             {{ integration.description }}
@@ -104,6 +92,7 @@ export default {
               class="text-center px-6 py-3 rounded bg-primary-700 text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-primary-600 focus:bg-primary-600 w-6/12">Connect</button>
           </div>
         </div>
+
         <div v-for="not_registered_integration in integrations"
           class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
           <h3 class="mb-3 text-3xl text-center font-bold text-primary-700">
@@ -112,8 +101,6 @@ export default {
 
           <div class="relative">
             <img class="w-full h-10/12" :src="not_registered_integration.logo" alt="Logos" />
-            <!--p class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">FREE
-                          </p-->
           </div>
           <h1 class="line-clamp-3 mt-4 text-primary-800 text-md cursor-pointer">
             {{ not_registered_integration.description }}
@@ -129,6 +116,53 @@ export default {
             </button>
           </div>
         </div>
+      </div> -->
+
+      <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+
+        <div class="w-full mb-4 border-gray-200 bg-white transform hover:scale-105 transition duration-500 border rounded-md" v-for="(item, index) in integrations" :key="index">
+        <div
+            class="rounded-t-md flex justify-center items-center shadow-md lg:w-full 2xl:w-full 2xl:h-44 object-cover px-4">
+            <img class="h-32" :src="item.logo" />
+        </div>
+        <div class="bg-white px-6">
+            <h2 class="text-center text-primary-700 text-2xl font-bold pt-3">
+                {{ item.name }}
+            </h2>
+            <div class="w-5/6 m-auto">
+              <!-- <p class="text-center text-gray-500 pt-3 line-clamp-2 text-sm" v-html="item.description"></p> -->
+            </div>
+            <div v-if="!item.integrated" class="flex justify-center items-center">
+              <div class="grid grid-cols-2 my-4">
+                <a :href="item.external_link" target="_blank" class="btn-primary inline-flex mr-2">Read
+                  More
+                  <ArrowRightIcon class="text-white w-5 ml-2" />
+                </a>
+                <button @click="showCheckModal(item)"
+                  class="btn-primary">
+                  Get Started
+                </button>
+              </div>
+            </div>
+            <div v-else class="flex justify-center items-center my-4">
+              <div v-if="item.connected" class="flex mt-4 content-center space-x-2 lg:mt-6">
+                <button @click="logout(integration)"
+                  class="btn-danger">Logout</button>
+                <Link :href="route('oneclickvid.index')" class="btn-primary">
+                Start Your Service</Link>
+              </div>
+              <div v-else class="flex mt-4 content-center space-x-2 lg:mt-6">
+                <button @click="showCheckModal(item.name, item.id)"
+                  class="btn-primary">
+                  Sign In or Sign Up
+                </button>
+                <button @click="logout(item)"
+                  class="btn-primary">Connect</button>
+              </div>
+            </div>
+        </div>
+    </div>
+      </div>
       </div>
     </template>
   </AppLayout>

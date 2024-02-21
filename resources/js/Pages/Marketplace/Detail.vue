@@ -1,20 +1,22 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref } from 'vue'
-import { Disclosure, DisclosureButton, DisclosurePanel, RadioGroup, RadioGroupLabel, RadioGroupOption, Tab,TabGroup, TabList, TabPanel, TabPanels,} from '@headlessui/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel, Tab,TabGroup, TabList, TabPanel, TabPanels,} from '@headlessui/vue'
 import { ChevronRightIcon, InformationCircleIcon } from '@heroicons/vue/solid'
 import { LinkIcon, MinusIcon, PlusIcon } from '@heroicons/vue/outline'
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import DialogModal from '@/Jetstream/DialogModal.vue'
 import JetLabel from '@/Jetstream/Label.vue';
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 import { auth } from '../Permissions'
 const props = defineProps({
   product: Object,
+  locations: Array
 });
 const form = useForm({
   product_id : props.product.id,
-  commission : ''
+  // commission : ''
 })
 
 const requestModal = ref(false)
@@ -53,6 +55,14 @@ const filterDuplicateData = (arr) => {
 }
 
 const filteredcountries = props.product.countries.filter((el) => el.country ==  'Saudi Arabia')
+
+const getCurrency =  (country) => {
+  return props.locations.find((el) => el.country == country)?.currency
+}
+
+const getFlag = (country) => {
+  return props.locations.find((el) => el.country == country)?.flag_code
+}
 
 </script>
 
@@ -126,17 +136,23 @@ const filteredcountries = props.product.countries.filter((el) => el.country ==  
               </div> -->
 
               <div class="mt-4">
-                <table class="min-w-full divide-y divide-gray-300">
+                <table class="min-w-full divide-y divide-gray-300" v-for="(item, index) in product.pricings" :key="index">
                   <thead>
                     <tr>
-                      <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Price</th>
+                      <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Country</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
                       <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Commission</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
-                    <tr v-for="price in product.pricings">
-                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ price.price+' SAR' }}</td>
+                    <tr v-for="price in item.prices">
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                        <span :class="['fi fi-'+getFlag(item.country), 'mr-2']"></span>
+                        {{ item.country }}
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ price.price+' '+getCurrency(item.country) }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ '$'+price.commission }}</td>
+
                     </tr>
                   </tbody>
                 </table>
@@ -239,13 +255,13 @@ const filteredcountries = props.product.countries.filter((el) => el.country ==  
                             <p>You are about to launch for this product. Your request will be processed before being validated or declined.</p>
                           </div>
                         </div>
-                        <div class="mt-4">
+                        <!-- <div class="mt-4">
                           <JetLabel for="commission" value="select the price at which you want to sell the product" />
                           <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
                             <option v-for="(item, index) in product.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission+' '+item.commission_type }}</option>
                           </select>
                           <JetInputError :message="form.errors.commission" class="mt-2" />
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </template>

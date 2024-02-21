@@ -2,16 +2,8 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { ref, watch } from 'vue';
 import { useForm } from '@inertiajs/inertia-vue3'
-import { Link } from '@inertiajs/inertia-vue3';
 import pickBy from 'lodash/pickBy'
 import { Inertia } from '@inertiajs/inertia';
-import { XCircleIcon } from '@heroicons/vue/outline'
-import {
-  Dialog,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
 import { auth } from '../Permissions';
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import Pagination from './Pagination.vue';
@@ -147,8 +139,8 @@ const open = ref(false)
                       <p class="text-sm text-gray-900">{{ 'starts from '+ product.recommanded_price+' SAR' }}</p>
                       <p class="text-base font-medium text-orange-600">{{ 'Commission : up to $'+product.commission }}</p>
                     </div>
-                    <div v-for="(item, index) in product.countries" :key="index">
-                      <span v-if="item.country == 'Saudi Arabia'" :class="['fi fi-'+item.flag_code, 'mr-2']"></span>
+                    <div>
+                      <span v-for="(item, index) in product.countries" :key="index" :class="['fi fi-'+item.flag_code, 'mr-2']"></span>
                     </div>
                   </div>
 

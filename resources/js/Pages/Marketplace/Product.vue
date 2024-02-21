@@ -9,6 +9,7 @@ import { auth } from '../Permissions';
 import DialogModal from '@/Jetstream/DialogModal.vue'
 import JetInput from '@/Jetstream/Input.vue';
 import JetInputError from '@/Jetstream/InputError.vue';
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 const props = defineProps({
   products: Object,
@@ -31,10 +32,10 @@ const form = useForm({
 const getLinkModal = (product) => {
   showModal.value = true
   form.product = product.name
-  form.link = product.link
+  form.link = product.pivot.link
   form.product_id = product.id
-  form.commission = product.commission
-  form.pricings = product.pricings
+  // form.commission = product.commission
+  // form.pricings = product.pricings
 }
 
 const update = () => {
@@ -85,9 +86,7 @@ const copyToClipboard = async (value) =>{
               <template #head>
                 <tr>
                   <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>
-                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Price</th>
-                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission</th>
-                  <!-- <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900" v-if="auth.hasRole('Investor')" >Commission Type</th> -->
+                  <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Available countries</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Categories</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Link</th>
                   <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Actions</th>
@@ -109,17 +108,14 @@ const copyToClipboard = async (value) =>{
                       </div>
                     </div>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.price+' SAR' }}</td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')"> {{ '$'+product.affiliate_commission }}</td>
-                  <!-- <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500" v-if="auth.hasRole('Investor')">
-                      <span v-if="product.commission_type">{{ product.commission_type }}</span>
-                     <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button>
-                  </td> -->
+                  <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
+                    <span v-for="(item, index) in product.countries" :key="index" :class="['fi fi-'+item.flag_code, 'mr-2']"></span>
+                  </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500">
                     <div class="flex flex-wrap items-left">
                       <span v-for="category in product.categories"
                         class="items-center inline-flex ml-2 bg-primary-500 p-1 rounded-full mb-1 text-sm text-white" tabindex="-1">
-                        {{ category }}
+                        {{ category.name }}
                       </span>
                     </div>
                   </td>
@@ -128,8 +124,11 @@ const copyToClipboard = async (value) =>{
                   </td>
 
                   <td class="whitespace-nowrap py-4 pl-6 pr-4 text-sm font-medium text-gray-500">
-                    <button v-if="product.commission_type" class="btn-primary" @click="getLinkModal(product)">Edit</button>
-                    <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button>
+                    <button class="btn-primary mr-1.5" @click="getLinkModal(product)">Edit</button>
+                    <Link class="btn-white" :href="route('marketplace.detail', product.slug)" >Show</Link>
+
+                    <!-- <button v-if="product.commission_type" class="btn-primary" @click="getLinkModal(product)">Edit</button>
+                    <button v-else class="btn-danger" @click="getLinkModal(product)">Update pricing</button> -->
                   </td>
 
                 </tr>
@@ -149,18 +148,18 @@ const copyToClipboard = async (value) =>{
             Edit Product
         </template>
         <template #content>
-          Set Link for {{ form.product }} and choice your commission (your commission depends on the selling price of the product. So please choose the commission corresponding to the price you use)
-
+          Set Link for {{ form.product }}
+          <!-- and choice your commission (your commission depends on the selling price of the product. So please choose the commission corresponding to the price you use) -->
           <div class="mt-4">
             <textarea class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.link"></textarea>
             <JetInputError :message="form.errors.link" class="mt-2" />
           </div>
-          <div class="mt-4">
+          <!-- <div class="mt-4">
             <select class="w-full border-slate-200 rounded focus:border-primary-400" v-model="form.commission">
               <option v-for="(item, index) in form.pricings" :value="item">{{ 'price: '+item.price+'SAR'+ ', commission: $'+item.commission }}</option>
             </select>
             <JetInputError :message="form.errors.commission" class="mt-2" />
-          </div>
+          </div> -->
         </template>
         <template #footer>
           <div class="flex flex-wrap justify-end fc">

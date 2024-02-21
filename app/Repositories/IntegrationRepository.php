@@ -30,7 +30,22 @@ class IntegrationRepository
         });
 
         return ['userIntegration' => $uniqueIntegrations, 'integration' => $integrations];
+
+        return $integrations = Integration::all()->map(function($integration) use($investor) {
+          return [
+            'id' => $integration->id,
+            'slug' => $integration->slug,
+            'name' => $integration->name,
+            'logo' => $integration->logo,
+            'external_link' => $integration->external_link,
+            'description' => $integration->description,
+            'integrated' => $investor->integrations()->where('integrables.id', $integration->id)->exists(),
+            // 'connected' => $investor->integrations()->where('integrables.id', $integration->id)
+          ];
+        });
     }
+
+
     public function store($request)
     {
 

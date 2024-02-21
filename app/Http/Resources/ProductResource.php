@@ -24,6 +24,7 @@ class ProductResource extends JsonResource
             'commission' => $this->pivot->affiliate_commission,
             'affiliate_price' => $this->pivot->affiliate_price,
             'type' => $this->pivot->productable_type=="App\Models\Investor" ? "Investor Product" : "Seller Product",
+            'link' => $this->pivot->link
           ];
         }),
         'recommanded_price' => $this->recommanded_price,

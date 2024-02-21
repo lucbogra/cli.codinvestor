@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -58,16 +59,18 @@ class OrderController extends Controller
 
   public function import(Request $request)
   {
-    $count = $this->investor->accessProducts()->wherePivot('commission_type', null)->count();
-    if($count > 0){
-      return back()->with('error', 'please update your products pricings !'.$count.' products left');
-    }
+    // $count = $this->investor->accessProducts()->wherePivot('commission_type', null)->count();
+    // if($count > 0){
+    //   return back()->with('error', 'please update your products pricings !'.$count.' products left');
+    // }
 
     $request->validate([
       'file' => ['required', 'mimes:xlsx,xlsm,xlsb,xltx,xls,csv'],
     ]);
 
-    (new OrderImport($this->investor->id))->import($request->file('file'));
+    Excel::import(new OrderImport($this->investor->id), $request->file('file') );
+
+    // (new OrderImport($this->investor->id))->import($request->file('file'));
     return redirect()->route('orders.index')->with('success', 'Orders uploaded successfully.');
 
   }

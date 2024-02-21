@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Http\Requests\OrderImportRequest;
 use App\Jobs\ImportOrdersjob;
 use App\Models\Investor;
 use App\Models\Location;
@@ -10,10 +11,13 @@ use App\Models\Product;
 use App\Models\Utils\Helper;
 use App\Models\WebsiteProduct;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -23,7 +27,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
+class OrderImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 // , WithBatchInserts, WithChunkReading
 {
   use Importable;
@@ -38,12 +42,52 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
     $this->investor_id = $investor_id;
   }
 
-  public function model(array $row)
+  public function collection($rows)
   {
-      // ImportOrdersjob::dispatch($row);
-      $product = $this->products($row['product sku']);
 
-      return new Order([
+    $validator = Validator::make($rows->toArray(), [
+      '*.customer name'      =>  ['required', 'max:255'],
+      '*.customer city'      =>  ['required', 'max:255'],
+      '*.customer phone'     =>  ['required', 'max:255'],
+      '*.product sku'   =>  ['required', 'max:255', Rule::in( Investor::find($this->investor_id)->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2) )],
+      '*.website'   =>  ['required', 'max:255'],
+      '*.country'   =>  ['nullable', 'max:255', Rule::In(Location::select('country')->get()->pluck('country')) ],
+      '*.price' => ['required', 'numeric']
+    ]);
+
+    //  $validator->sometimes('*.price', 'required', function($data, $item) use($validator) {
+
+    //   $product = $this->products($item['product sku']);
+
+    //   $value = $item['price'];
+
+    //   $prices = $product ? collect( collect(json_decode( $product->pricings )->pricings)->where('country', $item['country'] )->first()?->prices)->pluck('price')->toArray() : [];
+
+    //   return in_array($value, $prices);
+    // });
+
+    $validator->validate();
+
+    // because I can't validate prices with validator (I have to retry it next time)
+    foreach($rows->toArray() as $row) {
+      $product =  $this->products($row['product sku']);
+      $prices = $product ? collect( collect(json_decode( $product->pricings )->pricings)->where('country', $row['country'] )->first()?->prices)->pluck('price')->toArray() : [];
+
+      Validator::make($row, [
+        'price' => ['required', Rule::In($prices)]
+      ])->validate();
+    }
+
+      foreach($rows->toArray() as $row)
+      {
+        $product = $this->products($row['product sku']);
+
+        // dd(collect( collect(json_decode( $product->pricings )->pricings)
+        // ?->where('country', $row['country'])
+        // ->first()->prices)->where('price', $row['price'])
+        // ->first()?->commission);
+
+         Order::create([
           'customer_name'              => $row['customer name'],
           'phone'                      => $row['customer phone'],
           'customer_city'              => $row['customer city'],
@@ -56,10 +100,14 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
           'status'                     => $this->setStatus($product, $row['price']),
           'product_link'               => isset($product) ? ( isset($product->pivot->link ) != null ? $product->pivot->link : $product->website_link ) : null,
           'product_id'                 => isset($product) ? $product->id : null,
-          'commission'                 => isset($product) ? $product->pivot->affiliate_commission : 0,
+          'commission'                 => isset($product) ? collect( collect(json_decode( $product->pricings )->pricings)
+                                                                                          ?->where('country', $row['country'])
+                                                                                          ->first()?->prices)->where('price', $row['price'])
+                                                                                          ->first()?->commission : 0,
           'source'                     => 'importation',
-          // 'pricings'                   => $product->pivot->pricings
-      ]);
+        ]);
+      }
+
   }
 
     public function rules(): array
@@ -71,8 +119,24 @@ class OrderImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmpty
         'product sku'   =>  ['required', 'max:255', Rule::in( Investor::find($this->investor_id)->accessProducts()->select('products.alias')->get()->pluck('alias')->map(function($item){return json_decode($item);})->flatten(2) )],
         'website'   =>  ['required', 'max:255'],
         'country'   =>  ['nullable', 'max:255', Rule::In(Location::select('country')->get()->pluck('country')) ],
-        'price'     =>  ['nullable', 'max:255'],
+        'price'     => ['required', 'numeric']
       ];
+    }
+
+    public function withValidator($validator)
+    {
+      // $validator->sometimes('price', 'required', function() use($validator) {
+
+      //   $product = $this->products(collect($validator->getData())->pluck('product sku')->first());
+
+      //   $value = collect($validator->getData())->pluck('price')->first();
+
+      //   $prices = $product ? collect( collect(json_decode( $product->pricings )->pricings)->where('country', collect($validator->getData())->pluck('country')->first() )->first()->prices)->pluck('price')->toArray() : [];
+
+      //   if( ! in_array($value, $prices)){
+      //     $validator->errors()->add('price', 'Pricing is not allowed.');
+      //   }
+      // });
     }
 
     public function batchSize(): int

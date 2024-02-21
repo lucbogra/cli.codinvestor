@@ -37,8 +37,10 @@ class IntegrationController extends Controller
 
     public function index()
     {
+      // return $this->integrationRepository->integrationData($this->investor);
+
             $data= $this->integrationRepository->integrationData($this->investor);
-            
+
             return Inertia::render('Integrations/Index', [
                 'integration_user' => IntegrationResource::collection($data['userIntegration']),
                 'integrations' => $data['integration'],
@@ -62,7 +64,7 @@ class IntegrationController extends Controller
         if ($integrable) {
             return Inertia::render('Integrations/OneClickVid/Index', [
                 'hasIntegrationPayment' => count($this->investor->pendingIntegrationPayment) > 0,
-                'investorRemain'=>$remain 
+                'investorRemain'=>$remain
             ]);
         } else  return  redirect()->route('integrations.index');
     }

@@ -161,11 +161,7 @@ Route::middleware([
     Route::post('create_account_oneclickvid', [UserController::class, 'create_oneclickvid'])->name('users.oneclickvid')->middleware(DomainCheckMiddleware::class);
     Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
     Route::resource('/members', MemberController::class);
-  });
-  Route::prefix('user')->middleware('role:Investor')->group(function () {
-    Route::get('company', [UserController::class, 'company'])->name('users.company');
-    Route::put('/company/update', [UserController::class, 'update_company'])->name('users.company.update');
-    Route::resource('/members', MemberController::class);
+
     Route::get('/notifications', [HomeController::class, 'all_notifications'])->name('user.notifications');
     Route::put('/notifications/{id}/close', [HomeController::class, 'close_notification'])->name('user.notifications.close');
     Route::put('/notifications/close', [HomeController::class, 'close_all_notifications'])->name('user.all_notifications.close');
