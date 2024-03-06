@@ -14,16 +14,16 @@ const props = defineProps({
 
 const defaultMethod = JSON.parse(props.datas.datas).default.type
 const tabs = [
-  { name: 'Bank Account', href: '#', icon: LibraryIcon },
+  // { name: 'Bank Account', href: '#', icon: LibraryIcon },
   { name: 'Maroccan Bank Account', href: '#', icon: OfficeBuildingIcon },
   { name: 'Payoneer', href: '#', icon: CurrencyDollarIcon },
-  { name: 'Paypal', href: '#', icon: CreditCardIcon },
+  // { name: 'Paypal', href: '#', icon: CreditCardIcon },
   { name: 'TransferWise', href: '#', icon: CashIcon },
 ]
 onMounted(() => {
   console.log(JSON.parse(props.datas.datas).bank_account);
 })
-const selected = ref('Bank Account')
+const selected = ref('Maroccan Bank Account')
 const colorx = ref('#0F7490')
 
 const switchTab = (name) => {
@@ -66,10 +66,10 @@ const BankAccount = defineAsyncComponent(() =>
             </div>
           </div>
         </div>
-        <BankAccount v-if="selected == 'Bank Account'" :datas="JSON.parse(props.datas.datas).bank_account" :defaultMethod="defaultMethod" />
+        <!-- <BankAccount v-if="selected == 'Bank Account'" :datas="JSON.parse(props.datas.datas).bank_account" :defaultMethod="defaultMethod" /> -->
         <MaroccanBankAccount v-if="selected == 'Maroccan Bank Account'" :datas="JSON.parse(props.datas.datas).maroccan_bank_account" :default-method="defaultMethod" />
         <Payoneer v-if="selected == 'Payoneer'" :datas="JSON.parse(props.datas.datas).payoneer" :default-method="defaultMethod" />
-        <Paypal v-if="selected == 'Paypal'" :datas="JSON.parse(props.datas.datas).paypal" :default-method="defaultMethod" />
+        <!-- <Paypal v-if="selected == 'Paypal'" :datas="JSON.parse(props.datas.datas).paypal" :default-method="defaultMethod" /> -->
         <TransferWise v-if="selected == 'TransferWise'" :datas="JSON.parse(props.datas.datas).transferwise" :default-method="defaultMethod" />
       </div>
     </template>
