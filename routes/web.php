@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OneClickVid\ContactController;
@@ -129,6 +130,14 @@ Route::middleware([
 
   Route::get('analytics', [ReportController::class, 'analytics'])->name('analytics')->middleware('permission:affiliate show analytics');
   Route::get('performance/{start}/{end}', [ReportController::class, 'performance'])->name('performance')->middleware('permission:affiliate show analytics');
+
+  Route::get('analytics/index', [AnalyticsController::class, 'index'])->name('analytics.index')->middleware('permission:affiliate show analytics');
+  Route::get('analytics/top', [AnalyticsController::class, 'top'])->name('analytics.top')->middleware('permission:affiliate show analytics');
+  Route::get('analytics/byday/uploads', [AnalyticsController::class, 'uploads'])->name('analytics.byday.uploads')->middleware('permission:affiliate show analytics');
+  Route::get('analytics/byday/confirmations', [AnalyticsController::class, 'confirmations'])->name('analytics.byday.confirmations')->middleware('permission:affiliate show analytics');
+  Route::get('analytics/byday/deliveries', [AnalyticsController::class, 'deliveries'])->name('analytics.byday.deliveries')->middleware('permission:affiliate show analytics');
+
+
   Route::get('reports', [ReportController::class, 'reports'])->name('reports')->middleware('permission:affiliate show reports');
   Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products')->middleware('permission:affiliate show reports');
 
