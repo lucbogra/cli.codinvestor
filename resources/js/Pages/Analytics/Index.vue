@@ -26,36 +26,47 @@ const uploadsByDay = ref(null)
 const confirmationsByDay = ref(null)
 const deliveriesByDay = ref(null)
 const isLoading = ref(false)
+const uploadsdataIsLoading = ref(false)
+const confirmationsDataIsLoading = ref(false)
 
 onMounted(async () => {
-  getData()
-})
-
-const getData = async () => {
   isLoading.value = true
 
-  const res = await axios.get(route('analytics.top', { daterange: form.daterange, countries: form.countries }))
-  reports.value = res.data
+  getTopData()
+  getUploadsData()
+  getConfirmationsData()
 
   isLoading.value = false
+})
 
-  // const res2 = await axios.get(route('analytics.byday', { daterange: form.daterange, countries: form.countries }))
-  // byDayData.value = res2.data
+const getTopData = async () => {
+  const res = await axios.get(route('analytics.top', { daterange: form.daterange, countries: form.countries }))
+  reports.value = res.data
+}
+
+const getUploadsData = async () => {
+  uploadsdataIsLoading.value = true
 
   const res2 = await axios.get(route('analytics.byday.uploads', { daterange: form.daterange, countries: form.countries }))
   uploadsByDay.value = res2.data
 
+  uploadsdataIsLoading.value = false
+}
+
+const getConfirmationsData = async () => {
+  confirmationsDataIsLoading.value = true
+
   const res3 = await axios.get(route('analytics.byday.confirmations', { daterange: form.daterange, countries: form.countries }))
   confirmationsByDay.value = res3.data
 
-  // const res4 = await axios.get(route('analytics.byday.deliveries', { daterange: form.daterange, countries: form.countries }))
-  // deliveriesByDay.value = res4.data
-
+  confirmationsDataIsLoading.value = false
 }
 
 const submit = async() => {
   Inertia.get(route('analytics.index'), pickBy(form), { preserveState: true })
-  getData()
+  getTopData()
+  getUploadsData()
+  getConfirmationsData()
 }
 
 const LoadingOverlay = defineAsyncComponent(() =>
@@ -91,7 +102,7 @@ const LoadingOverlay = defineAsyncComponent(() =>
               </el-select>
             </div>
             <div class="">
-              <LoadingButton :loading="loading" class="btn-primary ml-4" type="submit">Submit</LoadingButton>
+              <LoadingButton :loading="isLoading" class="btn-primary ml-4" type="submit">Submit</LoadingButton>
             </div>
           </div>
         </form>
@@ -105,11 +116,11 @@ const LoadingOverlay = defineAsyncComponent(() =>
         <div class="grid xl:grid-cols-2 md:grid-cols-1 gap-4 mb-4">
 
 
-          <LoadingOverlay :is-loading="uploadsByDay == null" :full-page="false" >
+          <LoadingOverlay :is-loading="uploadsdataIsLoading" :full-page="false" >
             <UploadsByDayChart v-if="uploadsByDay != null" :data="uploadsByDay" />
           </LoadingOverlay>
 
-          <LoadingOverlay :is-loading="confirmationsByDay == null" :full-page="false" >
+          <LoadingOverlay :is-loading="confirmationsDataIsLoading" :full-page="false" >
             <ConfirmationsByDayChart v-if="confirmationsByDay != null" :data="confirmationsByDay" />
           </LoadingOverlay>
 
