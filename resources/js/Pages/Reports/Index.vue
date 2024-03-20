@@ -66,10 +66,10 @@ const LoadingOverlay = defineAsyncComponent(() =>
 )
 
 const getProductsDataByPagination = async (url) => {
-  isLoading.value = true
+  productsDataIsLoading.value = true
   const res = await axios.get(url)
   dataByProducts.value = res.data
-  isLoading.value = false
+  productsDataIsLoading.value = false
 }
 
 </script>
