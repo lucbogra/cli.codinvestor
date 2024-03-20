@@ -26,22 +26,23 @@ const uploadsByDay = ref(null)
 const confirmationsByDay = ref(null)
 const deliveriesByDay = ref(null)
 const isLoading = ref(false)
+const topDataIsLoading = ref(false)
 const uploadsdataIsLoading = ref(false)
 const confirmationsDataIsLoading = ref(false)
 
 onMounted(async () => {
-  isLoading.value = true
-
   getTopData()
   getUploadsData()
   getConfirmationsData()
-
-  isLoading.value = false
 })
 
 const getTopData = async () => {
+  topDataIsLoading.value = true
+
   const res = await axios.get(route('analytics.top', { daterange: form.daterange, countries: form.countries }))
   reports.value = res.data
+
+  topDataIsLoading.value = false
 }
 
 const getUploadsData = async () => {
@@ -102,7 +103,7 @@ const LoadingOverlay = defineAsyncComponent(() =>
               </el-select>
             </div>
             <div class="">
-              <LoadingButton :loading="isLoading" class="btn-primary ml-4" type="submit">Submit</LoadingButton>
+              <LoadingButton :loading="topDataIsLoading || uploadsdataIsLoading|| confirmationsDataIsLoading" class="btn-primary ml-4" type="submit">Submit</LoadingButton>
             </div>
           </div>
         </form>
@@ -129,7 +130,7 @@ const LoadingOverlay = defineAsyncComponent(() =>
       </div>
 
     </div>
-    <LoadingOverlay :is-loading="isLoading" />
+    <LoadingOverlay :is-loading="topDataIsLoading" />
     </template>
 
 
