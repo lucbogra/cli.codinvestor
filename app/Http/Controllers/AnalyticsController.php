@@ -32,6 +32,7 @@ class AnalyticsController extends Controller
   {
     return Inertia::render('Analytics/Index', [
       'daterange' => $this->daterange,
+      'allCountries' => Location::select('country')->get()->pluck('country'),
       'countries' => $this->countries,
     ]);
   }

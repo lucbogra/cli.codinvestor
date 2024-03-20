@@ -92,9 +92,9 @@ const navigation = [
 
   // { name: 'History', href: '#', icon: ClockIcon, current: false },
 
-  { name: 'Reports', href: route('reports'), icon: DocumentReportIcon, current: isUrl('/reports'), show: auth.value.hasPermission('affiliate show reports') },
+  { name: 'Reports', href: route('reports.index'), icon: DocumentReportIcon, current: isUrl('/reports'), show: auth.value.hasPermission('affiliate show reports') },
 
-  { name: 'Analytics', href: route('analytics'), icon: PresentationChartLineIcon, current: isUrl('/analytics'), show: auth.value.hasPermission('affiliate show analytics') },
+  { name: 'Analytics', href: route('analytics.index'), icon: PresentationChartLineIcon, current: isUrl('/analytics'), show: auth.value.hasPermission('affiliate show analytics') },
 
   { name: 'Invoices', href: route('invoices.index'), icon: ClipboardListIcon, current: isUrl('/invoices'), show: auth.value.hasPermission('affiliate show invoices') },
 

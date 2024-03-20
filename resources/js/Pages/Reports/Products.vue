@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  products : Array,
+  products : Object,
 })
 
 </script>
@@ -9,13 +9,14 @@ const props = defineProps({
  <div class="shadow-xl rounded-xl mb-8 ">
   <div class="bg-white rounded-lg border-slate-200">
     <div class="">
-      <VTable :data="products" class="min-w-full table-fixed bg-gray-50">
+      <VTable :data="products.data" class="min-w-full table-fixed bg-gray-50">
         <template #head>
           <tr>
             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Product</th>
             <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Uploaded</th>
-            <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">duplicate</th>
-            <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Wrong Number</th>
+            <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Processed</th>
+            <!-- <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">duplicate</th>
+            <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Wrong Number</th> -->
             <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Confirmed</th>
             <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Delivered</th>
             <th class="px-3 py-3.5 text-sm text-left font-semibold text-gray-900">Commission</th>
@@ -35,8 +36,9 @@ const props = defineProps({
               </div>
             </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.uploaded }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.duplicate }}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.wrong_number }} </td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.processed }}</td>
+            <!-- <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.duplicate }}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.wrong_number }} </td> -->
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.confirmed }} </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ product.delivered }} </td>
             <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500"> {{ '$'+product.commission }} </td>
@@ -51,6 +53,8 @@ const props = defineProps({
     </div>
   </div>
   <!-- Pagination -->
+  <slot name="pagination"/>
+
 </div>
 
 </template>

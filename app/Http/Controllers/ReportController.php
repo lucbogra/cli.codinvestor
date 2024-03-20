@@ -2,16 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GetCountries;
+use App\Actions\GetDateRange;
 use App\Models\Investor;
+use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ScheduledReport;
+use App\Repositories\ReportRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class ReportController extends Controller
 {
+
+  private $affiliate;
+  private $daterange;
+  private $countries;
+  private $reportRepository;
+
+  public function __construct(GetDateRange $daterange, GetCountries $countries, ReportRepository $reportRepository)
+  {
+    $this->middleware(function ($request, $next) {
+      $this->affiliate = $request->user()->hasRole('Investor') ? $request->user()->investor : ($request->user()->hasRole('Member') ? $request->user()->member->investor : null);
+      return $next($request);
+  });
+
+    $this->daterange = $daterange->action();
+    $this->countries = $countries->execute();
+    $this->reportRepository = $reportRepository;
+  }
+
+  public function index() {
+    return Inertia::render('Reports/Index', [
+      'daterange' => $this->daterange,
+      'allCountries' => Location::select('country')->get()->pluck('country'),
+      'countries' => $this->countries,
+    ]);
+  }
+
+  public function dataByProducts() {
+    $data = $this->reportRepository->dataByProducts($this->affiliate, $this->daterange, $this->countries);
+    return response()->json($data);
+  }
+
+  public function top() {
+    $data = $this->reportRepository->top($this->affiliate, $this->daterange, $this->countries);
+    return response()->json($data);
+  }
+
   public function analytics(){
     $start = Request::get('start') ? Request::get('start') : date("Y-m-d", strtotime('- 30 days'));
     $end = Request::get('end') ? Request::get('end') : date("Y-m-d");

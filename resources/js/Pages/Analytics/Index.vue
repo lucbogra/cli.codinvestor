@@ -12,7 +12,8 @@ import { pickBy } from 'lodash';
 
 const props = defineProps({
   daterange: Array,
-  countries: Array
+  countries: Array,
+  allCountries: Array
 })
 
 const form = useForm({
@@ -88,10 +89,10 @@ const LoadingOverlay = defineAsyncComponent(() =>
 
     <template #content>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 -mt-12">
-      <div class="bg-white p-4 grid md:grid-cols-2 sm:grid-cols-1 rounded mb-5 shadow-xl">
+      <div class="bg-white p-4 grid md:grid-cols-2 sm:grid-cols-1 rounded-md mb-5 ">
         <div class="my-2">
           <form @submit.prevent="submit">
-          <div class="flex mb-6">
+          <div class="flex">
             <div class="block mr-4">
               <el-date-picker v-model="form.daterange" type="daterange" range-separator="To"
                 start-placeholder="Start date" end-placeholder="End date" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
@@ -99,7 +100,7 @@ const LoadingOverlay = defineAsyncComponent(() =>
             <div class="mx-4">
               <el-select v-model="form.countries" multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="5"
                 placeholder="countries" style="width: 480px">
-                <el-option v-for="item in countries" :key="item" :label="item" :value="item" />
+                <el-option v-for="item in allCountries" :key="item" :label="item" :value="item" />
               </el-select>
             </div>
             <div class="">

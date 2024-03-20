@@ -143,6 +143,10 @@ Route::middleware([
   Route::get('reports', [ReportController::class, 'reports'])->name('reports')->middleware('permission:affiliate show reports');
   Route::get('products/{start}/{end}', [ReportController::class, 'products'])->name('reports.products')->middleware('permission:affiliate show reports');
 
+  Route::get('reports/index', [ReportController::class, 'index'])->name('reports.index')->middleware('permission:affiliate show reports');
+  Route::get('reports/data/products', [ReportController::class, 'dataByProducts'])->name('reports.data.products')->middleware('permission:affiliate show reports');
+  Route::get('reports/top', [ReportController::class, 'top'])->name('reports.top')->middleware('permission:affiliate show reports');
+
   Route::prefix('billing')->middleware('permission:affiliate manage billing settings')->group(function () {
     Route::get('index', [PaymentMethodController::class, 'index'])->name('billing.index');
     Route::put('update', [PaymentMethodController::class, 'update'])->name('billing.update');
