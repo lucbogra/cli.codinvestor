@@ -37,19 +37,20 @@ const getData = async () => {
   const res = await axios.get(route('analytics.top', { daterange: form.daterange, countries: form.countries }))
   reports.value = res.data
 
-  const res2 = await axios.get(route('analytics.byday', { daterange: form.daterange, countries: form.countries }))
-  byDayData.value = res2.data
+  isLoading.value = false
 
-  // const res2 = await axios.get(route('analytics.byday.uploads', { daterange: form.daterange, countries: form.countries }))
-  // uploadsByDay.value = res2.data
+  // const res2 = await axios.get(route('analytics.byday', { daterange: form.daterange, countries: form.countries }))
+  // byDayData.value = res2.data
 
-  // const res3 = await axios.get(route('analytics.byday.confirmations', { daterange: form.daterange, countries: form.countries }))
-  // confirmationsByDay.value = res3.data
+  const res2 = await axios.get(route('analytics.byday.uploads', { daterange: form.daterange, countries: form.countries }))
+  uploadsByDay.value = res2.data
+
+  const res3 = await axios.get(route('analytics.byday.confirmations', { daterange: form.daterange, countries: form.countries }))
+  confirmationsByDay.value = res3.data
 
   // const res4 = await axios.get(route('analytics.byday.deliveries', { daterange: form.daterange, countries: form.countries }))
   // deliveriesByDay.value = res4.data
 
-  isLoading.value = false
 }
 
 const submit = async() => {
@@ -102,11 +103,17 @@ const LoadingOverlay = defineAsyncComponent(() =>
       <Top v-if="reports != null" :datas="reports"/>
       <div class="hidden sm:block">
         <div class="grid xl:grid-cols-2 md:grid-cols-1 gap-4 mb-4">
-          <ConfirmationsByDayChart v-if="byDayData != null" :data="byDayData" />
 
-          <UploadsByDayChart v-if="byDayData != null" :data="byDayData" />
 
-          <DeliveriesByDayChart v-if="byDayData != null" :data="byDayData" />
+          <LoadingOverlay :is-loading="uploadsByDay == null" :full-page="false" >
+            <UploadsByDayChart v-if="uploadsByDay != null" :data="uploadsByDay" />
+          </LoadingOverlay>
+
+          <LoadingOverlay :is-loading="confirmationsByDay == null" :full-page="false" >
+            <ConfirmationsByDayChart v-if="confirmationsByDay != null" :data="confirmationsByDay" />
+          </LoadingOverlay>
+
+          <!-- <DeliveriesByDayChart v-if="byDayData != null" :data="byDayData" /> -->
         </div>
       </div>
 

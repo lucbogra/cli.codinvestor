@@ -36,7 +36,7 @@
         "vue-chart-3": "^3.1.8",
         "vue-clipboard3": "^2.0.0",
         "vue-content-loader": "^2.0.1",
-        "vue-loading-overlay": "^5.0.3",
+        "vue-loading-overlay": "^6.0.4",
         "vue2-editor": "^2.10.3",
         "vue3-apexcharts": "^1.4.1",
         "vue3-summernote-editor": "^1.0.2",

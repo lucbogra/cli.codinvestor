@@ -1,26 +1,27 @@
 
 <template>
-  <div class="vld-parent">
+  <div class="vl-parent">
       <loading v-model:active="isLoading"
                :can-cancel="true"
                :on-cancel="onCancel"
                :is-full-page="fullPage"
                color="#1B2E51"/>
+
+      <slot />
   </div>
 </template>
 
 <script>
   import Loading from 'vue-loading-overlay';
-  import 'vue-loading-overlay/dist/vue-loading.css';
+  import 'vue-loading-overlay/dist/css/index.css';
 
   export default {
     props : {
-      isLoading : Boolean
-    },
-    data() {
-        return {
-            fullPage: true
-        }
+      isLoading : Boolean,
+      fullPage : {
+        type : Boolean,
+        default : true
+      }
     },
     components: {
         Loading
