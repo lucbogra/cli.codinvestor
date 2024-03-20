@@ -133,6 +133,8 @@ Route::middleware([
 
   Route::get('analytics/index', [AnalyticsController::class, 'index'])->name('analytics.index')->middleware('permission:affiliate show analytics');
   Route::get('analytics/top', [AnalyticsController::class, 'top'])->name('analytics.top')->middleware('permission:affiliate show analytics');
+  Route::get('analytics/byday', [AnalyticsController::class, 'byday'])->name('analytics.byday')->middleware('permission:affiliate show analytics');
+
   Route::get('analytics/byday/uploads', [AnalyticsController::class, 'uploads'])->name('analytics.byday.uploads')->middleware('permission:affiliate show analytics');
   Route::get('analytics/byday/confirmations', [AnalyticsController::class, 'confirmations'])->name('analytics.byday.confirmations')->middleware('permission:affiliate show analytics');
   Route::get('analytics/byday/deliveries', [AnalyticsController::class, 'deliveries'])->name('analytics.byday.deliveries')->middleware('permission:affiliate show analytics');

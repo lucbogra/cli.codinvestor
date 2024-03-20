@@ -46,6 +46,46 @@ class AnalyticsRepository {
     return "$rate%";
   }
 
+  public function byDayData($affiliate, $daterange, $countries) {
+    $period = CarbonPeriod::create($daterange[0], $daterange[1]);
+
+    return collect($period)->map(function($day) use($affiliate, $countries) {
+    $date = $day->format('Y-m-d');
+
+    $uploaded = $affiliate->orders()->whereDate('created_at', $date)->whereIn('country', $countries)->count();
+
+    $wrong_number = $affiliate->orders()->whereDate('created_at', $date)->where('status', 'wrong number')->whereIn('country', $countries)->count();
+
+    $duplicate = $affiliate->orders()->whereDate('created_at', $date)->where('duplicate', 1)->whereIn('country', $countries)->count();
+
+    $rejected = $affiliate->orders()->whereDate('created_at', $date)->where('status', 'rejected')->whereIn('country', $countries)->count();
+
+    $confirmed = $affiliate->orders()->whereDate('confirmed_at', $date)->whereIn('country', $countries)->count();
+
+    $processed = $affiliate->orders()->whereDate('affected_at', $date)->whereIn('country', $countries)->count();
+
+    $cancelled = $affiliate->orders()->whereDate('cancelled_at', $date)->whereIn('country', $countries)->count();
+
+    $delivered = $affiliate->orders()->whereDate('confirmed_at', $date)->whereIn('country', $countries)->where('status', 'Delivered')->count();
+
+    $returned = $affiliate->orders()->whereDate('confirmed_at', $date)->whereIn('country', $countries)->where('status', 'Returned')->count();
+
+    return [
+      'day'           => $day->format('Y-m-d'),
+      'uploaded'      => $uploaded,
+      'wrong_number'  => $wrong_number,
+      'duplicate'     => $duplicate,
+      'rejected'      => $rejected,
+      'confirmed'     => $confirmed,
+      'processed'     => $processed,
+      'cancelled'     => $cancelled,
+      'delivered'     => $delivered,
+      'returned'      => $returned
+    ];
+
+   });
+  }
+
   public function bydayUploads($affiliate, $daterange, $countries) {
     $period = CarbonPeriod::create($daterange[0], $daterange[1]);
 

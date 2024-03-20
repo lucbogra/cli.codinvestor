@@ -43,6 +43,13 @@ class AnalyticsController extends Controller
     return response()->json($data);
   }
 
+  public function byday()
+  {
+    $data = $this->analyticsRepository->byDayData($this->affiliate, $this->daterange, $this->countries);
+
+    return response()->json($data);
+  }
+
   public function uploads()
   {
     $data = $this->analyticsRepository->bydayUploads($this->affiliate, $this->daterange, $this->countries);
