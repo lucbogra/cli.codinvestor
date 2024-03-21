@@ -86,7 +86,7 @@ const getProductsDataByPagination = async (url) => {
 
     <template #content>
       <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 -mt-12">
-      <div class="bg-white p-4 grid md:grid-cols-2 sm:grid-cols-1 rounded mb-5 shadow-xl">
+      <div class="bg-white p-4 grid md:grid-cols-2 sm:grid-cols-1 rounded-md mb-5">
         <div class="my-2">
           <form @submit.prevent="submit">
           <div class="flex">
