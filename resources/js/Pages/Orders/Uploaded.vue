@@ -19,7 +19,8 @@ const indeterminate = computed(() => selectedOrders.value.length > 0 && selected
 
 <template>
   <div>
-    <UploadForm :demo_file="demo_file" />
+    <!-- <UploadForm :demo_file="demo_file" /> -->
+    <p class="text-sm font-light text-gray-900">To import your orders, please create your store on <a class="text-primary-600 hover:text-primary-700 underline" target="_blank" href="https://gogetlead.shop/">gogetlead.shop</a> </p>
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
