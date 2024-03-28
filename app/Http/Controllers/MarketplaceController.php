@@ -44,7 +44,7 @@ class MarketplaceController extends Controller
       ->paginate(request()->paginate ?? 12)
       )->withQueryString();
 
-    $countries = Location::select('id','country')->where('country', 'Saudi Arabia')->get();
+    $countries = Location::select('id','country')->get();
     $categories = Category::select('id', 'name')->get();
 
     return Inertia::render('Marketplace/Index', [
