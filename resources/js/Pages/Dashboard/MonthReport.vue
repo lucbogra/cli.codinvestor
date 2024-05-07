@@ -16,7 +16,7 @@ const chartOptions = ref(null)
 onMounted(async () => {
   const res = await axios.get(route('dashboard.month_reports'))
   datas.value = res.data
-  console.log(datas.value.map((el) => el.uploaded).reduce((a, b) => a + b, 0));
+  // console.log(datas.value.map((el) => el.uploaded).reduce((a, b) => a + b, 0));
 
   series.value = [
     {

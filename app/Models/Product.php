@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Attribute;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -49,12 +50,9 @@ class Product extends Model
             ->select('products.id')->distinct()
         );
     })->when($filters['category'] ?? null, function ($query, $category_id) {
-        $query->whereIn(
-          'id',
-          DB::table('products')->join('category_product', 'products.id', '=', 'category_product.product_id')
-            ->where('category_product.category_id', $category_id)
-            ->select('products.id')->distinct()
-        );
+      $query->whereHas('categories', function(Builder $builder) use($category_id) {
+        $builder->where('id', $category_id);
+      });
     });
   }
 
