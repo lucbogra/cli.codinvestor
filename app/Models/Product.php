@@ -51,14 +51,14 @@ class Product extends Model
         );
     })->when($filters['category'] ?? null, function ($query, $category_id) {
       $query->whereHas('categories', function(Builder $builder) use($category_id) {
-        $builder->where('id', $category_id);
+        $builder->where('categories.id', $category_id);
       });
     });
   }
 
   public function categories()
   {
-    return $this->belongsToMany(Category::class)->withTimestamps();
+    return $this->belongsToMany(Category::class, 'category_product')->withTimestamps();
   }
 
   public function variants()
