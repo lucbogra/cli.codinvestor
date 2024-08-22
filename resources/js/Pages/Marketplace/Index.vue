@@ -83,13 +83,13 @@ const open = ref(false)
         <button type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden" @click="open = true">Filters</button>
 
 
-          <div class="mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-8xl lg:px-8">
+          <!-- <div class="mx-auto py-4 px-4 sm:py-4 sm:px-6 lg:max-w-8xl lg:px-8">
             <h2 class="sr-only">Products</h2>
             <div class="text-sm text-slate-500 mb-2" v-if="products?.data">{{ products.data.length }} {{
               (products.data.length > 1) ?
                 'Products' : 'Product' }}
             </div>
-          </div>
+          </div> -->
 
 
 
