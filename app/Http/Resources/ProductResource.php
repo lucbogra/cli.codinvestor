@@ -46,6 +46,7 @@ class ProductResource extends JsonResource
           ->selectRaw('locations.country as country, locations.flag_code as flag_code, sum(supplier_products.qty) as qty')
           ->groupBy('country', 'laravel_through_key', 'flag_code')->get(),
         'pricings' => $this->pricings ? json_decode($this->pricings)->pricings : [],
+        'niche' => $this->niche,
       ];
     }
 }

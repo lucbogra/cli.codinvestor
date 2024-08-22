@@ -39,7 +39,7 @@ class MarketplaceController extends Controller
     //     ];
     // });
 
-    $products = ProductResource::collection( Product::active()->filter(request()->only('search', 'country', 'category'))
+    $products = ProductResource::collection( Product::active()->filter(request()->only('search', 'country', 'category', 'niche'))
       ->orderBy('recommanded_price', 'ASC')
       ->paginate(request()->paginate ?? 12)
       )->withQueryString();
@@ -48,7 +48,7 @@ class MarketplaceController extends Controller
     $categories = Category::select('id', 'name')->get();
 
     return Inertia::render('Marketplace/Index', [
-      'filters' => request()->only('search', 'country', 'category', 'paginate'),
+      'filters' => request()->only('search', 'country', 'category', 'paginate', 'niche'),
       'products' => $products,
       'countries' => $countries,
       'categories' => $categories,

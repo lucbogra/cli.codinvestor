@@ -53,6 +53,8 @@ class Product extends Model
       $query->whereHas('categories', function(Builder $builder) use($category_id) {
         $builder->where('categories.id', $category_id);
       });
+    })->when($filters['niche'] ?? null, function ($query, $niche) {
+      $query->where('niche', $niche);
     });
   }
 
