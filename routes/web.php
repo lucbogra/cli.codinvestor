@@ -87,7 +87,7 @@ Route::middleware([
   'auth:sanctum',
   config('jetstream.auth_session'),
   // 'verified',
-  'register_steps',
+  // 'register_steps',
 ])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::get('/dashboard/top/{time}', [DashboardController::class, 'top'])->name('dashboard.top')->middleware('auth');
@@ -100,7 +100,7 @@ Route::middleware([
   'auth:sanctum',
   config('jetstream.auth_session'),
   // 'verified',
-  'register_steps',
+  // 'register_steps',
 ])->group(function () {
   Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
   Route::get('marketplace/search', [MarketplaceController::class, 'search'])->name('marketplace.search');
